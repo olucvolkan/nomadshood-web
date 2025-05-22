@@ -1,20 +1,14 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google'; // Changed from Geist_Sans to Inter
+import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Toaster } from "@/components/ui/toaster"
 
-const inter = Inter({ // Changed to Inter
-  variable: '--font-inter', // Updated CSS variable name
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
 });
-
-// Geist Mono is available but not explicitly used in primary text, keeping for potential future use (e.g. code blocks)
-// const geistMono = Geist_Mono({
-//   variable: '--font-geist-mono',
-//   subsets: ['latin'],
-// });
 
 export const metadata: Metadata = {
   title: 'Nomad Coliving Hub',
@@ -27,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}> {/* Apply the new font variable */}
+    <html lang="en" className={inter.variable}>
       <body className="antialiased flex flex-col min-h-screen">
         <Header />
         <main className="flex-grow container mx-auto px-4 py-8">
