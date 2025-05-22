@@ -12,20 +12,58 @@ export interface ColivingSpace {
   // websiteUrl?: string; // Future: Add a website URL
 }
 
-export interface ColivingRecommendation {
-  name: string;
-  address: string;
-  description: string;
-}
+// Old ColivingRecommendation is replaced by TripPlanOutput features
+// export interface ColivingRecommendation {
+//   name: string;
+//   address: string;
+//   description: string;
+// }
 
 export interface CommunityLink {
   platform: 'Slack' | 'WhatsApp' | 'Telegram' | 'Other';
   name: string;
   url: string;
-  dataAiHint?: string; 
+  dataAiHint?: string;
 }
 
 export interface CountrySpecificCommunityLinks {
   countryName: string;
   links: CommunityLink[];
+}
+
+// --- New Types for Trip Planner ---
+export interface TripPlanInput {
+  location: string;
+  budget: 'low' | 'medium' | 'high';
+  interests: string;
+  duration: string;
+  workingHours: string;
+  leisureTime: string;
+}
+
+export interface ColivingSuggestion {
+  name: string;
+  address: string;
+  reason: string;
+}
+
+export interface ActivitySuggestion {
+  name: string;
+  reason?: string; // For cafes/restaurants
+  cuisine?: string; // For restaurants
+}
+
+export interface DailyItineraryItem {
+  day: string; // e.g., "Day 1", "Monday"
+  morningActivity: string;
+  afternoonActivity: string;
+  eveningActivity: string;
+}
+
+export interface TripPlanOutput {
+  destinationOverview: string;
+  colivingSuggestion: ColivingSuggestion;
+  dailyItinerary: DailyItineraryItem[];
+  cafeSuggestions: ActivitySuggestion[];
+  restaurantSuggestions: ActivitySuggestion[];
 }
