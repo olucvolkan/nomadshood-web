@@ -1,10 +1,47 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, Lightbulb, Users, MapPin, Video } from 'lucide-react';
+import { List, Lightbulb, Users, MapPin, Video, Globe } from 'lucide-react';
+import { mockColivingSpaces } from '@/lib/mock-data';
+import type { ColivingSpace } from '@/types';
+
+interface CountryDisplayData {
+  name: string;
+  count: number;
+  imageUrl: string;
+  dataAiHint: string;
+}
 
 export default function HomePage() {
+  const countryCounts: { [country: string]: number } = {};
+  mockColivingSpaces.forEach(space => {
+    const addressParts = space.address.split(', ');
+    const country = addressParts[addressParts.length - 1];
+    if (country) {
+      countryCounts[country] = (countryCounts[country] || 0) + 1;
+    }
+  });
+
+  const countrySpecificHints: { [key: string]: string } = {
+    "Indonesia": "bali landscape",
+    "Portugal": "lisbon cityscape",
+    "USA": "colorado mountains",
+    "Japan": "tokyo street",
+    "South Africa": "capetown coast",
+    "Colombia": "medellin valley",
+  };
+
+  const countriesData: CountryDisplayData[] = Object.entries(countryCounts)
+    .map(([countryName, count]) => ({
+      name: countryName,
+      count: count,
+      imageUrl: `https://placehold.co/600x400.png`,
+      dataAiHint: countrySpecificHints[countryName] || countryName.toLowerCase().split(" ").slice(0,2).join(" "),
+    }))
+    .sort((a, b) => b.count - a.count); // Sort by count descending
+
   return (
     <div className="space-y-12">
       <section className="text-center py-10 bg-gradient-to-r from-primary/10 via-background to-accent/10 rounded-xl shadow-sm">
@@ -62,6 +99,41 @@ export default function HomePage() {
             </CardDescription>
           </CardContent>
         </Card>
+      </section>
+
+      <section className="py-10">
+        <div className="text-center mb-10">
+          <Globe className="h-12 w-12 text-primary mx-auto mb-2" />
+          <h2 className="text-3xl font-semibold">Explore Destinations</h2>
+          <p className="text-lg text-foreground/70 mt-2">Discover coliving hotspots around the world.</p>
+        </div>
+        {countriesData.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {countriesData.map((country) => (
+              <Card key={country.name} className="group hover:shadow-xl transition-shadow duration-300 overflow-hidden rounded-lg">
+                <div className="relative h-48 w-full">
+                  <Image
+                    src={country.imageUrl}
+                    alt={`Beautiful view of ${country.name}`}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    data-ai-hint={country.dataAiHint}
+                  />
+                </div>
+                <CardHeader className="p-4">
+                  <CardTitle className="text-xl">{country.name}</CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 pt-0">
+                  <p className="text-sm text-muted-foreground">
+                    {country.count} coliving space{country.count !== 1 ? 's' : ''} available
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-muted-foreground">No destination data available yet.</p>
+        )}
       </section>
 
       <section className="text-center">
