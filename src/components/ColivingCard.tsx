@@ -4,13 +4,14 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Home, Video, MessageSquare, ExternalLink } from 'lucide-react';
+import { MapPin, Video, MessageSquare } from 'lucide-react';
 
 interface ColivingCardProps {
   space: ColivingSpace;
+  showViewDetailsButton?: boolean;
 }
 
-export function ColivingCard({ space }: ColivingCardProps) {
+export function ColivingCard({ space, showViewDetailsButton = false }: ColivingCardProps) {
   return (
     <Card className="flex flex-col h-full shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardHeader className="flex flex-row items-start gap-4 p-4">
@@ -23,7 +24,11 @@ export function ColivingCard({ space }: ColivingCardProps) {
           data-ai-hint={space.dataAiHint || 'logo building'}
         />
         <div className="flex-1">
-          <CardTitle className="text-xl mb-1">{space.name}</CardTitle>
+          <Link href={`/coliving/${space.id}`} className="group">
+            <CardTitle className="text-xl mb-1 group-hover:text-primary transition-colors">
+              {space.name}
+            </CardTitle>
+          </Link>
           <CardDescription className="flex items-center text-sm">
             <MapPin className="h-4 w-4 mr-1.5 text-muted-foreground" />
             {space.address}
@@ -31,7 +36,7 @@ export function ColivingCard({ space }: ColivingCardProps) {
         </div>
       </CardHeader>
       <CardContent className="p-4 pt-0 flex-grow">
-        <p className="text-sm text-foreground/80 mb-3">{space.description}</p>
+        <p className="text-sm text-foreground/80 mb-3 line-clamp-3">{space.description}</p>
         {space.tags && space.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-2">
             {space.tags.map((tag) => (
@@ -58,6 +63,11 @@ export function ColivingCard({ space }: ColivingCardProps) {
                 <MessageSquare className="h-4 w-4 mr-2" />
                 Join Community
               </Link>
+            </Button>
+          )}
+           {showViewDetailsButton && (
+            <Button size="sm" asChild className="flex-1">
+              <Link href={`/coliving/${space.id}`}>View Details</Link>
             </Button>
           )}
         </div>

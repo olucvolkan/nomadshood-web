@@ -3,9 +3,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, Lightbulb, Users, MapPin, Video, Globe } from 'lucide-react';
+import { List, Lightbulb, Users, MapPin, Video, Globe, Star } from 'lucide-react';
 import { mockColivingSpaces } from '@/lib/mock-data';
 import type { ColivingSpace } from '@/types';
+import { ColivingCard } from '@/components/ColivingCard';
 
 interface CountryDisplayData {
   name: string;
@@ -40,10 +41,12 @@ export default function HomePage() {
       imageUrl: `https://placehold.co/600x400.png`,
       dataAiHint: countrySpecificHints[countryName] || countryName.toLowerCase().split(" ").slice(0,2).join(" "),
     }))
-    .sort((a, b) => b.count - a.count); // Sort by count descending
+    .sort((a, b) => b.count - a.count); 
+
+  const featuredSpaces = mockColivingSpaces.slice(0, 3); // Show first 3 as featured
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-16"> {/* Increased spacing between sections */}
       <section className="text-center py-10 bg-gradient-to-r from-primary/10 via-background to-accent/10 rounded-xl shadow-sm">
         <h1 className="text-5xl font-extrabold tracking-tight text-primary">
           Welcome to Nomad Coliving Hub
@@ -99,6 +102,19 @@ export default function HomePage() {
             </CardDescription>
           </CardContent>
         </Card>
+      </section>
+
+      <section className="py-10">
+        <div className="text-center mb-10">
+          <Star className="h-12 w-12 text-primary mx-auto mb-2" />
+          <h2 className="text-3xl font-semibold">Featured Coliving Spaces</h2>
+          <p className="text-lg text-foreground/70 mt-2">Handpicked selections for your next adventure.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredSpaces.map((space) => (
+            <ColivingCard key={space.id} space={space} />
+          ))}
+        </div>
       </section>
 
       <section className="py-10">
