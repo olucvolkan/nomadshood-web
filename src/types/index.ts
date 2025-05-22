@@ -17,3 +17,15 @@ export interface ColivingRecommendation {
   address: string;
   description: string;
 }
+
+export interface CommunityLink {
+  platform: 'Slack' | 'WhatsApp' | 'Telegram' | 'Other';
+  name: string;
+  url: string;
+  dataAiHint?: string; 
+}
+
+export interface CountrySpecificCommunityLinks {
+  countryName: string;
+  links: CommunityLink[];
+}

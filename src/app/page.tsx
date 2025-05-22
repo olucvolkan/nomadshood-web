@@ -1,12 +1,17 @@
 
+'use client';
+
+import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, Lightbulb, Users, MapPin, Video, Globe, Star, MessageSquare } from 'lucide-react';
+import { List, Lightbulb, Users, MapPin, Video, Globe, Star, MessageSquare, Send } from 'lucide-react';
 import { mockColivingSpaces } from '@/lib/mock-data';
-import type { ColivingSpace } from '@/types';
+import type { ColivingSpace, CommunityLink, CountrySpecificCommunityLinks } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { mockCountrySpecificCommunityLinks } from '@/lib/mock-community-links';
 
 interface CountryDisplayData {
   name: string;
@@ -16,6 +21,9 @@ interface CountryDisplayData {
 }
 
 export default function HomePage() {
+  const [selectedCountryForCommunities, setSelectedCountryForCommunities] = useState<string | null>(null);
+  const [displayedCommunityLinks, setDisplayedCommunityLinks] = useState<CommunityLink[]>([]);
+
   const countryCounts: { [country: string]: number } = {};
   mockColivingSpaces.forEach(space => {
     const addressParts = space.address.split(', ');
@@ -43,16 +51,47 @@ export default function HomePage() {
     }))
     .sort((a, b) => b.count - a.count); 
 
-  const featuredSpaces = mockColivingSpaces.slice(0, 3); // Show first 3 as featured
+  const featuredSpaces = mockColivingSpaces.slice(0, 3);
 
-  const exampleCommunityLinks = [
-    { name: "Global Nomads WhatsApp", href: "https://chat.whatsapp.com/examplegroup1", icon: MessageSquare, dataAiHint: "community chat" },
-    { name: "Digital Nomads Slack", href: "https://slack.com/examplecommunity", icon: Users, dataAiHint: "people network" },
-    // Add more example links if needed
-  ];
+  const uniqueCountriesForSelector = useMemo(() => {
+    const countries = new Set<string>();
+    mockColivingSpaces.forEach(space => {
+      const addressParts = space.address.split(', ');
+      const country = addressParts[addressParts.length - 1];
+      if (country) {
+        countries.add(country);
+      }
+    });
+    return Array.from(countries).sort();
+  }, []);
+
+  const handleCountryChangeForCommunities = (countryName: string) => {
+    setSelectedCountryForCommunities(countryName);
+    if (countryName) {
+      const countryLinksData = mockCountrySpecificCommunityLinks.find(
+        (item: CountrySpecificCommunityLinks) => item.countryName.toLowerCase() === countryName.toLowerCase()
+      );
+      setDisplayedCommunityLinks(countryLinksData ? countryLinksData.links : []);
+    } else {
+      setDisplayedCommunityLinks([]); // Clear links if no country is selected or "All" is chosen
+    }
+  };
+
+  const getPlatformIcon = (platform: CommunityLink['platform']) => {
+    switch (platform) {
+      case 'WhatsApp':
+        return <MessageSquare className="mr-2 h-5 w-5" />;
+      case 'Slack':
+        return <Users className="mr-2 h-5 w-5" />;
+      case 'Telegram':
+        return <Send className="mr-2 h-5 w-5" />;
+      default:
+        return <Globe className="mr-2 h-5 w-5" />;
+    }
+  };
 
   return (
-    <div className="space-y-16"> {/* Increased spacing between sections */}
+    <div className="space-y-16">
       <section className="text-center py-10 bg-gradient-to-r from-primary/10 via-background to-accent/10 rounded-xl shadow-sm">
         <h1 className="text-5xl font-extrabold tracking-tight text-primary">
           Welcome to Nomad Coliving Hub
@@ -162,30 +201,47 @@ export default function HomePage() {
 
       <section className="py-10 text-center">
         <Users className="h-12 w-12 text-primary mx-auto mb-2" />
-        <h2 className="text-3xl font-semibold">Communicate with Other Nomads Channels</h2>
+        <h2 className="text-3xl font-semibold">Connect with Nomad Communities</h2>
         <p className="mt-2 mb-6 text-lg text-foreground/70 max-w-xl mx-auto">
-          Join vibrant communities, ask questions, and share your experiences with fellow digital nomads worldwide.
+          Select a country to find local Slack, WhatsApp, or Telegram groups for digital nomads.
         </p>
-        <div className="flex justify-center items-center flex-wrap gap-4">
-          {exampleCommunityLinks.map((link) => (
-            <Button key={link.name} variant="outline" size="lg" asChild>
-              <Link href={link.href} target="_blank" rel="noopener noreferrer">
-                <link.icon className="mr-2 h-5 w-5" />
-                {link.name}
-              </Link>
-            </Button>
-          ))}
+        
+        <div className="max-w-md mx-auto mb-8">
+          <Select onValueChange={handleCountryChangeForCommunities} value={selectedCountryForCommunities || ""}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a country..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">-- Select a Country --</SelectItem>
+              {uniqueCountriesForSelector.map(country => (
+                <SelectItem key={country} value={country}>{country}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <div className="mt-6">
-            <Image 
-              src="https://placehold.co/800x300.png" 
-              alt="Nomads connecting online" 
-              width={800} 
-              height={300}
-              className="rounded-lg mx-auto shadow-md"
-              data-ai-hint="nomads communication" 
-            />
-        </div>
+
+        {selectedCountryForCommunities && displayedCommunityLinks.length > 0 && (
+          <div className="flex justify-center items-center flex-wrap gap-4">
+            {displayedCommunityLinks.map((link, index) => (
+              <Button key={index} variant="outline" size="lg" asChild>
+                <Link href={link.url} target="_blank" rel="noopener noreferrer">
+                  {getPlatformIcon(link.platform)}
+                  {link.name}
+                </Link>
+              </Button>
+            ))}
+          </div>
+        )}
+        {selectedCountryForCommunities && displayedCommunityLinks.length === 0 && (
+          <p className="text-muted-foreground mt-4">
+            No specific community links found for {selectedCountryForCommunities}. Try another country or check back later!
+          </p>
+        )}
+        {!selectedCountryForCommunities && (
+          <p className="text-muted-foreground mt-4">
+            Please select a country above to view relevant community channels.
+          </p>
+        )}
       </section>
     </div>
   );
