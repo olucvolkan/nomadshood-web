@@ -62,6 +62,12 @@ export default function HomePage() {
         countries.add(country);
       }
     });
+    // Also add countries from community links if they aren't already present from coliving spaces
+    mockCountrySpecificCommunityLinks.forEach(countryLinkData => {
+      if (countryLinkData.countryName) {
+        countries.add(countryLinkData.countryName);
+      }
+    });
     return Array.from(countries).sort();
   }, []);
 
@@ -73,7 +79,9 @@ export default function HomePage() {
       );
       setDisplayedCommunityLinks(countryLinksData ? countryLinksData.links : []);
     } else {
-      setDisplayedCommunityLinks([]); // Clear links if no country is selected or "All" is chosen
+      // This case might not be directly reachable via SelectItem if we only have actual country values
+      // but kept for robustness if selectedCountryForCommunities is set to null/empty string programmatically
+      setDisplayedCommunityLinks([]); 
     }
   };
 
@@ -157,7 +165,7 @@ export default function HomePage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredSpaces.map((space) => (
-            <ColivingCard key={space.id} space={space} />
+            <ColivingCard key={space.id} space={space} showViewDetailsButton={true} />
           ))}
         </div>
       </section>
@@ -207,12 +215,14 @@ export default function HomePage() {
         </p>
         
         <div className="max-w-md mx-auto mb-8">
-          <Select onValueChange={handleCountryChangeForCommunities} value={selectedCountryForCommunities || ""}>
+          <Select 
+            onValueChange={handleCountryChangeForCommunities} 
+            value={selectedCountryForCommunities || undefined} 
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a country..." />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">-- Select a Country --</SelectItem>
               {uniqueCountriesForSelector.map(country => (
                 <SelectItem key={country} value={country}>{country}</SelectItem>
               ))}
