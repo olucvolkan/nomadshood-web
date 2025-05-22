@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -5,13 +6,11 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2 } from 'lucide-react';
-import type { TripPlanInput } from '@/types'; // Updated type import
 
 const tripPlanSchema = z.object({
   location: z.string().min(2, { message: 'Location must be at least 2 characters long.' }),
@@ -34,7 +33,7 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
     resolver: zodResolver(tripPlanSchema),
     defaultValues: {
       location: '',
-      budget: undefined, // Default to undefined so placeholder shows
+      budget: undefined,
       interests: '',
       duration: '',
       workingHours: '',
@@ -91,7 +90,7 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="interests"
