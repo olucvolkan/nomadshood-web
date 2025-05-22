@@ -1,3 +1,4 @@
+
 import type { ColivingSpace } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -48,7 +49,7 @@ export function ColivingCard({ space, showViewDetailsButton = false }: ColivingC
         )}
       </CardContent>
       <CardFooter className="p-4 pt-0 flex flex-col sm:flex-row sm:justify-between gap-2 items-stretch">
-        <div className="flex flex-col sm:flex-row gap-2 w-full">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 w-full">
           {space.videoUrl && (
             <Button variant="outline" size="sm" asChild className="flex-1">
               <Link href={space.videoUrl} target="_blank" rel="noopener noreferrer">
