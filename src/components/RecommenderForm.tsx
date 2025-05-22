@@ -59,9 +59,9 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
               name="location"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="location">Preferred Location</FormLabel>
+                  <FormLabel>Preferred Location</FormLabel>
                   <FormControl>
-                    <Input id="location" placeholder="e.g., Bali, Lisbon, Medellin" {...field} />
+                    <Input placeholder="e.g., Bali, Lisbon, Medellin" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -73,10 +73,10 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
               name="budget"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="budget">Budget</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormLabel>Budget</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value || undefined} defaultValue={field.value || undefined}>
                     <FormControl>
-                      <SelectTrigger id="budget">
+                      <SelectTrigger>
                         <SelectValue placeholder="Select your budget range" />
                       </SelectTrigger>
                     </FormControl>
@@ -96,10 +96,9 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
               name="interests"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="interests">Interests & Vibe</FormLabel>
+                  <FormLabel>Interests & Vibe</FormLabel>
                   <FormControl>
                     <Textarea
-                      id="interests"
                       placeholder="e.g., surfing, tech networking, quiet & focused, community events, art galleries, hiking"
                       {...field}
                     />
@@ -114,9 +113,9 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
               name="duration"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="duration">Duration of Stay</FormLabel>
+                  <FormLabel>Duration of Stay</FormLabel>
                   <FormControl>
-                    <Input id="duration" placeholder="e.g., 1 week, 3 months, 10 days" {...field} />
+                    <Input placeholder="e.g., 1 week, 3 months, 10 days" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -128,10 +127,9 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
               name="workingHours"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="workingHours">Working Hours / Pattern</FormLabel>
+                  <FormLabel>Working Hours / Pattern</FormLabel>
                   <FormControl>
                     <Textarea
-                      id="workingHours"
                       placeholder="e.g., 9am-5pm Mon-Fri, Flexible - mostly evenings, 4 hours daily in mornings"
                       {...field}
                     />
@@ -146,10 +144,9 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
               name="leisureTime"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="leisureTime">Leisure Time Preferences</FormLabel>
+                  <FormLabel>Leisure Time Preferences</FormLabel>
                   <FormControl>
                     <Textarea
-                      id="leisureTime"
                       placeholder="e.g., Weekends free for day trips, weekday afternoons for museums, evenings for social events"
                       {...field}
                     />
