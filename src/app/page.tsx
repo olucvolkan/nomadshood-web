@@ -110,25 +110,27 @@ export default function HomePage() {
         {countriesData.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {countriesData.map((country) => (
-              <Card key={country.name} className="group hover:shadow-xl transition-shadow duration-300 overflow-hidden rounded-lg">
-                <div className="relative h-48 w-full">
-                  <Image
-                    src={country.imageUrl}
-                    alt={`Beautiful view of ${country.name}`}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    data-ai-hint={country.dataAiHint}
-                  />
-                </div>
-                <CardHeader className="p-4">
-                  <CardTitle className="text-xl">{country.name}</CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 pt-0">
-                  <p className="text-sm text-muted-foreground">
-                    {country.count} coliving space{country.count !== 1 ? 's' : ''} available
-                  </p>
-                </CardContent>
-              </Card>
+              <Link key={country.name} href={`/coliving?country=${encodeURIComponent(country.name)}`} className="block group rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                <Card className="h-full transition-all duration-300 ease-in-out group-hover:shadow-xl group-focus-within:shadow-xl group-hover:border-primary/50 group-focus-within:border-primary/50 border border-transparent">
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={country.imageUrl}
+                      alt={`Beautiful view of ${country.name}`}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      data-ai-hint={country.dataAiHint}
+                    />
+                  </div>
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-xl">{country.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 pt-0">
+                    <p className="text-sm text-muted-foreground">
+                      {country.count} coliving space{country.count !== 1 ? 's' : ''} available
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         ) : (
