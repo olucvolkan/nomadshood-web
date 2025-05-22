@@ -10,7 +10,7 @@ export default {
   theme: {
   	extend: {
       fontFamily: {
-        sans: ['var(--font-geist-sans)'], // Ensure Geist Sans is primary sans-serif
+        sans: ['var(--font-inter)'], // Updated to use the Inter font variable
       },
   		colors: {
   			background: 'hsl(var(--background))',
