@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, Lightbulb, Users, MapPin, Video, Globe, Star } from 'lucide-react';
+import { List, Lightbulb, Users, MapPin, Video, Globe, Star, MessageSquare } from 'lucide-react';
 import { mockColivingSpaces } from '@/lib/mock-data';
 import type { ColivingSpace } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
@@ -44,6 +44,12 @@ export default function HomePage() {
     .sort((a, b) => b.count - a.count); 
 
   const featuredSpaces = mockColivingSpaces.slice(0, 3); // Show first 3 as featured
+
+  const exampleCommunityLinks = [
+    { name: "Global Nomads WhatsApp", href: "https://chat.whatsapp.com/examplegroup1", icon: MessageSquare, dataAiHint: "community chat" },
+    { name: "Digital Nomads Slack", href: "https://slack.com/examplecommunity", icon: Users, dataAiHint: "people network" },
+    // Add more example links if needed
+  ];
 
   return (
     <div className="space-y-16"> {/* Increased spacing between sections */}
@@ -154,19 +160,32 @@ export default function HomePage() {
         )}
       </section>
 
-      <section className="text-center">
-        <Image 
-          src="https://placehold.co/800x400.png" 
-          alt="Nomads working and collaborating" 
-          width={800} 
-          height={400}
-          className="rounded-lg mx-auto shadow-md"
-          data-ai-hint="nomads collaboration" 
-        />
-        <h2 className="text-3xl font-semibold mt-6">Join the Movement</h2>
-        <p className="mt-2 text-lg text-foreground/70 max-w-xl mx-auto">
-          Nomad Coliving Hub is more than a directory; it&apos;s your gateway to a global community.
+      <section className="py-10 text-center">
+        <Users className="h-12 w-12 text-primary mx-auto mb-2" />
+        <h2 className="text-3xl font-semibold">Communicate with Other Nomads Channels</h2>
+        <p className="mt-2 mb-6 text-lg text-foreground/70 max-w-xl mx-auto">
+          Join vibrant communities, ask questions, and share your experiences with fellow digital nomads worldwide.
         </p>
+        <div className="flex justify-center items-center flex-wrap gap-4">
+          {exampleCommunityLinks.map((link) => (
+            <Button key={link.name} variant="outline" size="lg" asChild>
+              <Link href={link.href} target="_blank" rel="noopener noreferrer">
+                <link.icon className="mr-2 h-5 w-5" />
+                {link.name}
+              </Link>
+            </Button>
+          ))}
+        </div>
+        <div className="mt-6">
+            <Image 
+              src="https://placehold.co/800x300.png" 
+              alt="Nomads connecting online" 
+              width={800} 
+              height={300}
+              className="rounded-lg mx-auto shadow-md"
+              data-ai-hint="nomads communication" 
+            />
+        </div>
       </section>
     </div>
   );
