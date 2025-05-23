@@ -46,7 +46,7 @@ export default function HomePage() {
     .map(([countryName, count]) => ({
       name: countryName,
       count: count,
-      imageUrl: `https://placehold.co/600x400.png`,
+      imageUrl: `https://placehold.co/600x400.png`, // Corrected line: removed leading backslash
       dataAiHint: countrySpecificHints[countryName] || countryName.toLowerCase().split(" ").slice(0,2).join(" "),
     }))
     .sort((a, b) => b.count - a.count); 
@@ -102,7 +102,7 @@ export default function HomePage() {
     <div className="space-y-16">
       <section className="text-center py-10 bg-gradient-to-r from-primary/10 via-background to-accent/10 rounded-xl shadow-sm">
         <h1 className="text-5xl font-extrabold tracking-tight text-primary">
-          Welcome to Nomad Coliving Hub
+          Welcome to NomadsHood
         </h1>
         <p className="mt-4 text-xl text-foreground/80 max-w-2xl mx-auto">
           Discover your next home away from home. Explore coliving spaces, watch community videos, and connect with fellow digital nomads.

@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Nomad Coliving Hub',
+  title: 'NomadsHood',
   description: 'Discover coliving spaces and connect with digital nomad communities worldwide.',
 };
 

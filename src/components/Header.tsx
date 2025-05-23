@@ -7,7 +7,7 @@ export function Header() {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-primary hover:text-primary/90 transition-colors">
           <Waves className="h-8 w-8" />
-          <span>Nomad Coliving Hub</span>
+          <span>NomadsHood</span>
         </Link>
         <nav>
           <ul className="flex space-x-6 items-center">
