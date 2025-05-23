@@ -7,15 +7,8 @@ import { mockColivingSpaces } from '@/lib/mock-data';
 import type { ColivingSpace } from '@/types';
 import { Info } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from '@/components/ui/button'; // Added Button import
+import { Button } from '@/components/ui/button';
 import { ColivingFilters, type FiltersState } from '@/components/ColivingFilters';
-
-const ALL_VIBE_TAGS_FOR_FILTER: string[] = [
-  "community", "wellness", "tech", "adventure", "quiet", "social", 
-  "luxury", "eco-friendly", "surfing", "yoga", "city life", "mountains", 
-  "urban", "creative", "outdoors", "focused", "networking", "history", "art", "music"
-].sort();
-
 
 export default function ColivingDirectoryPage({
   searchParams,
@@ -26,85 +19,50 @@ export default function ColivingDirectoryPage({
   const selectedCountry = searchParams?.country;
 
   const [filters, setFilters] = useState<FiltersState>({
-    minBudget: '', // Initialized for new budget range
-    maxBudget: '', // Initialized for new budget range
-    hasPrivateBathroom: false,
-    hasCoworking: false,
-    selectedVibes: [],
+    selectedCity: '',
   });
 
   const handleFilterChange = (newFilters: Partial<FiltersState>) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
   
-  const availableVibeTags = useMemo(() => {
-    const tagsFromSpaces = new Set<string>();
-    allSpaces.forEach(space => {
-      space.tags?.forEach(tag => tagsFromSpaces.add(tag.toLowerCase()));
-    });
-    // Ensure only tags present in mock data AND in our predefined list are shown, and sort them
-    return ALL_VIBE_TAGS_FOR_FILTER.filter(vibe => tagsFromSpaces.has(vibe.toLowerCase())).sort();
-  }, [allSpaces]);
-
   const filteredSpaces = useMemo(() => {
     return allSpaces
       .filter(space => {
         // Country filter
         if (selectedCountry) {
           const addressParts = space.address.split(', ');
-          const countryName = addressParts[addressParts.length - 1];
-          if (countryName.toLowerCase() !== decodeURIComponent(selectedCountry).toLowerCase()) {
+          const countryNameInSpace = addressParts[addressParts.length - 1];
+          if (countryNameInSpace.toLowerCase() !== decodeURIComponent(selectedCountry).toLowerCase()) {
             return false;
           }
         }
         
-        // Budget range filter
-        const minBudgetNum = parseFloat(filters.minBudget);
-        const maxBudgetNum = parseFloat(filters.maxBudget);
-
-        if (!isNaN(minBudgetNum) && space.monthlyPrice < minBudgetNum) {
-          return false;
-        }
-        if (!isNaN(maxBudgetNum) && space.monthlyPrice > maxBudgetNum) {
-          return false;
-        }
-
-        // Private bathroom filter
-        if (filters.hasPrivateBathroom && !space.hasPrivateBathroom) {
-          return false;
-        }
-        // Coworking filter
-        if (filters.hasCoworking && !space.hasCoworking) {
-          return false;
-        }
-        // Vibe filter
-        if (filters.selectedVibes.length > 0) {
-          if (!space.tags || !filters.selectedVibes.some(vibe => space.tags!.map(t => t.toLowerCase()).includes(vibe.toLowerCase()))) {
+        // City filter
+        if (filters.selectedCity) {
+          const addressParts = space.address.split(', ');
+          const cityNameInSpace = addressParts[0]; // Assuming city is the first part of the address
+          if (!cityNameInSpace.toLowerCase().includes(filters.selectedCity.toLowerCase().trim())) {
             return false;
           }
         }
+        
         return true;
       });
   }, [allSpaces, selectedCountry, filters]);
 
   const pageTitle = selectedCountry 
-    ? `Coliving Spaces in ${decodeURIComponent(selectedCountry)}` 
-    : 'Coliving Directory';
+    ? `${decodeURIComponent(selectedCountry)} şehrindeki Coliving Alanları` 
+    : 'Coliving Rehberi';
   
   const pageDescription = selectedCountry
-    ? `Discover and filter amazing places to stay and connect in ${decodeURIComponent(selectedCountry)}.`
-    : 'Explore and filter unique coliving spaces around the globe.';
+    ? `${decodeURIComponent(selectedCountry)} şehrindeki harika yerleri keşfedin ve filtreleyin.`
+    : 'Dünyanın dört bir yanındaki benzersiz coliving alanlarını keşfedin ve filtreleyin.';
 
   const resetAllFilters = () => {
     handleFilterChange({ 
-        minBudget: '', 
-        maxBudget: '', 
-        hasPrivateBathroom: false, 
-        hasCoworking: false, 
-        selectedVibes: [] 
+        selectedCity: ''
     });
-    // If there's a country in URL, we don't remove it with this button
-    // To clear country, user needs to click the "all countries" link
   };
 
   return (
@@ -119,7 +77,6 @@ export default function ColivingDirectoryPage({
       <ColivingFilters 
         filters={filters} 
         onFilterChange={handleFilterChange}
-        availableVibeTags={availableVibeTags}
       />
 
       {filteredSpaces.length > 0 ? (
@@ -131,14 +88,14 @@ export default function ColivingDirectoryPage({
       ) : (
         <Alert className="max-w-lg mx-auto">
           <Info className="h-4 w-4" />
-          <AlertTitle>No Spaces Found</AlertTitle>
+          <AlertTitle>Alan Bulunamadı</AlertTitle>
           <AlertDescription>
-            Sorry, we couldn't find any coliving spaces matching your current filter criteria.
+            Üzgünüz, mevcut filtre kriterlerinize uyan herhangi bir coliving alanı bulamadık.
             <br />
-            Try adjusting your filters or <Button variant="link" className="p-0 h-auto" onClick={resetAllFilters}>reset all filters</Button>.
+            Filtrelerinizi ayarlamayı veya <Button variant="link" className="p-0 h-auto" onClick={resetAllFilters}>tüm filtreleri sıfırlamayı</Button> deneyin.
             {selectedCountry && (
               <>
-                {' '}Alternatively, explore all <a href="/coliving" className="underline hover:text-primary">available spaces in all countries</a>.
+                {' '}Alternatif olarak, <a href="/coliving" className="underline hover:text-primary">tüm ülkelerdeki mevcut alanları</a> keşfedin.
               </>
             )}
           </AlertDescription>
