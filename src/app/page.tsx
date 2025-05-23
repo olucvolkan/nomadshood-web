@@ -79,21 +79,13 @@ export default function HomePage() {
     }
   });
 
-  const countrySpecificImageHints: { [key: string]: string } = {
-    "Indonesia": "flag indonesia",
-    "Portugal": "flag portugal",
-    "USA": "flag usa",
-    "Japan": "flag japan",
-    "South Africa": "flag south africa",
-    "Colombia": "flag colombia",
-  };
-
+  // Using dataAiHint for potential future real flag image sourcing
   const countriesData: CountryDisplayData[] = Object.entries(countryCounts)
     .map(([countryName, count]) => ({
       name: countryName,
       count: count,
       imageUrl: `https://placehold.co/600x400.png`,
-      dataAiHint: countrySpecificImageHints[countryName] || `flag ${countryName.toLowerCase().split(" ").slice(0,1).join("")}`,
+      dataAiHint: `flag ${countryName.toLowerCase().split(" ").slice(0,1).join("")}`,
     }))
     .sort((a, b) => b.count - a.count);
 
@@ -108,7 +100,6 @@ export default function HomePage() {
         countries.add(country);
       }
     });
-    // Also add countries from community links if they aren't already present from coliving spaces
     mockCountrySpecificCommunityLinks.forEach(countryLinkData => {
       if (countryLinkData.countryName) {
         countries.add(countryLinkData.countryName);
@@ -200,7 +191,7 @@ export default function HomePage() {
           </CardContent>
         </Card>
       </section>
-
+      
       <section className="py-10">
         <div className="text-center mb-10">
           <Film className="h-12 w-12 text-primary mx-auto mb-2" />
@@ -265,7 +256,7 @@ export default function HomePage() {
                   <div className="relative h-48 w-full">
                     <Image
                       src={country.imageUrl}
-                      alt={`Beautiful view of ${country.name}`}
+                      alt={`View of ${country.name}`}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                       data-ai-hint={country.dataAiHint}

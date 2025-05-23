@@ -11,10 +11,10 @@ export interface FiltersState {
 }
 
 interface ColivingFiltersProps {
-  filters: FiltersState;
-  onFilterChange: (newFilters: Partial<FiltersState>) => void;
+  // filters: FiltersState; // No longer needed
+  // onFilterChange: (newFilters: Partial<FiltersState>) => void; // No longer needed
 }
 
-export function ColivingFilters({ filters, onFilterChange }: ColivingFiltersProps) {
+export function ColivingFilters({ /* filters, onFilterChange */ }: ColivingFiltersProps) {
   return null; // Render nothing as filters are removed
 }

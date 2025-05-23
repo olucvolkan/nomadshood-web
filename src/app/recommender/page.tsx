@@ -1,16 +1,17 @@
+
 'use client';
 
 import { useState } from 'react';
-import { RecommenderForm, type TripPlanFormData } from '@/components/RecommenderForm'; // Updated import
-import { TripPlanDisplay } from '@/components/TripPlanDisplay'; // New component for displaying the plan
-import type { TripPlanOutput } from '@/types'; // Updated type import
-import { generateTripPlan } from '@/ai/flows/trip-planner-flow'; // Updated AI flow import
+import { RecommenderForm, type TripPlanFormData } from '@/components/RecommenderForm';
+import { TripPlanDisplay } from '@/components/TripPlanDisplay'; 
+import type { TripPlanOutput } from '@/types'; 
+import { generateTripPlan } from '@/ai/flows/trip-planner-flow'; 
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal, PlaneTakeoff } from "lucide-react";
 
 export default function RecommenderPage() {
-  const [tripPlan, setTripPlan] = useState<TripPlanOutput | null>(null); // Updated state
+  const [tripPlan, setTripPlan] = useState<TripPlanOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
@@ -18,10 +19,10 @@ export default function RecommenderPage() {
   const handleSubmit = async (data: TripPlanFormData) => {
     setIsLoading(true);
     setError(null);
-    setTripPlan(null); // Clear previous plan
+    setTripPlan(null);
 
     try {
-      const result: TripPlanOutput = await generateTripPlan(data); // Call updated AI flow
+      const result: TripPlanOutput = await generateTripPlan(data);
       if (result) {
         setTripPlan(result);
         toast({
@@ -30,7 +31,6 @@ export default function RecommenderPage() {
           className: "bg-primary text-primary-foreground",
         });
       } else {
-        // This case might not be hit if the flow always throws an error on failure
         setError('No trip plan could be generated. Try adjusting your preferences.');
          toast({
           variant: "destructive",
