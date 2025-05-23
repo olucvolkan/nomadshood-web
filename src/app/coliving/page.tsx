@@ -1,14 +1,14 @@
 
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { ColivingCard } from '@/components/ColivingCard';
 import { mockColivingSpaces } from '@/lib/mock-data';
 import type { ColivingSpace } from '@/types';
 import { Info } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from '@/components/ui/button';
-import { ColivingFilters, type FiltersState } from '@/components/ColivingFilters';
+import Link from 'next/link';
 
 export default function ColivingDirectoryPage({
   searchParams,
@@ -18,52 +18,24 @@ export default function ColivingDirectoryPage({
   const allSpaces: ColivingSpace[] = mockColivingSpaces;
   const selectedCountry = searchParams?.country;
 
-  const [filters, setFilters] = useState<FiltersState>({
-    selectedCity: '',
-  });
-
-  const handleFilterChange = (newFilters: Partial<FiltersState>) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
-  };
-  
   const filteredSpaces = useMemo(() => {
-    return allSpaces
-      .filter(space => {
-        // Country filter
-        if (selectedCountry) {
-          const addressParts = space.address.split(', ');
-          const countryNameInSpace = addressParts[addressParts.length - 1];
-          if (countryNameInSpace.toLowerCase() !== decodeURIComponent(selectedCountry).toLowerCase()) {
-            return false;
-          }
-        }
-        
-        // City filter
-        if (filters.selectedCity) {
-          const addressParts = space.address.split(', ');
-          const cityNameInSpace = addressParts[0]; // Assuming city is the first part of the address
-          if (!cityNameInSpace.toLowerCase().includes(filters.selectedCity.toLowerCase().trim())) {
-            return false;
-          }
-        }
-        
-        return true;
-      });
-  }, [allSpaces, selectedCountry, filters]);
-
-  const pageTitle = selectedCountry 
-    ? `${decodeURIComponent(selectedCountry)} şehrindeki Coliving Alanları` 
-    : 'Coliving Rehberi';
-  
-  const pageDescription = selectedCountry
-    ? `${decodeURIComponent(selectedCountry)} şehrindeki harika yerleri keşfedin ve filtreleyin.`
-    : 'Dünyanın dört bir yanındaki benzersiz coliving alanlarını keşfedin ve filtreleyin.';
-
-  const resetAllFilters = () => {
-    handleFilterChange({ 
-        selectedCity: ''
+    if (!selectedCountry) {
+      return allSpaces; // No country selected, show all spaces
+    }
+    return allSpaces.filter(space => {
+      const addressParts = space.address.split(', ');
+      const countryNameInSpace = addressParts[addressParts.length - 1];
+      return countryNameInSpace.toLowerCase() === decodeURIComponent(selectedCountry).toLowerCase();
     });
-  };
+  }, [allSpaces, selectedCountry]);
+
+  const pageTitle = selectedCountry
+    ? `${decodeURIComponent(selectedCountry)} Coliving Alanları`
+    : 'Tüm Coliving Alanları';
+
+  const pageDescription = selectedCountry
+    ? `${decodeURIComponent(selectedCountry)} bölgesindeki tüm harika coliving alanlarını keşfedin.`
+    : 'Dünyanın dört bir yanındaki benzersiz coliving alanlarını keşfedin.';
 
   return (
     <div className="space-y-8">
@@ -73,16 +45,11 @@ export default function ColivingDirectoryPage({
           {pageDescription}
         </p>
       </div>
-      
-      <ColivingFilters 
-        filters={filters} 
-        onFilterChange={handleFilterChange}
-      />
 
       {filteredSpaces.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredSpaces.map((space) => (
-            <ColivingCard key={space.id} space={space} />
+            <ColivingCard key={space.id} space={space} showViewDetailsButton={true} />
           ))}
         </div>
       ) : (
@@ -90,13 +57,16 @@ export default function ColivingDirectoryPage({
           <Info className="h-4 w-4" />
           <AlertTitle>Alan Bulunamadı</AlertTitle>
           <AlertDescription>
-            Üzgünüz, mevcut filtre kriterlerinize uyan herhangi bir coliving alanı bulamadık.
-            <br />
-            Filtrelerinizi ayarlamayı veya <Button variant="link" className="p-0 h-auto" onClick={resetAllFilters}>tüm filtreleri sıfırlamayı</Button> deneyin.
-            {selectedCountry && (
+            {selectedCountry ? (
               <>
-                {' '}Alternatif olarak, <a href="/coliving" className="underline hover:text-primary">tüm ülkelerdeki mevcut alanları</a> keşfedin.
+                Üzgünüz, {decodeURIComponent(selectedCountry)} için herhangi bir coliving alanı bulamadık.
+                <br />
+                <Button variant="link" className="p-0 h-auto mt-2" asChild>
+                  <Link href="/coliving">Tüm alanları gör</Link>
+                </Button>
               </>
+            ) : (
+              "Üzgünüz, şu anda listelenecek bir coliving alanı bulunmamaktadır."
             )}
           </AlertDescription>
         </Alert>

@@ -79,13 +79,13 @@ export default function HomePage() {
     }
   });
 
-  const countrySpecificHints: { [key: string]: string } = {
-    "Indonesia": "bali landscape",
-    "Portugal": "lisbon cityscape",
-    "USA": "colorado mountains",
-    "Japan": "tokyo street",
-    "South Africa": "capetown coast",
-    "Colombia": "medellin valley",
+  const countrySpecificImageHints: { [key: string]: string } = {
+    "Indonesia": "flag indonesia",
+    "Portugal": "flag portugal",
+    "USA": "flag usa",
+    "Japan": "flag japan",
+    "South Africa": "flag south africa",
+    "Colombia": "flag colombia",
   };
 
   const countriesData: CountryDisplayData[] = Object.entries(countryCounts)
@@ -93,9 +93,9 @@ export default function HomePage() {
       name: countryName,
       count: count,
       imageUrl: `https://placehold.co/600x400.png`,
-      dataAiHint: countrySpecificHints[countryName] || countryName.toLowerCase().split(" ").slice(0,2).join(" "),
+      dataAiHint: countrySpecificImageHints[countryName] || `flag ${countryName.toLowerCase().split(" ").slice(0,1).join("")}`,
     }))
-    .sort((a, b) => b.count - a.count); 
+    .sort((a, b) => b.count - a.count);
 
   const featuredSpaces = mockColivingSpaces.slice(0, 3);
 
@@ -125,7 +125,7 @@ export default function HomePage() {
       );
       setDisplayedCommunityLinks(countryLinksData ? countryLinksData.links : []);
     } else {
-      setDisplayedCommunityLinks([]); 
+      setDisplayedCommunityLinks([]);
     }
   };
 
@@ -200,7 +200,7 @@ export default function HomePage() {
           </CardContent>
         </Card>
       </section>
-      
+
       <section className="py-10">
         <div className="text-center mb-10">
           <Film className="h-12 w-12 text-primary mx-auto mb-2" />
@@ -294,11 +294,11 @@ export default function HomePage() {
         <p className="mt-2 mb-6 text-lg text-foreground/70 max-w-xl mx-auto">
           Select a country to find local Slack, WhatsApp, or Telegram groups for digital nomads.
         </p>
-        
+
         <div className="max-w-md mx-auto mb-8">
-          <Select 
-            onValueChange={handleCountryChangeForCommunities} 
-            value={selectedCountryForCommunities || undefined} 
+          <Select
+            onValueChange={handleCountryChangeForCommunities}
+            value={selectedCountryForCommunities || undefined}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a country..." />
