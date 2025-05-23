@@ -1,11 +1,13 @@
 
 'use client';
 
+// NOTE: Explicit React import removed to match original user file state.
+// import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Card,
   CardContent,
@@ -14,24 +16,25 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2 } from 'lucide-react';
-import React from 'react'; // Keep React import for clarity
 
+// Schema and type definition are outside the component
 const tripPlanSchema = z.object({
   location: z.string().min(2, { message: "Location must be at least 2 characters." }),
   budget: z.enum(['low', 'medium', 'high'], {
@@ -51,16 +54,19 @@ interface RecommenderFormProps {
 }
 
 export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
+  const defaultFormValues: TripPlanFormData = {
+    location: '',
+    budget: undefined, // To allow placeholder to show for Select
+    interests: '',
+    duration: '',
+    workingHours: '',
+    leisureTime: ''
+  };
+
   const form = useForm<TripPlanFormData>({
-    resolver: zodResolver(tripPlanSchema),
-    defaultValues: {
-      location: '',
-      budget: undefined, // To allow placeholder to show
-      interests: '',
-      duration: '',
-      workingHours: '',
-      leisureTime: ''
-    },
+    // Temporarily commenting out the resolver to debug parsing error
+    // resolver: zodResolver(tripPlanSchema), 
+    defaultValues: defaultFormValues,
   });
 
   return (
