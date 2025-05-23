@@ -12,13 +12,6 @@ export interface ColivingSpace {
   // websiteUrl?: string; // Future: Add a website URL
 }
 
-// Old ColivingRecommendation is replaced by TripPlanOutput features
-// export interface ColivingRecommendation {
-//   name: string;
-//   address: string;
-//   description: string;
-// }
-
 export interface CommunityLink {
   platform: 'Slack' | 'WhatsApp' | 'Telegram' | 'Other';
   name: string;
@@ -39,6 +32,7 @@ export interface TripPlanInput {
   duration: string;
   workingHours: string;
   leisureTime: string;
+  workingStyle: 'intense_focus' | 'social_networking' | 'balanced'; // Yeni alan
 }
 
 export interface ColivingSuggestion {
