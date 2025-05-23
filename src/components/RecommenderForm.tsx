@@ -1,9 +1,9 @@
 
 'use client';
 
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import { useForm } from 'react-hook-form';
-// import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -31,21 +31,12 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2 } from 'lucide-react';
 
-// // Drastically simplified Zod schema for diagnostic purposes
-// const tripPlanSchema = z.object({
-//   location: z.string().min(2, { message: "Location must be at least 2 characters." }),
-//   // Temporarily commented out other fields
-//   // budget: z.enum(['low', 'medium', 'high'], {
-//   //   required_error: "You need to select a budget.",
-//   // }),
-//   // interests: z.string().min(3, { message: "Interests must be at least 3 characters." }),
-//   // duration: z.string().min(1, { message: "Duration is required." }),
-//   // workingHours: z.string().min(3, { message: "Working hours description is too short." }),
-//   // leisureTime: z.string().min(3, { message: 'Please describe your leisure time preferences.'})
-// });
+// Drastically simplified Zod schema for diagnostic purposes
+const tripPlanSchema = z.object({
+  location: z.string().min(2, { message: "Location must be at least 2 characters." }),
+});
 
-// export type TripPlanFormData = z.infer<typeof tripPlanSchema>;
-export type TripPlanFormData = any; // Dummy type for diagnosis
+export type TripPlanFormData = z.infer<typeof tripPlanSchema>;
 
 interface RecommenderFormProps {
   onSubmit: (data: TripPlanFormData) => Promise<void>;
@@ -53,25 +44,12 @@ interface RecommenderFormProps {
 }
 
 export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
-  // const form = useForm<TripPlanFormData>({
-  //   resolver: zodResolver(tripPlanSchema),
-  //   defaultValues: {
-  //     location: '',
-  //     // Temporarily commented out other default values
-  //     // budget: undefined,
-  //     // interests: '',
-  //     // duration: '',
-  //     // workingHours: '',
-  //     // leisureTime: ''
-  //   },
-  // });
-
-  // Dummy form object to allow JSX to compile. Functionality will be broken.
-  const form: any = {
-    control: undefined, 
-    handleSubmit: (fn: any) => (e: any) => { e.preventDefault(); fn(); },
-    // Add other methods/properties if JSX complains further
-  };
+  const form = useForm<TripPlanFormData>({
+    resolver: zodResolver(tripPlanSchema),
+    defaultValues: {
+      location: '',
+    },
+  });
 
   return (
     <Card className="w-full max-w-lg mx-auto shadow-xl">
@@ -100,7 +78,7 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
             {/*
             <FormField
               control={form.control}
-              name="budget"
+              name="budget" 
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Budget</FormLabel>
