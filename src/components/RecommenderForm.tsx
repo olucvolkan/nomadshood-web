@@ -31,13 +31,17 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2 } from 'lucide-react';
 
+// Drastically simplified Zod schema for diagnostic purposes
 const tripPlanSchema = z.object({
-  location: z.string().min(2, { message: 'Location must be at least 2 characters long.' }),
-  budget: z.enum(['low', 'medium', 'high'], { required_error: 'Please select a budget.' }),
-  interests: z.string().min(3, { message: 'Interests must be at least 3 characters long.' }),
-  duration: z.string().min(1, { message: 'Please enter the duration of your stay.'}),
-  workingHours: z.string().min(3, { message: 'Please describe your working hours/pattern.'}),
-  leisureTime: z.string().min(3, { message: 'Please describe your leisure time preferences.'})
+  location: z.string().min(2, { message: "Location must be at least 2 characters." }),
+  // Temporarily commented out other fields
+  // budget: z.enum(['low', 'medium', 'high'], {
+  //   required_error: "You need to select a budget.",
+  // }),
+  // interests: z.string().min(3, { message: "Interests must be at least 3 characters." }),
+  // duration: z.string().min(1, { message: "Duration is required." }),
+  // workingHours: z.string().min(3, { message: "Working hours description is too short." }),
+  // leisureTime: z.string().min(3, { message: 'Please describe your leisure time preferences.'})
 });
 
 export type TripPlanFormData = z.infer<typeof tripPlanSchema>;
@@ -52,11 +56,12 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
     resolver: zodResolver(tripPlanSchema),
     defaultValues: {
       location: '',
-      budget: undefined,
-      interests: '',
-      duration: '',
-      workingHours: '',
-      leisureTime: '' // Removed trailing comma here
+      // Temporarily commented out other default values
+      // budget: undefined,
+      // interests: '',
+      // duration: '',
+      // workingHours: '',
+      // leisureTime: ''
     },
   });
 
@@ -83,6 +88,8 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
               )}
             />
 
+            {/* Other fields are temporarily commented out for diagnosing the parsing error */}
+            {/*
             <FormField
               control={form.control}
               name="budget"
@@ -170,6 +177,7 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
                 </FormItem>
               )}
             />
+            */}
 
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
