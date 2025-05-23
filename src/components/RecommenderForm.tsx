@@ -37,7 +37,7 @@ const tripPlanSchema = z.object({
   interests: z.string().min(3, { message: 'Interests must be at least 3 characters long.' }),
   duration: z.string().min(1, { message: 'Please enter the duration of your stay.'}),
   workingHours: z.string().min(3, { message: 'Please describe your working hours/pattern.'}),
-  leisureTime: z.string().min(3, { message: 'Please describe your leisure time preferences.'}) // Removed trailing comma
+  leisureTime: z.string().min(3, { message: 'Please describe your leisure time preferences.'})
 });
 
 export type TripPlanFormData = z.infer<typeof tripPlanSchema>;
@@ -52,11 +52,11 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
     resolver: zodResolver(tripPlanSchema),
     defaultValues: {
       location: '',
-      budget: undefined, 
+      budget: undefined,
       interests: '',
       duration: '',
       workingHours: '',
-      leisureTime: '',
+      leisureTime: '' // Removed trailing comma here
     },
   });
 
