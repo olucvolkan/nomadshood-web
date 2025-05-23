@@ -39,7 +39,7 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
       workingHours: '',
       leisureTime: '',
     },
-  });
+  }); // Explicit semicolon added here
 
   return (
     <Card className="w-full max-w-lg mx-auto shadow-xl">
