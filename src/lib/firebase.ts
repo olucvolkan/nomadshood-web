@@ -24,10 +24,20 @@ const firebaseConfigValues: FirebaseConfig = {
 };
 
 // Check for missing or placeholder values for critical Firebase config keys
-const criticalConfigKeys: Array<keyof FirebaseConfig> = ['apiKey', 'projectId', 'databaseURL'];
+const criticalConfigKeys: Array<keyof FirebaseConfig> = [
+  'apiKey', 
+  'authDomain', 
+  'databaseURL', 
+  'projectId', 
+  'storageBucket', 
+  'messagingSenderId', 
+  'appId'
+];
+
 for (const key of criticalConfigKeys) {
   const value = firebaseConfigValues[key];
-  const envVarName = `NEXT_PUBLIC_FIREBASE_${key.replace(/([A-Z])/g, "_$1").toUpperCase().replace('DATABASE_U_R_L','DATABASE_URL')}`; // Construct likely env var name
+  // Construct the likely environment variable name for a more helpful error message
+  const envVarName = `NEXT_PUBLIC_FIREBASE_${key.replace(/([A-Z])/g, "_$1").toUpperCase().replace('DATABASE_U_R_L','DATABASE_URL')}`;
 
   if (!value || typeof value !== 'string' || value.startsWith('YOUR_') || value.startsWith('<YOUR_') || value.trim() === '') {
     const errorMessage = 
@@ -41,10 +51,10 @@ for (const key of criticalConfigKeys) {
 
 // Specific check for databaseURL format, as this is a common error source
 const dbURL = firebaseConfigValues.databaseURL;
-if (!dbURL || !dbURL.startsWith('https://') || !(dbURL.endsWith('.firebaseio.com') || dbURL.endsWith('.firebasedatabase.app'))) {
+if (dbURL && (!dbURL.startsWith('https://') || !(dbURL.endsWith('.firebaseio.com') || dbURL.endsWith('.firebasedatabase.app')))) {
   const dbErrorMessage = 
     `Firebase configuration error: The databaseURL ("${dbURL}") (from NEXT_PUBLIC_FIREBASE_DATABASE_URL in .env) is incorrectly formatted. ` +
-    `It must start with 'https://' and end with '.firebaseio.com' or '.firebasedatabase.app'. ` +
+    `It MUST start with 'https://' and end with '.firebaseio.com' or '.firebasedatabase.app'. Example: https://your-project-id.firebaseio.com. ` +
     `Please check your .env file and RESTART your development server.`;
   console.error(dbErrorMessage);
   throw new Error(dbErrorMessage);
