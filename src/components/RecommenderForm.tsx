@@ -70,11 +70,11 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
   // });
 
   // Dummy form object to allow JSX to compile. Functionality will be broken.
-  const form: any = {
+  const form = { // Removed :any type annotation
     control: undefined, // Or null, to satisfy FormField
     handleSubmit: (fn: any) => (e: any) => { e.preventDefault(); fn(); }, // Mock handleSubmit
     // Add other methods/properties if JSX complains further, e.g., register, formState
-  }; // Explicit semicolon added here
+  };
 
   return (
     <Card className="w-full max-w-lg mx-auto shadow-xl">
