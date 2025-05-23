@@ -7,7 +7,8 @@ import { mockColivingSpaces } from '@/lib/mock-data';
 import type { ColivingSpace } from '@/types';
 import { Info } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ColivingFilters, type FiltersState } from '@/components/ColivingFilters'; // Updated import
+import { Button } from '@/components/ui/button'; // Added Button import
+import { ColivingFilters, type FiltersState } from '@/components/ColivingFilters';
 
 const ALL_VIBE_TAGS_FOR_FILTER: string[] = [
   "community", "wellness", "tech", "adventure", "quiet", "social", 
@@ -25,7 +26,8 @@ export default function ColivingDirectoryPage({
   const selectedCountry = searchParams?.country;
 
   const [filters, setFilters] = useState<FiltersState>({
-    budget: 'all',
+    minBudget: '', // Initialized for new budget range
+    maxBudget: '', // Initialized for new budget range
     hasPrivateBathroom: false,
     hasCoworking: false,
     selectedVibes: [],
@@ -40,7 +42,8 @@ export default function ColivingDirectoryPage({
     allSpaces.forEach(space => {
       space.tags?.forEach(tag => tagsFromSpaces.add(tag.toLowerCase()));
     });
-    return ALL_VIBE_TAGS_FOR_FILTER.filter(vibe => tagsFromSpaces.has(vibe.toLowerCase()));
+    // Ensure only tags present in mock data AND in our predefined list are shown, and sort them
+    return ALL_VIBE_TAGS_FOR_FILTER.filter(vibe => tagsFromSpaces.has(vibe.toLowerCase())).sort();
   }, [allSpaces]);
 
   const filteredSpaces = useMemo(() => {
@@ -54,10 +57,18 @@ export default function ColivingDirectoryPage({
             return false;
           }
         }
-        // Budget filter
-        if (filters.budget !== 'all' && space.budgetCategory !== filters.budget) {
+        
+        // Budget range filter
+        const minBudgetNum = parseFloat(filters.minBudget);
+        const maxBudgetNum = parseFloat(filters.maxBudget);
+
+        if (!isNaN(minBudgetNum) && space.monthlyPrice < minBudgetNum) {
           return false;
         }
+        if (!isNaN(maxBudgetNum) && space.monthlyPrice > maxBudgetNum) {
+          return false;
+        }
+
         // Private bathroom filter
         if (filters.hasPrivateBathroom && !space.hasPrivateBathroom) {
           return false;
@@ -83,6 +94,18 @@ export default function ColivingDirectoryPage({
   const pageDescription = selectedCountry
     ? `Discover and filter amazing places to stay and connect in ${decodeURIComponent(selectedCountry)}.`
     : 'Explore and filter unique coliving spaces around the globe.';
+
+  const resetAllFilters = () => {
+    handleFilterChange({ 
+        minBudget: '', 
+        maxBudget: '', 
+        hasPrivateBathroom: false, 
+        hasCoworking: false, 
+        selectedVibes: [] 
+    });
+    // If there's a country in URL, we don't remove it with this button
+    // To clear country, user needs to click the "all countries" link
+  };
 
   return (
     <div className="space-y-8">
@@ -112,7 +135,7 @@ export default function ColivingDirectoryPage({
           <AlertDescription>
             Sorry, we couldn't find any coliving spaces matching your current filter criteria.
             <br />
-            Try adjusting your filters or <Button variant="link" className="p-0 h-auto" onClick={() => handleFilterChange({ budget: 'all', hasPrivateBathroom: false, hasCoworking: false, selectedVibes: [] })}>reset all filters</Button>.
+            Try adjusting your filters or <Button variant="link" className="p-0 h-auto" onClick={resetAllFilters}>reset all filters</Button>.
             {selectedCountry && (
               <>
                 {' '}Alternatively, explore all <a href="/coliving" className="underline hover:text-primary">available spaces in all countries</a>.

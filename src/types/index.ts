@@ -12,8 +12,8 @@ export interface ColivingSpace {
   dataAiHint?: string; // For placeholder image generation for logo/main image
   // websiteUrl?: string; // Future: Add a website URL
 
-  // New fields for filtering
-  budgetCategory?: 'low' | 'medium' | 'high'; // Approximate budget category
+  // Updated fields for filtering
+  monthlyPrice: number; // Approximate monthly price in a common currency (e.g., EUR or USD)
   hasPrivateBathroom?: boolean;
   hasCoworking?: boolean;
 }

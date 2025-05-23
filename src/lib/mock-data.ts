@@ -13,7 +13,7 @@ export const mockColivingSpaces: ColivingSpace[] = [
     whatsappLink: 'https://chat.whatsapp.com/nomadbali',
     tags: ['surfing', 'yoga', 'coworking', 'community', 'wellness', 'entrepreneurship', 'social', 'adventure'],
     dataAiHint: 'bali beach coliving',
-    budgetCategory: 'medium',
+    monthlyPrice: 1200, // Example price
     hasPrivateBathroom: true,
     hasCoworking: true,
   },
@@ -26,7 +26,7 @@ export const mockColivingSpaces: ColivingSpace[] = [
     slackLink: 'https://lisbondigital.slack.com',
     tags: ['city life', 'tech', 'culture', 'networking', 'history', 'rooftop', 'social'],
     dataAiHint: 'lisbon historic tech',
-    budgetCategory: 'medium',
+    monthlyPrice: 950, // Example price
     hasPrivateBathroom: false,
     hasCoworking: true,
   },
@@ -40,7 +40,7 @@ export const mockColivingSpaces: ColivingSpace[] = [
     whatsappLink: 'https://chat.whatsapp.com/mountaincolive',
     tags: ['mountains', 'hiking', 'skiing', 'outdoors', 'adventure', 'remote work', 'quiet', 'wellness'],
     dataAiHint: 'colorado mountain lodge',
-    budgetCategory: 'high',
+    monthlyPrice: 2200, // Example price
     hasPrivateBathroom: true,
     hasCoworking: true,
   },
@@ -53,7 +53,7 @@ export const mockColivingSpaces: ColivingSpace[] = [
     slackLink: 'https://tokyotechnest.slack.com',
     tags: ['urban', 'tech', 'innovation', 'japan', 'design', 'coding', 'quiet', 'focused'],
     dataAiHint: 'tokyo shibuya tech',
-    budgetCategory: 'high',
+    monthlyPrice: 1800, // Example price
     hasPrivateBathroom: false,
     hasCoworking: true,
   },
@@ -66,9 +66,9 @@ export const mockColivingSpaces: ColivingSpace[] = [
     videoUrl: 'https://www.youtube.com/watch?v=VIDEO_ID_CAPETOWN',
     tags: ['ocean', 'creative', 'design', 'art', 'music', 'collaboration', 'social', 'luxury'],
     dataAiHint: 'cape town ocean creatives',
-    budgetCategory: 'medium',
+    monthlyPrice: 1500, // Example price
     hasPrivateBathroom: true,
-    hasCoworking: false, // Example: Maybe this one doesn't have a dedicated coworking space
+    hasCoworking: false,
   },
   {
     id: '6',
@@ -79,7 +79,7 @@ export const mockColivingSpaces: ColivingSpace[] = [
     whatsappLink: 'https://chat.whatsapp.com/medellinconnect',
     tags: ['city vibe', 'culture', 'networking', 'spanish', 'salsa', 'community', 'social', 'eco-friendly'],
     dataAiHint: 'medellin poblado garden',
-    budgetCategory: 'low',
+    monthlyPrice: 750, // Example price
     hasPrivateBathroom: false,
     hasCoworking: true,
   },

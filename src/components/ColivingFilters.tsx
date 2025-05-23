@@ -3,13 +3,14 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input'; // Added Input
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { SlidersHorizontal } from 'lucide-react';
 
 export interface FiltersState {
-  budget: string; // 'all', 'low', 'medium', 'high'
+  minBudget: string; // Store as string to handle empty input
+  maxBudget: string; // Store as string to handle empty input
   hasPrivateBathroom: boolean;
   hasCoworking: boolean;
   selectedVibes: string[];
@@ -23,8 +24,12 @@ interface ColivingFiltersProps {
 
 export function ColivingFilters({ filters, onFilterChange, availableVibeTags }: ColivingFiltersProps) {
   
-  const handleBudgetChange = (value: string) => {
-    onFilterChange({ budget: value });
+  const handleMinBudgetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onFilterChange({ minBudget: event.target.value });
+  };
+
+  const handleMaxBudgetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onFilterChange({ maxBudget: event.target.value });
   };
 
   const handlePrivateBathroomChange = (checked: boolean) => {
@@ -44,7 +49,8 @@ export function ColivingFilters({ filters, onFilterChange, availableVibeTags }: 
 
   const resetFilters = () => {
     onFilterChange({
-      budget: 'all',
+      minBudget: '',
+      maxBudget: '',
       hasPrivateBathroom: false,
       hasCoworking: false,
       selectedVibes: [],
@@ -60,26 +66,34 @@ export function ColivingFilters({ filters, onFilterChange, availableVibeTags }: 
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Budget Filter */}
-          <div className="space-y-2">
-            <Label htmlFor="budget-filter" className="text-md font-semibold">Budget</Label>
-            <Select value={filters.budget} onValueChange={handleBudgetChange}>
-              <SelectTrigger id="budget-filter" className="w-full">
-                <SelectValue placeholder="Select budget" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Budgets</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-              </SelectContent>
-            </Select>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+          {/* Budget Range Filter */}
+          <div className="md:col-span-1 space-y-2">
+            <Label className="text-md font-semibold">Budget Range (Monthly)</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                type="number"
+                placeholder="Min"
+                value={filters.minBudget}
+                onChange={handleMinBudgetChange}
+                className="w-full"
+                min="0"
+              />
+              <span className="text-muted-foreground">-</span>
+              <Input
+                type="number"
+                placeholder="Max"
+                value={filters.maxBudget}
+                onChange={handleMaxBudgetChange}
+                className="w-full"
+                min="0"
+              />
+            </div>
           </div>
 
           {/* Amenity Filters */}
-          <div className="space-y-4 pt-2 md:pt-8"> {/* Adjust top padding for alignment */}
-            <div className="flex items-center space-x-2">
+          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 items-end">
+            <div className="flex items-center space-x-2 pt-2">
               <Checkbox
                 id="private-bathroom-filter"
                 checked={filters.hasPrivateBathroom}
@@ -89,7 +103,7 @@ export function ColivingFilters({ filters, onFilterChange, availableVibeTags }: 
                 Private Bathroom
               </Label>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 pt-2">
               <Checkbox
                 id="coworking-filter"
                 checked={filters.hasCoworking}
@@ -103,23 +117,25 @@ export function ColivingFilters({ filters, onFilterChange, availableVibeTags }: 
         </div>
 
         {/* Vibe Filter */}
-        <div className="space-y-3">
-          <Label className="text-md font-semibold block mb-2">Vibe / Tags</Label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-            {availableVibeTags.map((vibe) => (
-              <div key={vibe} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`vibe-${vibe}`}
-                  checked={filters.selectedVibes.includes(vibe)}
-                  onCheckedChange={(checked) => handleVibeChange(vibe, checked as boolean)}
-                />
-                <Label htmlFor={`vibe-${vibe}`} className="font-medium capitalize cursor-pointer">
-                  {vibe}
-                </Label>
-              </div>
-            ))}
+        {availableVibeTags.length > 0 && (
+          <div className="space-y-3">
+            <Label className="text-md font-semibold block mb-2">Vibe / Tags</Label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              {availableVibeTags.map((vibe) => (
+                <div key={vibe} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`vibe-${vibe}`}
+                    checked={filters.selectedVibes.includes(vibe)}
+                    onCheckedChange={(checked) => handleVibeChange(vibe, checked as boolean)}
+                  />
+                  <Label htmlFor={`vibe-${vibe}`} className="font-medium capitalize cursor-pointer">
+                    {vibe}
+                  </Label>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
         
         <div className="pt-4">
           <Button onClick={resetFilters} variant="outline" className="w-full md:w-auto">
