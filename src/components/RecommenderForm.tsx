@@ -2,12 +2,12 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2 } from 'lucide-react';
@@ -41,10 +41,6 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
     },
   });
 
-  const handleFormSubmit: SubmitHandler<TripPlanFormData> = async (data) => {
-    await onSubmit(data);
-  };
-
   return (
     <Card className="w-full max-w-lg mx-auto shadow-xl">
       <CardHeader>
@@ -53,7 +49,7 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="location"
