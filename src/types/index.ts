@@ -1,3 +1,4 @@
+
 export interface ColivingSpace {
   id: string;
   name: string;
@@ -7,9 +8,14 @@ export interface ColivingSpace {
   videoUrl?: string;
   slackLink?: string;
   whatsappLink?: string;
-  tags?: string[]; // e.g., ["beach", "coworking", "community events"]
+  tags?: string[]; // e.g., ["beach", "coworking", "community events", "quiet", "social"]
   dataAiHint?: string; // For placeholder image generation for logo/main image
   // websiteUrl?: string; // Future: Add a website URL
+
+  // New fields for filtering
+  budgetCategory?: 'low' | 'medium' | 'high'; // Approximate budget category
+  hasPrivateBathroom?: boolean;
+  hasCoworking?: boolean;
 }
 
 export interface CommunityLink {
@@ -24,7 +30,7 @@ export interface CountrySpecificCommunityLinks {
   links: CommunityLink[];
 }
 
-// --- New Types for Trip Planner ---
+// --- Types for Trip Planner ---
 export interface TripPlanInput {
   location: string;
   budget: 'low' | 'medium' | 'high';
@@ -32,7 +38,7 @@ export interface TripPlanInput {
   duration: string;
   workingHours: string;
   leisureTime: string;
-  workingStyle: 'intense_focus' | 'social_networking' | 'balanced'; // Yeni alan
+  workingStyle: 'intense_focus' | 'social_networking' | 'balanced';
 }
 
 export interface ColivingSuggestion {
