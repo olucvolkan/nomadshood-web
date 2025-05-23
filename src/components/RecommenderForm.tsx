@@ -30,9 +30,8 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2 } from 'lucide-react';
+import React from 'react'; // Keep React import for clarity
 
-// Temporarily comment out schema and use a simplified type
-/*
 const tripPlanSchema = z.object({
   location: z.string().min(2, { message: "Location must be at least 2 characters." }),
   budget: z.enum(['low', 'medium', 'high'], {
@@ -43,10 +42,8 @@ const tripPlanSchema = z.object({
   workingHours: z.string().min(3, { message: "Working hours description must be at least 3 characters." }),
   leisureTime: z.string().min(3, { message: "Leisure time preferences must be at least 3 characters." })
 });
-*/
 
-// export type TripPlanFormData = z.infer<typeof tripPlanSchema>;
-export type TripPlanFormData = any; // Simplified for debugging
+export type TripPlanFormData = z.infer<typeof tripPlanSchema>;
 
 interface RecommenderFormProps {
   onSubmit: (data: TripPlanFormData) => Promise<void>;
@@ -54,24 +51,17 @@ interface RecommenderFormProps {
 }
 
 export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
-  // Temporarily comment out useForm and provide a dummy object
-  /*
   const form = useForm<TripPlanFormData>({
     resolver: zodResolver(tripPlanSchema),
     defaultValues: {
       location: '',
-      budget: undefined,
+      budget: undefined, // To allow placeholder to show
       interests: '',
       duration: '',
       workingHours: '',
       leisureTime: ''
     },
   });
-  */
-  const form: any = { // Dummy form object for debugging
-    control: null,
-    handleSubmit: (fn: any) => (e: any) => { e.preventDefault(); fn({}); }
-  };
 
   return (
     <Card className="w-full max-w-lg mx-auto shadow-xl">
