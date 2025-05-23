@@ -3,8 +3,8 @@
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+// import { zodResolver } from '@hookform/resolvers/zod'; // Temporarily remove for parsing debug
+// import { z } from 'zod'; // Temporarily remove for parsing debug
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -27,6 +27,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
 
+// Temporarily comment out schema for parsing debug
+/*
 const tripPlanSchema = z.object({
   location: z.string().min(2, { message: 'Location must be at least 2 characters.' }),
   budget: z.enum(['low', 'medium', 'high'], {
@@ -38,34 +40,36 @@ const tripPlanSchema = z.object({
   workingStyle: z.enum(['intense_focus', 'social_networking', 'balanced'], {
     required_error: 'Please select your working style.',
   }),
-  leisureTime: z.string().min(3, { message: 'Please describe your leisure time preferences.' }),
+  leisureTime: z.string().min(3, { message: 'Please describe your leisure time preferences.' })
 });
 
 export type TripPlanFormData = z.infer<typeof tripPlanSchema>;
+
+const defaultFormValues: TripPlanFormData = {
+  location: '',
+  budget: undefined as unknown as 'low' | 'medium' | 'high', // Allow placeholder
+  interests: '',
+  duration: '',
+  workingHours: '',
+  workingStyle: undefined as unknown as 'intense_focus' | 'social_networking' | 'balanced', // Allow placeholder
+  leisureTime: '',
+};
+*/
+
+// Use 'any' for TripPlanFormData during this debug step
+export type TripPlanFormData = any;
 
 interface RecommenderFormProps {
   onSubmit: (data: TripPlanFormData) => Promise<void>;
   isLoading: boolean;
 }
 
-const defaultFormValues: TripPlanFormData = {
-  location: '',
-  budget: undefined as unknown as 'low' | 'medium' | 'high', // To allow placeholder to show
-  interests: '',
-  duration: '',
-  workingHours: '',
-  workingStyle: undefined as unknown as 'intense_focus' | 'social_networking' | 'balanced',
-  leisureTime: '',
-};
-
 export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
-  const form = useForm<TripPlanFormData>({
-    resolver: zodResolver(tripPlanSchema),
-    defaultValues: defaultFormValues,
-  });
+  // Drastically simplify useForm for parsing debug
+  const form = useForm(); // Removed generic, resolver, and defaultValues
 
   return (
-    <Card className="w-full max-w-2xl mx-auto shadow-xl border-primary/30">
+    <Card className="w-full max-w-2xl mx-auto shadow-xl"> {/* Removed border-primary/30 */}
       <CardHeader>
         <CardTitle className="text-2xl text-primary">AI Trip Planner</CardTitle>
         <CardDescription>Tell us your preferences, and our AI will craft a personalized trip plan for you!</CardDescription>
@@ -73,6 +77,7 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            {/* All FormFields will likely error at runtime, but we are checking parsing first */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
@@ -101,9 +106,9 @@ export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="low">Low (e.g., <$1000/month)</SelectItem>
+                        <SelectItem value="low">Low (e.g., &lt;$1000/month)</SelectItem>
                         <SelectItem value="medium">Medium (e.g., $1000-$2500/month)</SelectItem>
-                        <SelectItem value="high">High (e.g., >$2500/month)</SelectItem>
+                        <SelectItem value="high">High (e.g., &gt;$2500/month)</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormDescription>What is your approximate monthly budget?</FormDescription>
