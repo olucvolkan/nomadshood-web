@@ -3,10 +3,10 @@
 
 import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, Lightbulb, Users, MapPin, Video, Globe, Star, MessageSquare, Send } from 'lucide-react';
+import { List, Lightbulb, Users, MapPin, Video, Globe, Star, MessageSquare, Send, Youtube, Film } from 'lucide-react';
 import { mockColivingSpaces } from '@/lib/mock-data';
 import type { ColivingSpace, CommunityLink, CountrySpecificCommunityLinks } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
@@ -19,6 +19,52 @@ interface CountryDisplayData {
   imageUrl: string;
   dataAiHint: string;
 }
+
+interface YouTubeVideo {
+  id: string;
+  title: string;
+  thumbnailUrl: string;
+  youtubeUrl: string;
+  dataAiHint: string;
+}
+
+const mockYouTubeVideos: YouTubeVideo[] = [
+  {
+    id: '1',
+    title: 'Top 5 Digital Nomad Hotspots in 2025',
+    thumbnailUrl: 'https://placehold.co/400x225.png',
+    youtubeUrl: 'https://www.youtube.com/watch?v=example1',
+    dataAiHint: 'travel global map',
+  },
+  {
+    id: '2',
+    title: 'Packing Light: Essential Gear for Nomads',
+    thumbnailUrl: 'https://placehold.co/400x225.png',
+    youtubeUrl: 'https://www.youtube.com/watch?v=example2',
+    dataAiHint: 'backpack travel gear',
+  },
+  {
+    id: '3',
+    title: 'Coliving in Bali: A Deep Dive',
+    thumbnailUrl: 'https://placehold.co/400x225.png',
+    youtubeUrl: 'https://www.youtube.com/watch?v=example3',
+    dataAiHint: 'bali tropical workspace',
+  },
+  {
+    id: '4',
+    title: 'Visa Guide for Aspiring Digital Nomads',
+    thumbnailUrl: 'https://placehold.co/400x225.png',
+    youtubeUrl: 'https://www.youtube.com/watch?v=example4',
+    dataAiHint: 'passport visa documents',
+  },
+  {
+    id: '5',
+    title: 'Community Spotlight: Lisbon Nomads',
+    thumbnailUrl: 'https://placehold.co/400x225.png',
+    youtubeUrl: 'https://www.youtube.com/watch?v=example5',
+    dataAiHint: 'lisbon group people',
+  },
+];
 
 export default function HomePage() {
   const [selectedCountryForCommunities, setSelectedCountryForCommunities] = useState<string | null>(null);
@@ -251,6 +297,44 @@ export default function HomePage() {
           </p>
         )}
       </section>
+
+      <section className="py-10">
+        <div className="text-center mb-10">
+          <Film className="h-12 w-12 text-primary mx-auto mb-2" />
+          <h2 className="text-3xl font-semibold">From the NomadsHood Channel</h2>
+          <p className="text-lg text-foreground/70 mt-2">Watch our latest videos, tips, and community showcases.</p>
+        </div>
+        <div className="flex overflow-x-auto space-x-6 pb-4 -mb-4 pl-4">
+          {mockYouTubeVideos.map((video) => (
+            <Card key={video.id} className="min-w-[300px] max-w-[300px] flex-shrink-0 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
+                <Image
+                  src={video.thumbnailUrl}
+                  alt={video.title}
+                  layout="fill"
+                  objectFit="cover"
+                  data-ai-hint={video.dataAiHint}
+                />
+              </div>
+              <CardHeader className="p-4">
+                <CardTitle className="text-lg line-clamp-2 h-[3.25rem]">{video.title}</CardTitle>
+              </CardHeader>
+              <CardFooter className="p-4 pt-0">
+                <Button asChild variant="outline" className="w-full">
+                  <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                    <Youtube className="mr-2 h-5 w-5 text-red-600" />
+                    Watch on YouTube
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+        {mockYouTubeVideos.length === 0 && (
+          <p className="text-center text-muted-foreground">No videos available at the moment. Check back soon!</p>
+        )}
+      </section>
+
     </div>
   );
 }
