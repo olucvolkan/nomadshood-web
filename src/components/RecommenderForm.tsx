@@ -1,9 +1,9 @@
 
 'use client';
 
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import { useForm } from 'react-hook-form';
-// import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -31,24 +31,16 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2 } from 'lucide-react';
 
-// const tripPlanSchema = z.object({
-//   location: z.string().min(2, { message: 'Location must be at least 2 characters long.' }),
-//   budget: z.enum(['low', 'medium', 'high'], { required_error: 'Please select a budget.' }),
-//   interests: z.string().min(3, { message: 'Interests must be at least 3 characters long.' }),
-//   duration: z.string().min(1, { message: 'Please enter the duration of your stay.'}),
-//   workingHours: z.string().min(3, { message: 'Please describe your working hours/pattern.'}),
-//   leisureTime: z.string().min(3, { message: 'Please describe your leisure time preferences.'}),
-// });
+const tripPlanSchema = z.object({
+  location: z.string().min(2, { message: 'Location must be at least 2 characters long.' }),
+  budget: z.enum(['low', 'medium', 'high'], { required_error: 'Please select a budget.' }),
+  interests: z.string().min(3, { message: 'Interests must be at least 3 characters long.' }),
+  duration: z.string().min(1, { message: 'Please enter the duration of your stay.'}),
+  workingHours: z.string().min(3, { message: 'Please describe your working hours/pattern.'}),
+  leisureTime: z.string().min(3, { message: 'Please describe your leisure time preferences.'}) // Removed trailing comma
+});
 
-// Simplified TripPlanFormData for testing purposes
-export type TripPlanFormData = {
-  location: string;
-  budget?: 'low' | 'medium' | 'high';
-  interests: string;
-  duration: string;
-  workingHours: string;
-  leisureTime: string;
-};
+export type TripPlanFormData = z.infer<typeof tripPlanSchema>;
 
 interface RecommenderFormProps {
   onSubmit: (data: TripPlanFormData) => Promise<void>;
@@ -56,25 +48,17 @@ interface RecommenderFormProps {
 }
 
 export function RecommenderForm({ onSubmit, isLoading }: RecommenderFormProps) {
-  // Temporarily comment out useForm to isolate parsing error
-  // const form = useForm<TripPlanFormData>({
-  //   resolver: zodResolver(tripPlanSchema),
-  //   defaultValues: {
-  //     location: '',
-  //     budget: undefined,
-  //     interests: '',
-  //     duration: '',
-  //     workingHours: '',
-  //     leisureTime: '',
-  //   },
-  // });
-
-  // Dummy form object to allow JSX to compile. Functionality will be broken.
-  const form = { // Removed :any type annotation
-    control: undefined, // Or null, to satisfy FormField
-    handleSubmit: (fn: any) => (e: any) => { e.preventDefault(); fn(); }, // Mock handleSubmit
-    // Add other methods/properties if JSX complains further, e.g., register, formState
-  };
+  const form = useForm<TripPlanFormData>({
+    resolver: zodResolver(tripPlanSchema),
+    defaultValues: {
+      location: '',
+      budget: undefined, 
+      interests: '',
+      duration: '',
+      workingHours: '',
+      leisureTime: '',
+    },
+  });
 
   return (
     <Card className="w-full max-w-lg mx-auto shadow-xl">
