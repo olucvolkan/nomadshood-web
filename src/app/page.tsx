@@ -46,7 +46,7 @@ export default function HomePage() {
     .map(([countryName, count]) => ({
       name: countryName,
       count: count,
-      imageUrl: `https://placehold.co/600x400.png`, // Corrected line: removed leading backslash
+      imageUrl: `https://placehold.co/600x400.png`,
       dataAiHint: countrySpecificHints[countryName] || countryName.toLowerCase().split(" ").slice(0,2).join(" "),
     }))
     .sort((a, b) => b.count - a.count); 
@@ -79,8 +79,6 @@ export default function HomePage() {
       );
       setDisplayedCommunityLinks(countryLinksData ? countryLinksData.links : []);
     } else {
-      // This case might not be directly reachable via SelectItem if we only have actual country values
-      // but kept for robustness if selectedCountryForCommunities is set to null/empty string programmatically
       setDisplayedCommunityLinks([]); 
     }
   };
