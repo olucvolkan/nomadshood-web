@@ -200,6 +200,43 @@ export default function HomePage() {
           </CardContent>
         </Card>
       </section>
+      
+      <section className="py-10">
+        <div className="text-center mb-10">
+          <Film className="h-12 w-12 text-primary mx-auto mb-2" />
+          <h2 className="text-3xl font-semibold">From the NomadsHood Channel</h2>
+          <p className="text-lg text-foreground/70 mt-2">Watch our latest videos, tips, and community showcases.</p>
+        </div>
+        <div className="flex overflow-x-auto space-x-6 pb-4 -mb-4 pl-4">
+          {mockYouTubeVideos.map((video) => (
+            <Card key={video.id} className="min-w-[300px] max-w-[300px] flex-shrink-0 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
+                <Image
+                  src={video.thumbnailUrl}
+                  alt={video.title}
+                  layout="fill"
+                  objectFit="cover"
+                  data-ai-hint={video.dataAiHint}
+                />
+              </div>
+              <CardHeader className="p-4">
+                <CardTitle className="text-lg line-clamp-2 h-[3.25rem]">{video.title}</CardTitle>
+              </CardHeader>
+              <CardFooter className="p-4 pt-0">
+                <Button asChild variant="outline" className="w-full">
+                  <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                    <Youtube className="mr-2 h-5 w-5 text-red-600" />
+                    Watch on YouTube
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+        {mockYouTubeVideos.length === 0 && (
+          <p className="text-center text-muted-foreground">No videos available at the moment. Check back soon!</p>
+        )}
+      </section>
 
       <section className="py-10">
         <div className="text-center mb-10">
@@ -295,43 +332,6 @@ export default function HomePage() {
           <p className="text-muted-foreground mt-4">
             Please select a country above to view relevant community channels.
           </p>
-        )}
-      </section>
-
-      <section className="py-10">
-        <div className="text-center mb-10">
-          <Film className="h-12 w-12 text-primary mx-auto mb-2" />
-          <h2 className="text-3xl font-semibold">From the NomadsHood Channel</h2>
-          <p className="text-lg text-foreground/70 mt-2">Watch our latest videos, tips, and community showcases.</p>
-        </div>
-        <div className="flex overflow-x-auto space-x-6 pb-4 -mb-4 pl-4">
-          {mockYouTubeVideos.map((video) => (
-            <Card key={video.id} className="min-w-[300px] max-w-[300px] flex-shrink-0 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
-                <Image
-                  src={video.thumbnailUrl}
-                  alt={video.title}
-                  layout="fill"
-                  objectFit="cover"
-                  data-ai-hint={video.dataAiHint}
-                />
-              </div>
-              <CardHeader className="p-4">
-                <CardTitle className="text-lg line-clamp-2 h-[3.25rem]">{video.title}</CardTitle>
-              </CardHeader>
-              <CardFooter className="p-4 pt-0">
-                <Button asChild variant="outline" className="w-full">
-                  <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
-                    <Youtube className="mr-2 h-5 w-5 text-red-600" />
-                    Watch on YouTube
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-        {mockYouTubeVideos.length === 0 && (
-          <p className="text-center text-muted-foreground">No videos available at the moment. Check back soon!</p>
         )}
       </section>
 
