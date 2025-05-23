@@ -16,16 +16,9 @@ let app: FirebaseApp;
 
 // Check if Firebase has already been initialized
 if (!getApps().length) {
-  // Validate that the databaseURL is provided and looks like a URL
-  // This is a basic check; Firebase SDK will do more thorough validation
-  if (!firebaseConfig.databaseURL || !firebaseConfig.databaseURL.startsWith('https://')) {
-    console.error(
-      'Firebase Database URL is missing or incorrectly formatted in your .env file. ' +
-      'It should start with "https://" and end with ".firebaseio.com" or ".firebasedatabase.app". ' +
-      `Current value: ${firebaseConfig.databaseURL}`
-    );
-    // Depending on how critical this is, you might throw an error here or let Firebase SDK handle it
-  }
+  // Firebase SDK will perform its own validation of the databaseURL.
+  // If firebaseConfig.databaseURL is undefined or malformed, 
+  // initializeApp or getDatabase will throw an appropriate error.
   app = initializeApp(firebaseConfig);
 } else {
   app = getApps()[0]; // Use the existing app
