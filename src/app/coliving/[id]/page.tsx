@@ -1,4 +1,5 @@
-import { mockColivingSpaces } from '@/lib/mock-data';
+
+// import { mockColivingSpaces } from '@/lib/mock-data'; // Firebase data will be used
 import type { ColivingSpace } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -6,10 +7,11 @@ import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { ArrowLeft, MapPin, Video, MessageSquare, ExternalLink, Users, Globe } from 'lucide-react';
+import { ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Bath, Briefcase } from 'lucide-react';
+import { getColivingSpaceById } from '@/services/colivingService'; // Import Firebase service
 
-export default function ColivingDetailPage({ params }: { params: { id: string } }) {
-  const space = mockColivingSpaces.find((s) => s.id === params.id);
+export default async function ColivingDetailPage({ params }: { params: { id: string } }) {
+  const space: ColivingSpace | null = await getColivingSpaceById(params.id);
 
   if (!space) {
     notFound();
@@ -29,10 +31,10 @@ export default function ColivingDetailPage({ params }: { params: { id: string } 
           <div className="md:w-1/3 p-2">
             <div className="relative w-full h-64 md:h-full rounded-lg overflow-hidden">
               <Image
-                src={space.logoUrl} // Using logoUrl as main image for now
+                src={space.logoUrl || 'https://placehold.co/600x400.png'}
                 alt={`${space.name} view`}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{objectFit: 'cover'}}
                 className="rounded-lg"
                 data-ai-hint={space.dataAiHint || "building exterior"}
               />
@@ -49,6 +51,21 @@ export default function ColivingDetailPage({ params }: { params: { id: string } 
             <CardContent className="p-6 pt-0 space-y-4">
               <p className="text-foreground/90 leading-relaxed">{space.description}</p>
               
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="flex items-center">
+                  <DollarSign className="h-4 w-4 mr-2 text-primary" />
+                  <span>Monthly Price: ~${space.monthlyPrice}</span>
+                </div>
+                <div className="flex items-center">
+                  <Bath className="h-4 w-4 mr-2 text-primary" />
+                  <span>Private Bathroom: {space.hasPrivateBathroom ? 'Yes' : 'No'}</span>
+                </div>
+                <div className="flex items-center">
+                  <Briefcase className="h-4 w-4 mr-2 text-primary" />
+                  <span>Coworking Space: {space.hasCoworking ? 'Yes' : 'No/Not specified'}</span>
+                </div>
+              </div>
+
               {space.tags && space.tags.length > 0 && (
                 <div>
                   <h3 className="text-md font-semibold mb-2 text-foreground">Tags:</h3>
@@ -90,43 +107,9 @@ export default function ColivingDetailPage({ params }: { params: { id: string } 
                     </Link>
                     </Button>
                 )}
-                 {/* Placeholder for a website link if we add it to types later */}
-                {/* {space.websiteUrl && (
-                    <Button variant="outline" asChild>
-                    <Link href={space.websiteUrl} target="_blank" rel="noopener noreferrer">
-                        <Globe className="mr-2 h-4 w-4" />
-                        Visit Website
-                    </Link>
-                    </Button>
-                )} */}
             </div>
         </CardFooter>
       </Card>
-
-      {/* Future section for embedded video, if direct embed is preferred */}
-      {/* {space.videoUrl && (
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Video Tour</h2>
-          <div className="aspect-video rounded-lg overflow-hidden shadow-lg">
-            <iframe
-              width="100%"
-              height="100%"
-              src={`https://www.youtube.com/embed/${extractYoutubeId(space.videoUrl)}`} // Example for YouTube
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </div>
-      )} */}
     </div>
   );
 }
-
-// Helper function if you want to embed YouTube videos directly
-// function extractYoutubeId(url: string): string | null {
-//   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-//   const match = url.match(regExp);
-//   return (match && match[7].length === 11) ? match[7] : null;
-// }

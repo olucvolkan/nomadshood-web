@@ -7,11 +7,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Image from 'next/image';
 import Link from 'next/link';
 import { List, Lightbulb, Users, MapPin, Video, Globe, Star, MessageSquare, Send, Youtube, Film } from 'lucide-react';
-import { mockColivingSpaces } from '@/lib/mock-data';
+// import { mockColivingSpaces } from '@/lib/mock-data'; // Firebase data will be used
 import type { ColivingSpace, CommunityLink, CountrySpecificCommunityLinks } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { mockCountrySpecificCommunityLinks } from '@/lib/mock-community-links';
+import { getAllColivingSpaces } from '@/services/colivingService'; // Import Firebase service
 
 interface CountryDisplayData {
   name: string;
@@ -66,34 +67,42 @@ const mockYouTubeVideos: YouTubeVideo[] = [
   },
 ];
 
-export default function HomePage() {
+// Note: This component is marked 'use client', but the async part
+// will run on the server for initial data fetching if used as a page component.
+export default async function HomePage() {
+  const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
+
   const [selectedCountryForCommunities, setSelectedCountryForCommunities] = useState<string | null>(null);
   const [displayedCommunityLinks, setDisplayedCommunityLinks] = useState<CommunityLink[]>([]);
 
-  const countryCounts: { [country: string]: number } = {};
-  mockColivingSpaces.forEach(space => {
-    const addressParts = space.address.split(', ');
-    const country = addressParts[addressParts.length - 1];
-    if (country) {
-      countryCounts[country] = (countryCounts[country] || 0) + 1;
-    }
-  });
+  const countryCounts: { [country: string]: number } = useMemo(() => {
+    const counts: { [country: string]: number } = {};
+    allSpaces.forEach(space => {
+      const addressParts = space.address.split(', ');
+      const country = addressParts[addressParts.length - 1];
+      if (country) {
+        counts[country] = (counts[country] || 0) + 1;
+      }
+    });
+    return counts;
+  }, [allSpaces]);
 
-  // Using dataAiHint for potential future real flag image sourcing
-  const countriesData: CountryDisplayData[] = Object.entries(countryCounts)
+  const countriesData: CountryDisplayData[] = useMemo(() => 
+    Object.entries(countryCounts)
     .map(([countryName, count]) => ({
       name: countryName,
       count: count,
       imageUrl: `https://placehold.co/600x400.png`,
       dataAiHint: `flag ${countryName.toLowerCase().split(" ").slice(0,1).join("")}`,
     }))
-    .sort((a, b) => b.count - a.count);
-
-  const featuredSpaces = mockColivingSpaces.slice(0, 3);
+    .sort((a, b) => b.count - a.count)
+  , [countryCounts]);
+  
+  const featuredSpaces = useMemo(() => allSpaces.slice(0, 3), [allSpaces]);
 
   const uniqueCountriesForSelector = useMemo(() => {
     const countries = new Set<string>();
-    mockColivingSpaces.forEach(space => {
+    allSpaces.forEach(space => {
       const addressParts = space.address.split(', ');
       const country = addressParts[addressParts.length - 1];
       if (country) {
@@ -106,7 +115,7 @@ export default function HomePage() {
       }
     });
     return Array.from(countries).sort();
-  }, []);
+  }, [allSpaces]);
 
   const handleCountryChangeForCommunities = (countryName: string) => {
     setSelectedCountryForCommunities(countryName);
@@ -205,8 +214,8 @@ export default function HomePage() {
                 <Image
                   src={video.thumbnailUrl}
                   alt={video.title}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{objectFit: 'cover'}}
                   data-ai-hint={video.dataAiHint}
                 />
               </div>
@@ -240,6 +249,12 @@ export default function HomePage() {
             <ColivingCard key={space.id} space={space} showViewDetailsButton={true} />
           ))}
         </div>
+         {featuredSpaces.length === 0 && allSpaces.length > 0 && (
+          <p className="text-center text-muted-foreground">Loading featured spaces...</p>
+        )}
+        {allSpaces.length === 0 && (
+           <p className="text-center text-muted-foreground">No coliving spaces available yet. Stay tuned!</p>
+        )}
       </section>
 
       <section className="py-10">
@@ -275,7 +290,7 @@ export default function HomePage() {
             ))}
           </div>
         ) : (
-          <p className="text-center text-muted-foreground">No destination data available yet.</p>
+          <p className="text-center text-muted-foreground">No destination data available yet. Once coliving spaces are added, countries will appear here.</p>
         )}
       </section>
 
@@ -325,7 +340,6 @@ export default function HomePage() {
           </p>
         )}
       </section>
-
     </div>
   );
 }

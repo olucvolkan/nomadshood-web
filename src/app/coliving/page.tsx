@@ -1,9 +1,7 @@
 
-'use client';
-
-import { useMemo } from 'react';
+import { useMemo } from 'react'; // Keep for potential client-side aspects if page evolves
 import { ColivingCard } from '@/components/ColivingCard';
-import { mockColivingSpaces } from '@/lib/mock-data';
+// import { mockColivingSpaces } from '@/lib/mock-data'; // Firebase data will be used
 import type { ColivingSpace } from '@/types';
 import { Info, ArrowLeft, Globe } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -11,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getAllColivingSpaces } from '@/services/colivingService'; // Import Firebase service
 
 interface CountryDisplayData {
   name: string;
@@ -19,15 +18,15 @@ interface CountryDisplayData {
   dataAiHint: string;
 }
 
-export default function ColivingDirectoryPage({
+export default async function ColivingDirectoryPage({
   searchParams,
 }: {
   searchParams?: { country?: string };
 }) {
-  const allSpaces: ColivingSpace[] = mockColivingSpaces;
+  const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
   const selectedCountryName = searchParams?.country ? decodeURIComponent(searchParams.country) : null;
 
-  const countryCounts: { [country: string]: number } = useMemo(() => {
+  const countryCounts: { [country: string]: number } = (() => {
     const counts: { [country: string]: number } = {};
     allSpaces.forEach(space => {
       const addressParts = space.address.split(', ');
@@ -37,30 +36,29 @@ export default function ColivingDirectoryPage({
       }
     });
     return counts;
-  }, [allSpaces]);
+  })();
 
-  const countriesData: CountryDisplayData[] = useMemo(() => 
+  const countriesData: CountryDisplayData[] = (() => 
     Object.entries(countryCounts)
       .map(([countryName, count]) => ({
         name: countryName,
         count: count,
-        imageUrl: `https://placehold.co/600x400.png`, // Placeholder for flag
+        imageUrl: `https://placehold.co/600x400.png`, 
         dataAiHint: `flag ${countryName.toLowerCase().split(" ").slice(0,1).join("")}`,
       }))
-      .sort((a, b) => a.name.localeCompare(b.name)), // Sort alphabetically by country name
-    [countryCounts]
-  );
+      .sort((a, b) => a.name.localeCompare(b.name))
+  )();
 
-  const filteredSpaces = useMemo(() => {
+  const filteredSpaces = (() => {
     if (!selectedCountryName) {
-      return []; // Don't show individual spaces if no country is selected
+      return []; 
     }
     return allSpaces.filter(space => {
       const addressParts = space.address.split(', ');
       const countryNameInSpace = addressParts[addressParts.length - 1];
       return countryNameInSpace.toLowerCase() === selectedCountryName.toLowerCase();
     });
-  }, [allSpaces, selectedCountryName]);
+  })();
 
   const pageTitle = selectedCountryName
     ? `${selectedCountryName} Coliving Spaces`
@@ -116,15 +114,25 @@ export default function ColivingDirectoryPage({
         </div>
       )}
       
-      {!selectedCountryName && countriesData.length === 0 && (
+      {!selectedCountryName && countriesData.length === 0 && allSpaces.length === 0 && (
          <Alert className="max-w-lg mx-auto">
           <Globe className="h-4 w-4" />
           <AlertTitle>No Countries Available</AlertTitle>
           <AlertDescription>
-            It seems there are no coliving spaces listed yet to populate countries.
+            It seems there are no coliving spaces listed yet to populate countries. Add some to your Firebase database!
           </AlertDescription>
         </Alert>
       )}
+       {!selectedCountryName && countriesData.length === 0 && allSpaces.length > 0 && (
+         <Alert className="max-w-lg mx-auto">
+          <Globe className="h-4 w-4" />
+          <AlertTitle>No Countries Parsed</AlertTitle>
+          <AlertDescription>
+            Coliving spaces were found, but countries could not be determined from their addresses. Please check address formats.
+          </AlertDescription>
+        </Alert>
+      )}
+
 
       {selectedCountryName && filteredSpaces.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -139,11 +147,20 @@ export default function ColivingDirectoryPage({
           <Info className="h-4 w-4" />
           <AlertTitle>No Spaces Found</AlertTitle>
           <AlertDescription>
-            Sorry, we couldn't find any coliving spaces for {selectedCountryName}.
+            Sorry, we couldn&apos;t find any coliving spaces for {selectedCountryName}.
             <br />
             <Button variant="link" className="p-0 h-auto mt-2" asChild>
               <Link href="/coliving">View all countries</Link>
             </Button>
+          </AlertDescription>
+        </Alert>
+      )}
+       {allSpaces.length === 0 && selectedCountryName && (
+         <Alert className="max-w-lg mx-auto">
+          <Info className="h-4 w-4" />
+          <AlertTitle>No Spaces in Database</AlertTitle>
+          <AlertDescription>
+            There are currently no coliving spaces in the database. Please add some to see them listed.
           </AlertDescription>
         </Alert>
       )}
