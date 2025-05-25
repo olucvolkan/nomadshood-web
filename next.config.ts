@@ -1,3 +1,4 @@
+
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
@@ -16,6 +17,24 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com', // Added Unsplash
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https', // For repeople.co images
+        hostname: 'www.repeople.co',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https', // For example.com placeholders if any are used
+        hostname: 'example.com',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
 };
