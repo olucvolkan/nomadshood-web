@@ -18,7 +18,7 @@ interface CountryDisplayData {
   dataAiHint: string;
 }
 
-export interface HomePageYouTubeVideo { // Exporting if needed by parent, or keep local
+export interface HomePageYouTubeVideo {
   id: string;
   title: string;
   thumbnailUrl: string;
@@ -43,17 +43,14 @@ export function HomePageClientContent({
   const countryCounts: { [country: string]: number } = useMemo(() => {
     const counts: { [country: string]: number } = {};
     allSpaces.forEach(space => {
-      const addressParts = space.address.split(', ');
-      const country = addressParts[addressParts.length - 1];
-      if (country) {
-        counts[country] = (counts[country] || 0) + 1;
+      if (space && space.country) { // Use direct country field and check if it exists
+        counts[space.country] = (counts[space.country] || 0) + 1;
       }
     });
     return counts;
   }, [allSpaces]);
 
   const countriesData: CountryDisplayData[] = useMemo(() => {
-    // Define specific image hints for certain countries if desired
     const countrySpecificImageHints: { [key: string]: string } = {
       "Indonesia": "bali tropical",
       "Portugal": "lisbon tram",
@@ -61,6 +58,7 @@ export function HomePageClientContent({
       "Japan": "tokyo street",
       "South Africa": "cape town mountain",
       "Colombia": "medellin valley",
+      "Spain": "barcelona gaudi", // Example hint for Spain
     };
     return Object.entries(countryCounts)
     .map(([countryName, count]) => ({
@@ -69,18 +67,20 @@ export function HomePageClientContent({
       imageUrl: `https://placehold.co/600x400.png`,
       dataAiHint: countrySpecificImageHints[countryName] || `flag ${countryName.toLowerCase().split(" ").slice(0,1).join("")}`,
     }))
-    .sort((a, b) => b.count - a.count);
+    .sort((a, b) => b.count - a.count); // Sort by count, descending
   } , [countryCounts]);
   
-  const featuredSpaces = useMemo(() => allSpaces.slice(0, 3), [allSpaces]);
+  const featuredSpaces = useMemo(() => {
+     // Sort spaces by a metric if available (e.g., rating, reviews_count), then slice
+     // For now, just taking the first few as before, if data exists.
+    return allSpaces.length > 0 ? allSpaces.slice(0, 3) : [];
+  }, [allSpaces]);
 
   const uniqueCountriesForSelector = useMemo(() => {
     const countries = new Set<string>();
     allSpaces.forEach(space => {
-      const addressParts = space.address.split(', ');
-      const country = addressParts[addressParts.length - 1];
-      if (country) {
-        countries.add(country);
+      if (space && space.country) { // Use direct country field and check if it exists
+        countries.add(space.country);
       }
     });
     countryCommunityLinks.forEach(countryLinkData => {
@@ -223,7 +223,7 @@ export function HomePageClientContent({
             <ColivingCard key={space.id} space={space} showViewDetailsButton={true} />
           ))}
         </div>
-         {featuredSpaces.length === 0 && allSpaces.length > 0 && (
+         {allSpaces.length > 0 && featuredSpaces.length === 0 && ( // Show only if allSpaces has data but featured is somehow empty
           <p className="text-center text-muted-foreground">Loading featured spaces...</p>
         )}
         {allSpaces.length === 0 && (
