@@ -43,7 +43,7 @@ export function HomePageClientContent({
   const countryCounts: { [country: string]: number } = useMemo(() => {
     const counts: { [country: string]: number } = {};
     allSpaces.forEach(space => {
-      if (space && space.country) { // Use direct country field and check if it exists
+      if (space && space.country) { 
         counts[space.country] = (counts[space.country] || 0) + 1;
       }
     });
@@ -58,28 +58,26 @@ export function HomePageClientContent({
       "Japan": "tokyo street",
       "South Africa": "cape town mountain",
       "Colombia": "medellin valley",
-      "Spain": "barcelona gaudi", // Example hint for Spain
+      "Spain": "barcelona gaudi", 
     };
     return Object.entries(countryCounts)
     .map(([countryName, count]) => ({
       name: countryName,
       count: count,
-      imageUrl: `https://placehold.co/600x400.png`,
+      imageUrl: `https://placehold.co/600x400/E0E0E0/757575.png`, // Updated placeholder
       dataAiHint: countrySpecificImageHints[countryName] || `flag ${countryName.toLowerCase().split(" ").slice(0,1).join("")}`,
     }))
-    .sort((a, b) => b.count - a.count); // Sort by count, descending
+    .sort((a, b) => b.count - a.count); 
   } , [countryCounts]);
   
   const featuredSpaces = useMemo(() => {
-     // Sort spaces by a metric if available (e.g., rating, reviews_count), then slice
-     // For now, just taking the first few as before, if data exists.
     return allSpaces.length > 0 ? allSpaces.slice(0, 3) : [];
   }, [allSpaces]);
 
   const uniqueCountriesForSelector = useMemo(() => {
     const countries = new Set<string>();
     allSpaces.forEach(space => {
-      if (space && space.country) { // Use direct country field and check if it exists
+      if (space && space.country) { 
         countries.add(space.country);
       }
     });
@@ -223,7 +221,7 @@ export function HomePageClientContent({
             <ColivingCard key={space.id} space={space} showViewDetailsButton={true} />
           ))}
         </div>
-         {allSpaces.length > 0 && featuredSpaces.length === 0 && ( // Show only if allSpaces has data but featured is somehow empty
+         {allSpaces.length > 0 && featuredSpaces.length === 0 && ( 
           <p className="text-center text-muted-foreground">Loading featured spaces...</p>
         )}
         {allSpaces.length === 0 && (

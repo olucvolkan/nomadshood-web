@@ -13,11 +13,33 @@ interface ColivingCardProps {
 }
 
 export function ColivingCard({ space, showViewDetailsButton = false }: ColivingCardProps) {
+  // Defensively render the address based on its potential structure
+  let displayAddress = 'Address not available';
+  if (typeof space.address === 'string') {
+    displayAddress = space.address;
+  } else if (space.address && typeof (space.address as any).address === 'string') {
+    // Handles if space.address is an object like: { address: "Street...", city: "...", ... }
+    displayAddress = (space.address as any).address;
+    if ((space.address as any).city) {
+      displayAddress += `, ${(space.address as any).city}`;
+    }
+    if ((space.address as any).country) {
+      displayAddress += `, ${(space.address as any).country}`;
+    }
+  } else if (space.address && typeof (space.address as any).city === 'string' && typeof (space.address as any).country === 'string') {
+    // Fallback if space.address is an object but only has city/country
+     displayAddress = `${(space.address as any).city}, ${(space.address as any).country}`;
+  } else if (space.location && typeof space.location === 'string') {
+    // Fallback to space.location if space.address is problematic but space.location (raw field) exists
+    displayAddress = space.location;
+  }
+
+
   return (
     <Card className="flex flex-col h-full shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardHeader className="flex flex-row items-start gap-4 p-4">
         <Image
-          src={space.logoUrl}
+          src={space.logoUrl} // This should come from space.cover_image in Firestore via mapping
           alt={`${space.name} logo`}
           width={80}
           height={80}
@@ -32,7 +54,7 @@ export function ColivingCard({ space, showViewDetailsButton = false }: ColivingC
           </Link>
           <CardDescription className="flex items-center text-sm">
             <MapPin className="h-4 w-4 mr-1.5 text-muted-foreground" />
-            {space.address}
+            {displayAddress}
           </CardDescription>
         </div>
       </CardHeader>
@@ -58,9 +80,9 @@ export function ColivingCard({ space, showViewDetailsButton = false }: ColivingC
               </Link>
             </Button>
           )}
-          {(space.slackLink || space.whatsappLink) && (
+          {space.whatsappLink && ( 
              <Button variant="outline" size="sm" asChild className="flex-1">
-              <Link href={space.slackLink || space.whatsappLink!} target="_blank" rel="noopener noreferrer">
+              <Link href={space.whatsappLink} target="_blank" rel="noopener noreferrer">
                 <MessageSquare className="h-4 w-4 mr-2" />
                 Join Community
               </Link>
