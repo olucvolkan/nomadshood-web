@@ -16,6 +16,19 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
     notFound();
   }
 
+  // Defensive rendering for address
+  let displayAddress = 'Address not available';
+  if (typeof space.address === 'string') {
+    displayAddress = space.address;
+  } else if (space.address && typeof (space.address as any).address === 'string') {
+    displayAddress = (space.address as any).address;
+    if ((space.address as any).city) displayAddress += `, ${(space.address as any).city}`;
+    if ((space.address as any).country) displayAddress += `, ${(space.address as any).country}`;
+  } else if (space.address && typeof (space.address as any).city === 'string' && typeof (space.address as any).country === 'string') {
+    displayAddress = `${(space.address as any).city}, ${(space.address as any).country}`;
+  }
+
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Button variant="outline" asChild className="mb-8">
@@ -30,7 +43,7 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
           <div className="md:w-1/3 p-2">
             <div className="relative w-full h-64 md:h-full rounded-lg overflow-hidden">
               <Image
-                src={space.logoUrl || 'https://placehold.co/600x400/E0E0E0/757575.png'} // Updated placeholder
+                src={space.logoUrl || 'https://placehold.co/600x400/E0E0E0/757575.png'}
                 alt={`${space.name} view`}
                 fill
                 style={{objectFit: 'cover'}}
@@ -44,7 +57,7 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
               <CardTitle className="text-3xl font-bold text-primary">{space.name}</CardTitle>
               <CardDescription className="flex items-center text-lg text-muted-foreground mt-1">
                 <MapPin className="h-5 w-5 mr-2" />
-                {space.address}
+                {displayAddress}
               </CardDescription>
                {space.websiteUrl && (
                 <Button variant="link" asChild className="p-0 h-auto mt-2 text-sm">
