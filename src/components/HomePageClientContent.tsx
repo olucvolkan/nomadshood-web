@@ -50,7 +50,7 @@ export function HomePageClientContent({
     return counts;
   }, [allSpaces]);
 
-  const countriesData: CountryDisplayData[] = useMemo(() => {
+  const topCountriesData: CountryDisplayData[] = useMemo(() => {
     const countrySpecificImageHints: { [key: string]: string } = {
       "Indonesia": "bali tropical",
       "Portugal": "lisbon tram",
@@ -61,17 +61,29 @@ export function HomePageClientContent({
       "Spain": "barcelona gaudi", 
     };
     return Object.entries(countryCounts)
-    .map(([countryName, count]) => ({
-      name: countryName,
-      count: count,
-      imageUrl: `https://placehold.co/600x400/E0E0E0/757575.png`, // Updated placeholder
-      dataAiHint: countrySpecificImageHints[countryName] || `flag ${countryName.toLowerCase().split(" ").slice(0,1).join("")}`,
-    }))
-    .sort((a, b) => b.count - a.count); 
+    .map(([countryName, count]) => {
+      const hintKey = countryName.split(" ").slice(0,1).join("").toLowerCase();
+      const defaultHint = `${hintKey} landmark`;
+      return {
+        name: countryName,
+        count: count,
+        imageUrl: `https://placehold.co/600x400/E0E0E0/757575.png`, 
+        dataAiHint: (countrySpecificImageHints[countryName] || defaultHint).split(" ").slice(0,2).join(" "),
+      };
+    })
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10); // Get top 10 countries
   } , [countryCounts]);
   
   const featuredSpaces = useMemo(() => {
-    return allSpaces.length > 0 ? allSpaces.slice(0, 3) : [];
+    // Sort by rating (desc) and then by reviews_count (desc) as a tie-breaker
+    const sortedSpaces = [...allSpaces].sort((a, b) => {
+      if ((b.rating ?? 0) !== (a.rating ?? 0)) {
+        return (b.rating ?? 0) - (a.rating ?? 0);
+      }
+      return (b.reviews_count ?? 0) - (a.reviews_count ?? 0);
+    });
+    return sortedSpaces.length > 0 ? sortedSpaces.slice(0, 3) : [];
   }, [allSpaces]);
 
   const uniqueCountriesForSelector = useMemo(() => {
@@ -179,9 +191,9 @@ export function HomePageClientContent({
           <h2 className="text-3xl font-semibold">From the NomadsHood Channel</h2>
           <p className="text-lg text-foreground/70 mt-2">Watch our latest videos, tips, and community showcases.</p>
         </div>
-        <div className="flex overflow-x-auto space-x-6 pb-4 -mb-4 pl-4">
+        <div className="flex overflow-x-auto space-x-4 sm:space-x-6 pb-4 -mb-4 pl-1 sm:pl-0">
           {youTubeVideos.map((video) => (
-            <Card key={video.id} className="min-w-[300px] max-w-[300px] flex-shrink-0 shadow-lg hover:shadow-xl transition-shadow">
+            <Card key={video.id} className="min-w-[280px] sm:min-w-[300px] flex-shrink-0 shadow-lg hover:shadow-xl transition-shadow">
               <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
                 <Image
                   src={video.thumbnailUrl}
@@ -212,33 +224,18 @@ export function HomePageClientContent({
 
       <section className="py-10">
         <div className="text-center mb-10">
-          <Star className="h-12 w-12 text-primary mx-auto mb-2" />
-          <h2 className="text-3xl font-semibold">Featured Coliving Spaces</h2>
-          <p className="text-lg text-foreground/70 mt-2">Handpicked selections for your next adventure.</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredSpaces.map((space) => (
-            <ColivingCard key={space.id} space={space} showViewDetailsButton={true} />
-          ))}
-        </div>
-         {allSpaces.length > 0 && featuredSpaces.length === 0 && ( 
-          <p className="text-center text-muted-foreground">Loading featured spaces...</p>
-        )}
-        {allSpaces.length === 0 && (
-           <p className="text-center text-muted-foreground">No coliving spaces available yet. Add some to your Firebase database to see them here!</p>
-        )}
-      </section>
-
-      <section className="py-10">
-        <div className="text-center mb-10">
           <Globe className="h-12 w-12 text-primary mx-auto mb-2" />
-          <h2 className="text-3xl font-semibold">Explore Destinations</h2>
-          <p className="text-lg text-foreground/70 mt-2">Discover coliving hotspots around the world.</p>
+          <h2 className="text-3xl font-semibold">Explore Top Destinations</h2>
+          <p className="text-lg text-foreground/70 mt-2">Discover the most popular coliving hotspots around the world.</p>
         </div>
-        {countriesData.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {countriesData.map((country) => (
-              <Link key={country.name} href={`/coliving?country=${encodeURIComponent(country.name)}`} className="block group rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+        {topCountriesData.length > 0 ? (
+          <div className="flex overflow-x-auto space-x-4 sm:space-x-6 pb-4 -mb-4 pl-1 sm:pl-0">
+            {topCountriesData.map((country) => (
+              <Link 
+                key={country.name} 
+                href={`/coliving?country=${encodeURIComponent(country.name)}`} 
+                className="block group rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-w-[280px] sm:min-w-[300px] flex-shrink-0"
+              >
                 <Card className="h-full transition-all duration-300 ease-in-out group-hover:shadow-xl group-focus-within:shadow-xl group-hover:border-primary/50 group-focus-within:border-primary/50 border border-transparent">
                   <div className="relative h-48 w-full">
                     <Image
@@ -247,6 +244,7 @@ export function HomePageClientContent({
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                       data-ai-hint={country.dataAiHint}
+                      sizes="(max-width: 640px) 280px, 300px"
                     />
                   </div>
                   <CardHeader className="p-4">
@@ -263,6 +261,25 @@ export function HomePageClientContent({
           </div>
         ) : (
           <p className="text-center text-muted-foreground">No destination data available yet. Once coliving spaces are added to Firebase, countries will appear here.</p>
+        )}
+      </section>
+
+      <section className="py-10">
+        <div className="text-center mb-10">
+          <Star className="h-12 w-12 text-primary mx-auto mb-2" />
+          <h2 className="text-3xl font-semibold">Featured Coliving Spaces</h2>
+          <p className="text-lg text-foreground/70 mt-2">Handpicked selections for your next adventure.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredSpaces.map((space) => (
+            <ColivingCard key={space.id} space={space} showViewDetailsButton={true} />
+          ))}
+        </div>
+         {allSpaces.length > 0 && featuredSpaces.length === 0 && ( 
+          <p className="text-center text-muted-foreground">Loading featured spaces...</p>
+        )}
+        {allSpaces.length === 0 && (
+           <p className="text-center text-muted-foreground">No coliving spaces available yet. Add some to your Firebase database to see them here!</p>
         )}
       </section>
 
@@ -315,3 +332,4 @@ export function HomePageClientContent({
     </div>
   );
 }
+
