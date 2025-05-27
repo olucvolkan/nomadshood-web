@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Bath, Briefcase, Home, ExternalLink, CheckCircle, XCircle, Tag, Star, Users2, Wifi, Clock, LanguagesIcon, Mountain } from 'lucide-react'; // Added more icons
+import { ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Bath, Briefcase, Home, ExternalLink, CheckCircle, XCircle, Tag, Star, Users2, Wifi, Clock, LanguagesIcon, Mountain } from 'lucide-react';
 import { getColivingSpaceById } from '@/services/colivingService'; 
 
 export default async function ColivingDetailPage({ params }: { params: { id: string } }) {
@@ -16,8 +16,8 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
     notFound();
   }
 
-  // Use the direct address string (mapped from 'location')
-  const displayAddress = space.address || 'Address not available';
+  // The space.address should now be a pre-formatted string from the service
+  const displayAddress = space.address || 'Location not specified';
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -33,7 +33,7 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
           <div className="md:w-1/3 p-2">
             <div className="relative w-full h-64 md:h-full rounded-lg overflow-hidden">
               <Image
-                src={space.mainImageUrl || 'https://placehold.co/600x400/E0E0E0/757575.png'} // Use mainImageUrl which prioritizes cover_image
+                src={space.mainImageUrl || 'https://placehold.co/600x400/E0E0E0/757575.png'}
                 alt={`${space.name} view`}
                 fill
                 style={{objectFit: 'cover'}}
@@ -71,7 +71,7 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
                 )}
                 <div className="flex items-center">
                   {space.hasCoworking ? <CheckCircle className="h-4 w-4 mr-2 text-green-600" /> : <XCircle className="h-4 w-4 mr-2 text-red-600" />}
-                  <span>Coworking Space: {space.hasCoworking ? (space.coworking_access && typeof space.coworking_access === 'string' && !space.coworking_access.toLowerCase().includes('yes') ? space.coworking_access : 'Yes') : 'No/Not specified'}</span>
+                  <span>Coworking Space: {space.hasCoworking ? (space.coworking_access && typeof space.coworking_access === 'string' && !['yes', 'available', '24/7'].some(term => space.coworking_access!.toLowerCase().includes(term)) ? space.coworking_access : 'Yes') : 'No/Not specified'}</span>
                 </div>
                  <div className="flex items-center">
                   {space.hasPrivateBathroom ? <CheckCircle className="h-4 w-4 mr-2 text-green-600" /> : <XCircle className="h-4 w-4 mr-2 text-red-600" />}
@@ -154,7 +154,6 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
                 </div>
               )}
 
-
               {space.tags && space.tags.length > 0 && (
                 <div className="mt-4">
                   <h3 className="text-md font-semibold mb-2 text-foreground">Tags:</h3>
@@ -199,4 +198,3 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
     </div>
   );
 }
-

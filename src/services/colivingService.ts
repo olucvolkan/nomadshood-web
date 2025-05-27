@@ -9,51 +9,21 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
   
   if (!rawData) {
     console.error("Document data is undefined for document ID:", document.id);
+    // Return a minimal valid ColivingSpace object to prevent further errors
     return {
       id: document.id,
       name: 'Error: Missing Data',
-      address: 'N/A', 
-      logoUrl: 'https://placehold.co/300x200/E0E0E0/757575.png',
+      address: 'Data Unavailable', 
+      logoUrl: 'https://placehold.co/80x80/E0E0E0/757575.png',
+      mainImageUrl: 'https://placehold.co/600x400/E0E0E0/757575.png',
       description: 'Data for this coliving space could not be loaded.',
       country: 'Unknown',
       city: 'Unknown',
       monthlyPrice: 0, 
       dataAiHint: "placeholder image error",
-      region: undefined,
-      coordinates: undefined,
-      average_budget: undefined,
-      budget_range: undefined,
-      gallery: [],
-      coworking_access: undefined,
-      amenities: [],
-      room_types: [],
-      vibe: undefined,
-      contact: {},
-      capacity: undefined,
-      minimum_stay: undefined,
-      check_in: undefined,
-      languages: [],
-      age_range: undefined,
-      rating: undefined,
-      reviews_count: undefined,
-      wifi_speed: undefined,
-      climate: undefined,
-      timezone: undefined,
-      nearby_attractions: [],
-      transportation: undefined,
-      created_at: undefined,
-      updated_at: undefined,
-      status: undefined,
+      tags: [],
       hasPrivateBathroom: false,
       hasCoworking: false,
-      websiteUrl: undefined,
-      videoUrl: undefined,
-      whatsappLink: undefined,
-      tags: [],
-      // Deprecated fields no longer in new structure
-      // slackLink: undefined, 
-      // cover_image: this is now used for logoUrl
-      // location: this is now split into address, city, country etc.
     } as ColivingSpace;
   }
 
@@ -89,44 +59,60 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     amenity.toLowerCase().includes('private bathroom')
   );
 
+  // Construct logoUrl (for list/card views)
   const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
-  let dynamicLogoUrl = `https://placehold.co/80x80/E0E0E0/757575.png`; // Default placeholder for card/list view
-  if (storageBucket && document.id) {
-    // Assumes logo filenames are [document.id].png in the 'coliving-logos' folder
-    const logoPath = `coliving-logos%2F${document.id}.png`; 
-    dynamicLogoUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${logoPath}?alt=media`;
-  } else if (!storageBucket) {
-    console.warn("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET is not set. Falling back to placeholder for logoUrl for space ID:", document.id);
+  let dynamicLogoUrl = data.cover_image || `https://placehold.co/80x80/E0E0E0/757575.png`; 
+  if (!data.cover_image && storageBucket && document.id) {
+    // Assumes logo filenames are [document.id].png (or other common extensions) in the 'coliving-logos' folder
+    // We'll try .png, .jpg, .jpeg. For a robust solution, store the filename/extension in Firestore.
+    const logoPathPng = `coliving-logos%2F${document.id}.png`; 
+    // This example primarily uses the cover_image field as the source for logoUrl and mainImageUrl.
+    // If you want to specifically use a file from coliving-logos based on ID, you'd adjust here.
+    // For simplicity, if cover_image is missing, we use a placeholder.
+    // If you have specific logic to check for existence in coliving-logos, it would go here.
+    // For now, if data.cover_image is present, it's used. Otherwise, a placeholder.
+  } else if (!storageBucket && !data.cover_image) {
+    // console.warn("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET is not set and no cover_image provided. Falling back to placeholder for logoUrl for space ID:", document.id);
   }
+  
+  // For the main image on detail page, prefer cover_image if it exists, else fallback to a larger placeholder if logo was also a placeholder
+  let mainImageUrl = data.cover_image || `https://placehold.co/600x400/E0E0E0/757575.png`;
 
-
-  // For the main image on detail page, prefer cover_image if it exists, else fallback to logo construction
-  let mainImageUrl = data.cover_image || dynamicLogoUrl;
-  if (mainImageUrl === dynamicLogoUrl && mainImageUrl.includes('placehold.co/80x80')) {
-    mainImageUrl = `https://placehold.co/600x400/E0E0E0/757575.png`; // Larger placeholder for detail page if only small logo placeholder was constructed
+  // Construct display address
+  let displayAddress = 'Location not specified';
+  if (data.location && typeof data.location === 'string' && data.location.trim() !== '') {
+    displayAddress = data.location;
+  } else if (data.city && data.country) {
+    displayAddress = `${data.city}, ${data.country}`;
+  } else if (data.city) {
+    displayAddress = data.city;
+  } else if (data.country) {
+    displayAddress = data.country;
   }
-
 
   return {
     id: document.id,
     name: data.name || 'Unnamed Space',
     description: data.description || 'No description available.',
-    location: data.location || 'Address not specified', // Original location string
+    
+    // Use the constructed displayAddress
+    address: displayAddress, 
+    
     country: data.country || 'Unknown Country',
     city: data.city || 'Unknown City',
     region: data.region,
-    coordinates: data.coordinates,
+    coordinates: data.coordinates, // Keep original coordinates object
+    
     average_budget: data.average_budget,
     budget_range: data.budget_range,
-    cover_image: data.cover_image, // Keep original cover_image field from Firestore if needed elsewhere
+    
     gallery: Array.isArray(data.gallery) ? data.gallery.filter((g: any) => typeof g === 'string') : [],
     coworking_access: data.coworking_access,
     amenities: amenitiesArray,
     room_types: Array.isArray(data.room_types) ? data.room_types : [],
     vibe: data.vibe,
     tags: Array.isArray(data.tags) ? data.tags.filter((t: any) => typeof t === 'string') : [],
-    website: data.website, 
-    youtube_video_link: data.youtube_video_link, 
+    
     contact: data.contact || {},
     capacity: typeof data.capacity === 'number' ? data.capacity : undefined,
     minimum_stay: data.minimum_stay,
@@ -145,9 +131,8 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     status: data.status,
 
     // Derived fields for component consumption
-    logoUrl: dynamicLogoUrl, // For list/card views, uses [id].png from coliving-logos
-    mainImageUrl: mainImageUrl, // For detail page hero, prefers cover_image, falls back to dynamicLogoUrl/larger placeholder
-    address: data.location || 'Address not specified', 
+    logoUrl: dynamicLogoUrl, // Primarily from cover_image or placeholder
+    mainImageUrl: mainImageUrl, // Primarily from cover_image or larger placeholder
     monthlyPrice: data.budget_range?.min || 0,
     videoUrl: data.youtube_video_link,
     websiteUrl: data.website,
@@ -168,10 +153,6 @@ export async function getAllColivingSpaces(): Promise<ColivingSpace[]> {
       spaces.push(mapDocToColivingSpace(document));
     });
     
-    if (spaces.length === 0) {
-      // This is a normal operational state, so a simple log is fine, not necessarily a warning.
-      // console.log("No coliving spaces found in Firestore collection 'colivings'. This may be expected.");
-    }
     return spaces;
 
   } catch (error) {
@@ -223,7 +204,7 @@ const mapDocToCountryData = (document: QueryDocumentSnapshot<DocumentData> | Doc
   const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
 
   if (data.code && storageBucket) {
-    const flagPath = `flags%2F${data.code.toLowerCase()}.png`; // Assumes flags are in 'flags/' and named e.g. 'es.png'
+    const flagPath = `flags%2F${data.code.toLowerCase()}.png`; 
     flagImageUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${flagPath}?alt=media`;
   } else if (!storageBucket) {
      // console.warn("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET is not set in .env. Cannot construct flag image URLs for countries.");
@@ -256,9 +237,6 @@ export async function getAllCountriesFromDB(): Promise<CountryData[]> {
       countries.push(mapDocToCountryData(document));
     });
     
-    if (countries.length === 0) {
-      // console.warn("No countries found in Firestore collection 'countries'. Ensure this collection exists and has data.");
-    }
     return countries.sort((a, b) => a.name.localeCompare(b.name)); 
   } catch (error) {
     console.error("Error fetching countries from Firestore:", error);
