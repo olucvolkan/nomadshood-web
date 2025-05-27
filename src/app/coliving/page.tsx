@@ -4,10 +4,10 @@ import { getAllColivingSpaces, getAllCountriesFromDB } from '@/services/coliving
 import { ColivingCard } from '@/components/ColivingCard';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, MapPin, Building } from 'lucide-react';
+import { ArrowLeft, MapPin, Building, Wifi } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 export default async function ColivingDirectoryPage({
   searchParams,
@@ -17,11 +17,9 @@ export default async function ColivingDirectoryPage({
   const selectedCountryName = searchParams?.country ? decodeURIComponent(searchParams.country) : null;
   const selectedCityName = searchParams?.city ? decodeURIComponent(searchParams.city) : null;
 
-  const allCountries: CountryData[] = await getAllCountriesFromDB();
-  const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
-
-  // If no country is selected, show the list of countries
+  // If no country is selected, show the list of countries from "countries" collection
   if (!selectedCountryName) {
+    const allCountries: CountryData[] = await getAllCountriesFromDB();
     return (
       <div className="space-y-8">
         <div className="text-center">
@@ -36,25 +34,38 @@ export default async function ColivingDirectoryPage({
               <Link 
                 key={country.id} 
                 href={`/coliving?country=${encodeURIComponent(country.name)}`}
-                className="block group rounded-lg overflow-hidden shadow-md hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-300"
+                className="block group"
               >
-                <Card className="h-full border border-transparent group-hover:border-primary/30">
-                  <div className="relative h-48 w-full">
+                <Card className="h-full overflow-hidden shadow-md hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col">
+                  <div className="relative h-40 w-full">
                     <Image
                       src={country.cover_image}
                       alt={`Discover coliving in ${country.name}`}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      data-ai-hint={`landmark ${country.name.toLowerCase()}`}
                     />
-                    <div className="absolute top-2 right-2 text-3xl bg-black/30 p-1 rounded-sm">{country.flag}</div>
+                     {country.flagImageUrl ? (
+                        <div className="absolute top-2 right-2 bg-background/70 p-1 rounded-sm backdrop-blur-sm">
+                          <Image
+                            src={country.flagImageUrl}
+                            alt={`${country.name} flag`}
+                            width={32} // Adjust size as needed
+                            height={20} // Adjust size as needed
+                            className="object-contain"
+                          />
+                        </div>
+                      ) : (
+                         <div className="absolute top-2 right-2 text-3xl bg-black/30 p-1 rounded-sm">{country.flag}</div>
+                      )}
                   </div>
-                  <CardHeader className="p-4">
+                  <CardHeader className="p-4 flex-grow">
                     <CardTitle className="text-xl group-hover:text-primary">{country.name}</CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 pt-0">
                     <p className="text-sm text-muted-foreground">
-                      {country.coliving_count} coliving space{country.coliving_count !== 1 ? 's' : ''}
+                      {country.coliving_count || 0} coliving space{country.coliving_count !== 1 ? 's' : ''}
                     </p>
                   </CardContent>
                 </Card>
@@ -66,7 +77,7 @@ export default async function ColivingDirectoryPage({
             <Building className="h-4 w-4" />
             <AlertTitle>No Countries Found</AlertTitle>
             <AlertDescription>
-              It seems there are no countries listed in the database yet.
+              It seems there are no countries listed in the database yet. Please add data to the 'countries' collection in Firestore.
             </AlertDescription>
           </Alert>
         )}
@@ -74,7 +85,8 @@ export default async function ColivingDirectoryPage({
     );
   }
 
-  // If a country is selected, filter spaces and show cities/spaces
+  // If a country is selected, fetch all coliving spaces and filter
+  const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
   const spacesInSelectedCountry = allSpaces.filter(
     (space) => space.country.toLowerCase() === selectedCountryName.toLowerCase()
   );
@@ -99,7 +111,6 @@ export default async function ColivingDirectoryPage({
   const pageDescription = selectedCityName
     ? `Browse coliving spaces in ${selectedCityName}, ${selectedCountryName}.`
     : `Discover amazing coliving spaces in ${selectedCountryName}. Select a city or browse all.`;
-
 
   return (
     <div className="space-y-8">
@@ -153,10 +164,13 @@ export default async function ColivingDirectoryPage({
           <MapPin className="h-4 w-4" />
           <AlertTitle>No Spaces Found</AlertTitle>
           <AlertDescription>
-            Sorry, we couldn&apos;t find any coliving spaces for {selectedCityName ? `${selectedCityName}, ` : ''} {selectedCountryName}.
+            Sorry, we couldn't find any coliving spaces for {selectedCityName ? `${selectedCityName}, ` : ''} {selectedCountryName}.
+            This could be because data is still being added or your Firestore security rules need adjustment.
           </AlertDescription>
         </Alert>
       )}
     </div>
   );
 }
+
+```

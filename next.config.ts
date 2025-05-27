@@ -35,9 +35,9 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
-      { // Re-adding via.placeholder.com as it appears in current data/error
+      {
         protocol: 'https',
-        hostname: 'via.placeholder.com',
+        hostname: 'firebasestorage.googleapis.com', // For Firebase Storage images
         port: '',
         pathname: '/**',
       }
@@ -46,3 +46,5 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+```

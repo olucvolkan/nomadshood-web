@@ -2,17 +2,16 @@
 export interface ColivingSpace {
   id: string;
   name: string;
-  address: string; // Full address string from Firestore's 'location'
-  logoUrl: string; // Mapped from Firestore's 'cover_image' for the coliving space
+  address: string; // Mapped from Firestore's 'location'
+  logoUrl: string; // Mapped from Firestore's 'cover_image'
   description: string;
   videoUrl?: string; // Mapped from 'youtube_video_link'
-  slackLink?: string; // Optional, as it's not in the new JSON
   whatsappLink?: string; // Mapped from 'contact.whatsapp'
   websiteUrl?: string; // Mapped from 'website'
   tags?: string[];
   dataAiHint?: string;
 
-  // Fields from your new JSON structure
+  // Fields directly from your new JSON structure / Firestore
   country: string;
   city: string;
   region?: string;
@@ -20,13 +19,12 @@ export interface ColivingSpace {
     latitude?: number;
     longitude?: number;
   };
-  average_budget?: string; // e.g., "€1000+/month"
+  average_budget?: string;
   budget_range?: {
     min?: number;
     max?: number;
     currency?: string;
   };
-  // cover_image is mapped to logoUrl
   gallery?: string[];
   coworking_access?: string; // Will be parsed to hasCoworking
   amenities?: string[];
@@ -46,7 +44,7 @@ export interface ColivingSpace {
   check_in?: string;
   languages?: string[];
   age_range?: string;
-  rating?: number;
+  rating?: number; // Expecting a number directly
   reviews_count?: number;
   wifi_speed?: string;
   climate?: string;
@@ -57,13 +55,13 @@ export interface ColivingSpace {
     public_transport?: string;
     bike_rental?: boolean;
   };
-  created_at?: string; // Consider converting to Date objects if needed
-  updated_at?: string; // Consider converting to Date objects if needed
+  created_at?: string; 
+  updated_at?: string; 
   status?: string;
 
   // Derived/mapped fields for easier component use
   monthlyPrice: number; // Derived from budget_range.min
-  hasPrivateBathroom?: boolean; // This field is not in your new JSON, so it will be false/undefined
+  hasPrivateBathroom?: boolean; // Derived from amenities
   hasCoworking?: boolean; // Derived from coworking_access
 }
 
@@ -117,16 +115,19 @@ export interface TripPlanOutput {
   restaurantSuggestions: ActivitySuggestion[];
 }
 
-// New type for data from "countries" Firestore collection
+// Type for data from "countries" Firestore collection
 export interface CountryData {
   id: string; // Firestore document ID
-  code: string;
+  code: string; // e.g., "ES", "PT"
   name: string;
-  cover_image: string;
-  flag: string; // Emoji
+  cover_image: string; // URL for a general image of the country
+  flag: string; // Emoji flag
+  flagImageUrl?: string; // URL for the flag image from Firebase Storage
   continent?: string;
   currency?: string;
   timezone?: string;
   popular_cities?: string[];
-  coliving_count?: number; // Denormalized count from your Firestore data
+  coliving_count?: number; 
 }
+
+```
