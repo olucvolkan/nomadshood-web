@@ -19,18 +19,24 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com', 
+        hostname: 'via.placeholder.com', // Added for existing data
         port: '',
         pathname: '/**',
       },
       {
-        protocol: 'https', 
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'www.repeople.co',
         port: '',
         pathname: '/**',
       },
       {
-        protocol: 'https', 
+        protocol: 'https',
         hostname: 'example.com', // From sample data
         port: '',
         pathname: '/**',
