@@ -9,6 +9,7 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
   
   if (!rawData) {
     console.error("Document data is undefined for document ID:", document.id);
+    // Return a minimal, valid ColivingSpace object to prevent further errors
     return {
       id: document.id,
       name: 'Error: Missing Data',
@@ -17,8 +18,40 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
       description: 'Data for this coliving space could not be loaded.',
       country: 'Unknown',
       city: 'Unknown',
-      monthlyPrice: 0, // Derived from budget_range.min
+      monthlyPrice: 0, 
       dataAiHint: "placeholder image error",
+      // Ensure all other required fields from ColivingSpace type have default/fallback values
+      region: undefined,
+      coordinates: undefined,
+      average_budget: undefined,
+      budget_range: undefined,
+      gallery: [],
+      coworking_access: undefined,
+      amenities: [],
+      room_types: [],
+      vibe: undefined,
+      contact: {},
+      capacity: undefined,
+      minimum_stay: undefined,
+      check_in: undefined,
+      languages: [],
+      age_range: undefined,
+      rating: undefined,
+      reviews_count: undefined,
+      wifi_speed: undefined,
+      climate: undefined,
+      timezone: undefined,
+      nearby_attractions: [],
+      transportation: undefined,
+      created_at: undefined,
+      updated_at: undefined,
+      status: undefined,
+      hasPrivateBathroom: false,
+      hasCoworking: false,
+      websiteUrl: undefined,
+      videoUrl: undefined,
+      whatsappLink: undefined,
+      tags: [],
     } as ColivingSpace;
   }
 
@@ -27,54 +60,56 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
   // Date conversions
   const formatDate = (timestampField: any): string | undefined => {
     if (!timestampField) return undefined;
-    if (typeof timestampField.toDate === 'function') { // Firestore Timestamp
+    if (timestampField instanceof Timestamp) { // Firestore Timestamp
       return timestampField.toDate().toISOString();
     } else if (typeof timestampField === 'string') { // ISO string
-      return timestampField;
+      try {
+        // Validate if it's a valid ISO string before returning
+        return new Date(timestampField).toISOString();
+      } catch (e) {
+        return undefined; // Invalid date string
+      }
     } else if (typeof timestampField === 'object' && typeof timestampField.seconds === 'number') { // Plain object timestamp
       return new Date(timestampField.seconds * 1000 + (timestampField.nanoseconds || 0) / 1000000).toISOString();
     }
     return undefined;
   };
 
-  let hasCoworking = false;
+  let hasCoworkingDerived = false;
   if (typeof data.coworking_access === 'string') {
     const access = data.coworking_access.toLowerCase();
-    hasCoworking = access.includes('yes') || access.includes('available') || access.includes('24/7');
+    hasCoworkingDerived = access.includes('yes') || access.includes('available') || access.includes('24/7');
   } else if (typeof data.coworking_access === 'boolean') {
-    hasCoworking = data.coworking_access;
+    hasCoworkingDerived = data.coworking_access;
   }
 
   const amenitiesArray: string[] = Array.isArray(data.amenities) ? data.amenities.filter((a: any) => typeof a === 'string') : [];
-  const hasPrivateBathroom = amenitiesArray.some((amenity: string) => 
+  const hasPrivateBathroomDerived = amenitiesArray.some((amenity: string) => 
     amenity.toLowerCase().includes('private bathroom')
   );
 
   return {
     id: document.id,
     name: data.name || 'Unnamed Space',
-    address: data.location || 'Address not specified', 
-    logoUrl: data.cover_image || 'https://placehold.co/300x200/E0E0E0/757575.png', // Smaller default for cards
     description: data.description || 'No description available.',
-    videoUrl: data.youtube_video_link,
-    whatsappLink: data.contact?.whatsapp,
-    websiteUrl: data.website,
-    tags: Array.isArray(data.tags) ? data.tags.filter((t: any) => typeof t === 'string') : [],
-    dataAiHint: data.dataAiHint || `${data.city || ''} ${data.country || ''}`.trim().toLowerCase().substring(0,50) || "building exterior",
-
+    location: data.location || 'Address not specified', // Raw location string
     country: data.country || 'Unknown Country',
     city: data.city || 'Unknown City',
     region: data.region,
     coordinates: data.coordinates,
     average_budget: data.average_budget,
     budget_range: data.budget_range,
+    cover_image: data.cover_image || 'https://placehold.co/600x400/E0E0E0/757575.png', // used for logoUrl
     gallery: Array.isArray(data.gallery) ? data.gallery.filter((g: any) => typeof g === 'string') : [],
     coworking_access: data.coworking_access,
     amenities: amenitiesArray,
     room_types: Array.isArray(data.room_types) ? data.room_types : [],
     vibe: data.vibe,
-    contact: data.contact,
-    capacity: data.capacity,
+    tags: Array.isArray(data.tags) ? data.tags.filter((t: any) => typeof t === 'string') : [],
+    website: data.website, // used for websiteUrl
+    youtube_video_link: data.youtube_video_link, // used for videoUrl
+    contact: data.contact || {},
+    capacity: typeof data.capacity === 'number' ? data.capacity : undefined,
     minimum_stay: data.minimum_stay,
     check_in: data.check_in,
     languages: Array.isArray(data.languages) ? data.languages.filter((l: any) => typeof l === 'string') : [],
@@ -86,15 +121,20 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     timezone: data.timezone,
     nearby_attractions: Array.isArray(data.nearby_attractions) ? data.nearby_attractions.filter((na: any) => typeof na === 'string') : [],
     transportation: data.transportation,
-    
     created_at: formatDate(data.created_at),
     updated_at: formatDate(data.updated_at),
-    
     status: data.status,
 
+    // Derived fields for component consumption
+    logoUrl: data.cover_image || 'https://placehold.co/300x200/E0E0E0/757575.png', 
+    address: data.location || 'Address not specified', 
     monthlyPrice: data.budget_range?.min || 0,
-    hasPrivateBathroom: hasPrivateBathroom,
-    hasCoworking: hasCoworking,
+    videoUrl: data.youtube_video_link,
+    websiteUrl: data.website,
+    whatsappLink: data.contact?.whatsapp,
+    hasCoworking: hasCoworkingDerived,
+    hasPrivateBathroom: hasPrivateBathroomDerived,
+    dataAiHint: data.dataAiHint || `${data.city || ''} ${data.country || ''}`.trim().toLowerCase().substring(0,50) || "building exterior",
   };
 };
 
@@ -151,6 +191,10 @@ const mapDocToCountryData = (document: QueryDocumentSnapshot<DocumentData> | Doc
       cover_image: 'https://placehold.co/600x400/E0E0E0/757575.png',
       flag: '🏳️',
       coliving_count: 0,
+      continent: '',
+      currency: '',
+      timezone: '',
+      popular_cities: [],
     };
   }
 
@@ -158,11 +202,11 @@ const mapDocToCountryData = (document: QueryDocumentSnapshot<DocumentData> | Doc
   const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
 
   if (data.code && storageBucket) {
-    // Assumes flags are named like '[lowercase_country_code].png' in a 'flags/' folder
     const flagPath = `flags%2F${data.code.toLowerCase()}.png`;
     flagImageUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${flagPath}?alt=media`;
   } else if (!storageBucket) {
-    console.warn("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET is not set in .env. Cannot construct flag image URLs.");
+    // This console.warn is fine, as it informs the developer about a configuration issue for a visual feature.
+    // console.warn("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET is not set in .env. Cannot construct flag image URLs.");
   }
 
 
@@ -201,5 +245,3 @@ export async function getAllCountriesFromDB(): Promise<CountryData[]> {
     return [];
   }
 }
-  
-```
