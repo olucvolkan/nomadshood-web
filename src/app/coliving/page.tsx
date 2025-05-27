@@ -5,7 +5,7 @@ import { ColivingCard } from '@/components/ColivingCard';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, MapPin, Building, Wifi } from 'lucide-react';
+import { ArrowLeft, MapPin, Building } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
@@ -29,41 +29,31 @@ export default async function ColivingDirectoryPage({
           </p>
         </div>
         {allCountries.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {allCountries.map((country) => (
-              <Link 
-                key={country.id} 
+              <Link
+                key={country.id}
                 href={`/coliving?country=${encodeURIComponent(country.name)}`}
                 className="block group"
               >
-                <Card className="h-full overflow-hidden shadow-md hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col">
-                  <div className="relative h-40 w-full">
-                    <Image
-                      src={country.cover_image}
-                      alt={`Discover coliving in ${country.name}`}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      data-ai-hint={`landmark ${country.name.toLowerCase()}`}
-                    />
-                     {country.flagImageUrl ? (
-                        <div className="absolute top-2 right-2 bg-background/70 p-1 rounded-sm backdrop-blur-sm">
-                          <Image
-                            src={country.flagImageUrl}
-                            alt={`${country.name} flag`}
-                            width={32} // Adjust size as needed
-                            height={20} // Adjust size as needed
-                            className="object-contain"
-                          />
-                        </div>
-                      ) : (
-                         <div className="absolute top-2 right-2 text-3xl bg-black/30 p-1 rounded-sm">{country.flag}</div>
-                      )}
-                  </div>
-                  <CardHeader className="p-4 flex-grow">
+                <Card className="h-full overflow-hidden shadow-md hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col items-center justify-center p-6 text-center">
+                  {country.flagImageUrl ? (
+                    <div className="relative w-20 h-14 mb-4"> {/* Increased size for better visibility */}
+                      <Image
+                        src={country.flagImageUrl}
+                        alt={`${country.name} flag`}
+                        fill
+                        className="object-contain rounded-sm"
+                        data-ai-hint={`flag ${country.name.toLowerCase()}`}
+                      />
+                    </div>
+                  ) : (
+                    <div className="text-5xl mb-4">{country.flag}</div>
+                  )}
+                  <CardHeader className="p-0 mb-1">
                     <CardTitle className="text-xl group-hover:text-primary">{country.name}</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-4 pt-0">
+                  <CardContent className="p-0">
                     <p className="text-sm text-muted-foreground">
                       {country.coliving_count || 0} coliving space{country.coliving_count !== 1 ? 's' : ''}
                     </p>
@@ -88,26 +78,26 @@ export default async function ColivingDirectoryPage({
   // If a country is selected, fetch all coliving spaces and filter
   const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
   const spacesInSelectedCountry = allSpaces.filter(
-    (space) => space.country.toLowerCase() === selectedCountryName.toLowerCase()
+    (space) => space.country && space.country.toLowerCase() === selectedCountryName.toLowerCase()
   );
 
   const uniqueCitiesInCountry = Array.from(
     new Set(spacesInSelectedCountry.map((space) => space.city).filter(Boolean))
   ).map(city => ({
-    name: city,
+    name: city!,
     count: spacesInSelectedCountry.filter(s => s.city === city).length
   })).sort((a,b) => a.name.localeCompare(b.name));
 
   const filteredSpaces = selectedCityName
     ? spacesInSelectedCountry.filter(
-        (space) => space.city.toLowerCase() === selectedCityName.toLowerCase()
+        (space) => space.city && space.city.toLowerCase() === selectedCityName.toLowerCase()
       )
     : spacesInSelectedCountry;
 
   const pageTitle = selectedCityName
     ? `${selectedCityName}, ${selectedCountryName}`
     : `${selectedCountryName} Coliving Spaces`;
-  
+
   const pageDescription = selectedCityName
     ? `Browse coliving spaces in ${selectedCityName}, ${selectedCountryName}.`
     : `Discover amazing coliving spaces in ${selectedCountryName}. Select a city or browse all.`;
@@ -172,5 +162,3 @@ export default async function ColivingDirectoryPage({
     </div>
   );
 }
-
-```
