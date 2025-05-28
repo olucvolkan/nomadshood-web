@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'via.placeholder.com', // Added for existing data
+        hostname: 'via.placeholder.com',
         port: '',
         pathname: '/**',
       },
@@ -44,6 +44,12 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'firebasestorage.googleapis.com', // For Firebase Storage images
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com', // Added to support this common GCS hostname
         port: '',
         pathname: '/**',
       }

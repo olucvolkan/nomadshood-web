@@ -46,46 +46,44 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     return undefined;
   };
 
-  const isValidHttpUrl = (string: string): boolean => {
+  const isAbsoluteImageUrl = (url: string): boolean => {
+    if (!url || typeof url !== 'string') {
+      return false;
+    }
     try {
-      const url = new URL(string);
-      return url.protocol === "http:" || url.protocol === "https:";
-    } catch (_) {
-      return false;  
+      const parsedUrl = new URL(url);
+      // Check for http or https protocol
+      if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+        return false;
+      }
+      // Simple check for common image extensions (optional but good practice)
+      const path = parsedUrl.pathname.toLowerCase();
+      if (!path.endsWith('.jpg') && !path.endsWith('.jpeg') && !path.endsWith('.png') && !path.endsWith('.gif') && !path.endsWith('.webp')) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
     }
-  }
-
-  // 1. Construct finalLogoUrl (for cards, smaller image)
-  let finalLogoUrl: string;
-  if (data.logo && typeof data.logo === 'string' && isValidHttpUrl(data.logo)) {
-    finalLogoUrl = data.logo;
-  } else {
-    if (data.logo && typeof data.logo === 'string') { // Log if it was a string but not a valid URL
-        console.warn(`Document ID ${document.id}: 'logo' field ('${data.logo}') is not a valid absolute URL. Using placeholder for logoUrl.`);
-    }
-    finalLogoUrl = `https://placehold.co/80x80/E0E0E0/757575.png`;
-  }
+  };
 
   // 2. Construct finalMainImageUrl (for detail page, larger image)
   let finalMainImageUrl: string | undefined = undefined;
 
   // Try gallery first
-  if (Array.isArray(data.gallery) && data.gallery.length > 0 && typeof data.gallery[0] === 'string' && isValidHttpUrl(data.gallery[0])) {
+  if (Array.isArray(data.gallery) && data.gallery.length > 0 && typeof data.gallery[0] === 'string' && isAbsoluteImageUrl(data.gallery[0])) {
     finalMainImageUrl = data.gallery[0];
   }
 
   // Try cover_image if gallery didn't provide a URL
-  if (!finalMainImageUrl && data.cover_image && typeof data.cover_image === 'string' && isValidHttpUrl(data.cover_image)) {
+  if (!finalMainImageUrl && data.cover_image && typeof data.cover_image === 'string' && isAbsoluteImageUrl(data.cover_image)) {
     finalMainImageUrl = data.cover_image;
   }
   
   // Fallback to finalLogoUrl if it's not the small placeholder and is a valid URL
-  if (!finalMainImageUrl && finalLogoUrl !== `https://placehold.co/80x80/E0E0E0/757575.png` && isValidHttpUrl(finalLogoUrl)) {
-      finalMainImageUrl = finalLogoUrl;
-  }
 
   // Final fallback to large placeholder if no valid main image found
-  if (!finalMainImageUrl || !isValidHttpUrl(finalMainImageUrl)) {
+  if (!finalMainImageUrl) {
     if (finalMainImageUrl) { // Log if it was set but then deemed invalid
         console.warn(`Document ID ${document.id}: 'finalMainImageUrl' ('${finalMainImageUrl}') was not a valid absolute URL. Using large placeholder.`);
     }
@@ -120,7 +118,6 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     displayAddress = `${data.city}, ${data.country}`;
   }
 
-
   return {
     id: document.id,
     name: data.name || 'Unnamed Space',
@@ -143,7 +140,8 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     phone: data.phone,
     email: data.email,
     logo: data.logo, 
-    logoUrl: finalLogoUrl,
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:1426092493.
+    logoUrl: data.logo ?? `https://placehold.co/80x80/E0E0E0/757575.png`,
     cover_image: data.cover_image, 
     mainImageUrl: finalMainImageUrl,
     gallery: Array.isArray(data.gallery) ? data.gallery.filter((g: any) => typeof g === 'string' && g.trim() !== '') : [],
@@ -257,7 +255,7 @@ const mapDocToCountryData = (document: QueryDocumentSnapshot<DocumentData> | Doc
     flag: data.flag || '🏳️',
     flagImageUrl: flagImageUrl,
     continent: data.continent || '',
-    currency: data.currency || '',
+ currency: data.currency || '',
     timezone: data.timezone || '',
     popular_cities: Array.isArray(data.popular_cities) ? data.popular_cities.filter((pc: any) => typeof pc === 'string') : [],
     coliving_count: typeof data.coliving_count === 'number' ? data.coliving_count : 0,
