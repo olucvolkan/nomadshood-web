@@ -9,7 +9,6 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
 
   if (!rawData) {
     console.error("Document data is undefined for document ID:", document.id);
-    // Return a minimal structure to avoid further errors
     return {
       id: document.id,
       name: 'Error: Missing Data',
@@ -26,10 +25,10 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
       room_types: [],
       hasPrivateBathroom: false,
       hasCoworking: false,
-    } as ColivingSpace; // Cast to satisfy type, though it's an error state
+    } as ColivingSpace;
   }
 
-  const data = { ...rawData }; // Create a mutable copy
+  const data = { ...rawData }; 
 
   const formatDate = (timestampField: any): string | undefined => {
     if (!timestampField) return undefined;
@@ -47,36 +46,52 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     return undefined;
   };
 
-  const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
-  let finalLogoUrl: string;
-  let finalMainImageUrl: string;
-
-  // 1. Construct finalLogoUrl (for cards, smaller image)
-  if (data.logo && typeof data.logo === 'string' && data.logo.trim() !== '' && storageBucket) {
-    const logoFilename = data.logo.trim();
-    const fullLogoPath = `coliving-logos/${logoFilename.startsWith('/') ? logoFilename.substring(1) : logoFilename}`;
-    finalLogoUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${encodeURIComponent(fullLogoPath)}?alt=media`;
-  } else if (data.cover_image && typeof data.cover_image === 'string' && data.cover_image.trim() !== '') {
-    finalLogoUrl = data.cover_image.trim(); // Use cover_image if logo filename is not available
-  } else {
-    finalLogoUrl = 'https://placehold.co/80x80/E0E0E0/757575.png'; // Default placeholder
-    if (!storageBucket && data.logo && typeof data.logo === 'string' && data.logo.trim() !== '') {
-      console.warn(`Firebase Storage Bucket (NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) is not set in .env, but Firestore document ${document.id} has a logo filename ('${data.logo}'). Falling back to placeholder for logoUrl.`);
+  const isValidHttpUrl = (string: string): boolean => {
+    try {
+      const url = new URL(string);
+      return url.protocol === "http:" || url.protocol === "https:";
+    } catch (_) {
+      return false;  
     }
   }
 
-  // 2. Construct finalMainImageUrl (for detail page, larger image)
-  if (Array.isArray(data.gallery) && data.gallery.length > 0 && typeof data.gallery[0] === 'string' && data.gallery[0].trim() !== '') {
-    finalMainImageUrl = data.gallery[0].trim();
-  } else if (data.cover_image && typeof data.cover_image === 'string' && data.cover_image.trim() !== '') {
-    finalMainImageUrl = data.cover_image.trim();
-  } else if (finalLogoUrl !== 'https://placehold.co/80x80/E0E0E0/757575.png') {
-    // If a real logo was found (not the 80x80 placeholder), use it as main image if no gallery/cover_image
-    finalMainImageUrl = finalLogoUrl;
+  // 1. Construct finalLogoUrl (for cards, smaller image)
+  let finalLogoUrl: string;
+  if (data.logo && typeof data.logo === 'string' && isValidHttpUrl(data.logo)) {
+    finalLogoUrl = data.logo;
   } else {
-    finalMainImageUrl = 'https://placehold.co/600x400/E0E0E0/757575.png'; // Default large placeholder
+    if (data.logo && typeof data.logo === 'string') { // Log if it was a string but not a valid URL
+        console.warn(`Document ID ${document.id}: 'logo' field ('${data.logo}') is not a valid absolute URL. Using placeholder for logoUrl.`);
+    }
+    finalLogoUrl = `https://placehold.co/80x80/E0E0E0/757575.png`;
   }
 
+  // 2. Construct finalMainImageUrl (for detail page, larger image)
+  let finalMainImageUrl: string | undefined = undefined;
+
+  // Try gallery first
+  if (Array.isArray(data.gallery) && data.gallery.length > 0 && typeof data.gallery[0] === 'string' && isValidHttpUrl(data.gallery[0])) {
+    finalMainImageUrl = data.gallery[0];
+  }
+
+  // Try cover_image if gallery didn't provide a URL
+  if (!finalMainImageUrl && data.cover_image && typeof data.cover_image === 'string' && isValidHttpUrl(data.cover_image)) {
+    finalMainImageUrl = data.cover_image;
+  }
+  
+  // Fallback to finalLogoUrl if it's not the small placeholder and is a valid URL
+  if (!finalMainImageUrl && finalLogoUrl !== `https://placehold.co/80x80/E0E0E0/757575.png` && isValidHttpUrl(finalLogoUrl)) {
+      finalMainImageUrl = finalLogoUrl;
+  }
+
+  // Final fallback to large placeholder if no valid main image found
+  if (!finalMainImageUrl || !isValidHttpUrl(finalMainImageUrl)) {
+    if (finalMainImageUrl) { // Log if it was set but then deemed invalid
+        console.warn(`Document ID ${document.id}: 'finalMainImageUrl' ('${finalMainImageUrl}') was not a valid absolute URL. Using large placeholder.`);
+    }
+    finalMainImageUrl = `https://placehold.co/600x400/E0E0E0/757575.png`;
+  }
+  
   const amenitiesArray: string[] = Array.isArray(data.amenities) ? data.amenities.filter((a: any) => typeof a === 'string') : [];
 
   let hasCoworkingDerived = false;
@@ -96,7 +111,15 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     amenity.toLowerCase().includes('private bathroom')
   );
   
-  const displayAddress = data.address || (data.city && data.country ? `${data.city}, ${data.country}` : 'Location not specified');
+  let displayAddress = 'Location not specified';
+  if (data.location && typeof data.location === 'string' && data.location.trim() !== '') {
+    displayAddress = data.location;
+  } else if (data.address && typeof data.address === 'string' && data.address.trim() !== '') { // Fallback to direct address field if location is missing
+    displayAddress = data.address;
+  } else if (data.city && data.country) {
+    displayAddress = `${data.city}, ${data.country}`;
+  }
+
 
   return {
     id: document.id,
@@ -105,10 +128,10 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     status: data.status,
     country: data.country || 'Unknown Country',
     city: data.city || 'Unknown City',
-    address: displayAddress, // Use the processed displayAddress
+    address: displayAddress,
     lat: typeof data.lat === 'number' ? data.lat : (data.coordinates?.latitude),
     lng: typeof data.lng === 'number' ? data.lng : (data.coordinates?.longitude),
-    coordinates: data.coordinates,
+    coordinates: data.coordinates, // Keep original object if present
     description: data.description || 'No description available.',
     amenities: amenitiesArray,
     currency: data.currency || data.budget_range?.currency,
@@ -119,9 +142,9 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     websiteUrl: data.website,
     phone: data.phone,
     email: data.email,
-    logo: data.logo, // Keep original filename from Firestore if present
+    logo: data.logo, 
     logoUrl: finalLogoUrl,
-    cover_image: data.cover_image, // Keep original field if present
+    cover_image: data.cover_image, 
     mainImageUrl: finalMainImageUrl,
     gallery: Array.isArray(data.gallery) ? data.gallery.filter((g: any) => typeof g === 'string' && g.trim() !== '') : [],
     rating: typeof data.rating === 'number' ? data.rating : undefined,
@@ -136,8 +159,8 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     tags: Array.isArray(data.tags) ? data.tags.filter((t: any) => typeof t === 'string') : [],
     youtube_video_link: data.youtube_video_link,
     videoUrl: data.youtube_video_link,
-    contact: data.contact || { email: data.email, phone: data.phone, whatsapp: data.whatsappLink },
-    whatsappLink: data.contact?.whatsapp || data.whatsapp,
+    contact: data.contact || { email: data.email, phone: data.phone, whatsapp: data.whatsappLink }, // Ensure contact object exists
+    whatsappLink: data.contact?.whatsapp || data.whatsapp, // Prioritize contact.whatsapp
     capacity: typeof data.capacity === 'number' ? data.capacity : undefined,
     minimum_stay: data.minimum_stay,
     check_in: data.check_in,
@@ -152,7 +175,7 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     updated_at: formatDate(data.updated_at),
     hasCoworking: hasCoworkingDerived,
     hasPrivateBathroom: hasPrivateBathroomDerived,
-    dataAiHint: data.dataAiHint || (data.city && data.country ? `${data.city} ${data.country}`.trim().toLowerCase().substring(0,50) : "building office")
+    dataAiHint: data.dataAiHint || (data.city && data.country ? `${data.city.toLowerCase()} ${data.country.toLowerCase()}`.trim().substring(0,50) : "building office")
   };
 };
 
@@ -184,6 +207,8 @@ export async function getColivingSpaceById(id: string): Promise<ColivingSpace | 
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
+      // For single document, docSnap itself is the DocumentData, not QueryDocumentSnapshot
+      // So we directly pass it to mapDocToColivingSpace
       return mapDocToColivingSpace(docSnap);
     } else {
       console.warn(`No coliving space found with id: ${id} in Firestore.`);
@@ -195,21 +220,9 @@ export async function getColivingSpaceById(id: string): Promise<ColivingSpace | 
   }
 }
 
-interface CountryDataFromDB {
-  id: string;
-  code?: string;
-  name?: string;
-  cover_image?: string;
-  flag?: string;
-  continent?: string;
-  currency?: string;
-  timezone?: string;
-  popular_cities?: string[];
-  coliving_count?: number;
-}
 
 const mapDocToCountryData = (document: QueryDocumentSnapshot<DocumentData> | DocumentData): CountryData => {
-  const data = document.data() as CountryDataFromDB | undefined; // Add type assertion
+  const data = document.data() as Partial<CountryData> & { code?: string; name?: string; cover_image?: string; flag?: string; coliving_count?: number; };
   if (!data) {
     return {
       id: document.id,
