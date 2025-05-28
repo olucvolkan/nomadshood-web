@@ -52,6 +52,12 @@ const nextConfig: NextConfig = {
         hostname: 'storage.googleapis.com', // Added to support this common GCS hostname
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.colivingtirana.com', // Added for this specific error
+        port: '',
+        pathname: '/**',
       }
     ],
   },
