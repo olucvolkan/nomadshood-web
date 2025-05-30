@@ -58,6 +58,12 @@ const nextConfig: NextConfig = {
         hostname: 'www.colivingtirana.com', // Added for this specific error
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'villasantafe.eu', // Added for this specific error
+        port: '',
+        pathname: '/**',
       }
     ],
   },
