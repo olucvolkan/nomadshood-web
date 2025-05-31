@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, Lightbulb, Users, MapPin, Globe, Star, MessageSquare, Send, Youtube, Film, Compass, Podcast, Eye } from 'lucide-react';
+import { List, Lightbulb, Users, MapPin, Globe, Star, MessageSquare, Send, Youtube, Compass, Podcast } from 'lucide-react';
 import type { ColivingSpace, CommunityLink, CountrySpecificCommunityLinks, CountryData, NomadVideo } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -15,90 +15,63 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface HomePageClientContentProps {
   allSpaces: ColivingSpace[];
   allCountries: CountryData[];
-  mostWatchedVideos: NomadVideo[];
   nomadsHoodPodcastVideos: NomadVideo[];
   countryCommunityLinks: CountrySpecificCommunityLinks[];
 }
 
 // Helper component for rendering a list of videos
-const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: React.ElementType }> = ({ title, videos, icon: IconComponent }) => {
+const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: React.ElementType; isSlider?: boolean }> = ({ title, videos, icon: IconComponent, isSlider = false }) => {
   if (!videos || videos.length === 0) {
     return (
-      <div>
+      <div className="py-4">
         <h3 className="text-2xl font-semibold mb-4 flex items-center">
           {IconComponent && <IconComponent className="mr-3 h-7 w-7 text-primary" />}
           {title}
         </h3>
-        <p className="text-muted-foreground">No videos available for this section yet. This might be due to missing data (check Firestore collection '{title === "NomadsHood Podcast" ? "nomadsHood-videos" : "nomad-videos.json"}', Firestore rules, or local JSON for 'Most Watched'), incorrect data structure, or a Firestore query issue (check console for index warnings).</p>
+        <p className="text-muted-foreground">
+          No videos available for the "{title}" section yet. 
+          {title === "NomadsHood Podcast" && " This might be due to missing data in the 'nomadsHood-videos' Firestore collection, incorrect data structure (ensure 'publishedAt' is a Timestamp), or a Firestore query issue (check console for index warnings on 'publishedAt' field)."}
+        </p>
       </div>
     );
   }
 
-  const isMostWatched = title === "Most Watched Videos";
+  const videoCardBaseClasses = "flex flex-col shadow-lg hover:shadow-xl transition-shadow";
+  const sliderItemClasses = isSlider ? "w-72 flex-shrink-0" : "sm:w-auto"; // Fixed width for slider items
 
   return (
-    <div>
+    <div className="py-4">
       <h3 className="text-2xl font-semibold mb-6 flex items-center">
         {IconComponent && <IconComponent className="mr-3 h-7 w-7 text-primary" />}
         {title}
       </h3>
-      {isMostWatched ? (
-        <div className="flex overflow-x-auto space-x-4 pb-4 -mx-4 px-4"> {/* Added -mx-4 px-4 for edge padding */}
-          {videos.map((video) => (
-            <Card key={video.id} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow w-72 flex-shrink-0"> {/* Fixed width and prevent shrinking */}
-              <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
-                <Image
-                  src={video.thumbnailUrl}
-                  alt={video.title}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  data-ai-hint={video.dataAiHint || 'video thumbnail'}
-                  sizes="288px" // Adjusted for w-72 card (288px)
-                />
-              </div>
-              <CardHeader className="p-4 flex-grow">
-                <CardTitle className="text-md leading-tight line-clamp-3 h-[4.5em]">{video.title}</CardTitle>
-              </CardHeader>
-              <CardFooter className="p-4 pt-0">
-                <Button asChild variant="outline" className="w-full">
-                  <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
-                    <Youtube className="mr-2 h-5 w-5 text-red-600" />
-                    Watch
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {videos.map((video) => (
-            <Card key={video.id} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow">
-              <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
-                <Image
-                  src={video.thumbnailUrl}
-                  alt={video.title}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  data-ai-hint={video.dataAiHint || 'video thumbnail'}
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
-                />
-              </div>
-              <CardHeader className="p-4 flex-grow">
-                <CardTitle className="text-md leading-tight line-clamp-3 h-[4.5em]">{video.title}</CardTitle>
-              </CardHeader>
-              <CardFooter className="p-4 pt-0">
-                <Button asChild variant="outline" className="w-full">
-                  <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
-                    <Youtube className="mr-2 h-5 w-5 text-red-600" />
-                    Watch
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      )}
+      <div className={isSlider ? "flex overflow-x-auto space-x-4 pb-4 -mx-4 px-4" : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"}>
+        {videos.map((video) => (
+          <Card key={video.id} className={`${videoCardBaseClasses} ${sliderItemClasses}`}>
+            <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
+              <Image
+                src={video.thumbnailUrl}
+                alt={video.title}
+                fill
+                style={{ objectFit: 'cover' }}
+                data-ai-hint={video.dataAiHint || 'video thumbnail'}
+                sizes={isSlider ? "288px" : "(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"}
+              />
+            </div>
+            <CardHeader className="p-4 flex-grow">
+              <CardTitle className="text-md leading-tight line-clamp-3 h-[4.5em]">{video.title}</CardTitle>
+            </CardHeader>
+            <CardFooter className="p-4 pt-0">
+              <Button asChild variant="outline" className="w-full">
+                <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                  <Youtube className="mr-2 h-5 w-5 text-red-600" />
+                  Watch
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };
@@ -107,7 +80,6 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: R
 export function HomePageClientContent({
   allSpaces,
   allCountries,
-  mostWatchedVideos,
   nomadsHoodPodcastVideos,
   countryCommunityLinks
 }: HomePageClientContentProps) {
@@ -213,7 +185,7 @@ export function HomePageClientContent({
         </Card>
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
-            <Film className="h-10 w-10 text-primary mb-2" />
+            <Youtube className="h-10 w-10 text-primary mb-2" />
             <CardTitle>Video Showcases</CardTitle>
           </CardHeader>
           <CardContent>
@@ -241,8 +213,7 @@ export function HomePageClientContent({
           <p className="text-lg text-foreground/70 mt-2">Curated video content for the aspiring and seasoned digital nomad.</p>
         </div>
         <div className="space-y-12">
-          <VideoListSection title="NomadsHood Podcast" videos={nomadsHoodPodcastVideos} icon={Podcast} />
-          <VideoListSection title="Most Watched Videos" videos={mostWatchedVideos} icon={Eye} />
+          <VideoListSection title="NomadsHood Podcast" videos={nomadsHoodPodcastVideos} icon={Podcast} isSlider={false} />
         </div>
       </section>
 
@@ -361,4 +332,3 @@ export function HomePageClientContent({
     </div>
   );
 }
-
