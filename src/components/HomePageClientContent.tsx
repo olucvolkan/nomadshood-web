@@ -6,20 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, Lightbulb, Users, MapPin, Video, Globe, Star, MessageSquare, Send, Youtube, Film } from 'lucide-react';
+import { List, Lightbulb, Users, MapPin, Video, Globe, Star, MessageSquare, Send, Youtube, Film, Compass } from 'lucide-react';
 import type { ColivingSpace, CommunityLink, CountrySpecificCommunityLinks, CountryData } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-interface CountryDisplayData {
-  name: string;
-  count: number;
-  imageUrl: string;
-  dataAiHint: string;
-  flagImageUrl?: string;
-  flagEmoji?: string;
-  linkName: string;
-}
 
 export interface HomePageYouTubeVideo {
   id: string;
@@ -36,13 +26,6 @@ interface HomePageClientContentProps {
   countryCommunityLinks: CountrySpecificCommunityLinks[];
 }
 
-const hardcodedDestinations = [
-  { name: 'Brazil', imageFile: 'brazil.webp', defaultHint: 'brazil scenic landscape', linkName: 'Brazil' },
-  { name: 'Mexico', imageFile: 'mexico.jpg', defaultHint: 'mexico beach city', linkName: 'Mexico' },
-  { name: 'Portugal', imageFile: 'portugal.avif', defaultHint: 'portugal coast town', linkName: 'Portugal' },
-  { name: 'Spain', imageFile: 'spain.jpg', defaultHint: 'spain historic architecture', linkName: 'Spain' },
-];
-
 export function HomePageClientContent({
   allSpaces,
   allCountries,
@@ -52,41 +35,15 @@ export function HomePageClientContent({
   const [selectedCountryForCommunities, setSelectedCountryForCommunities] = useState<string | null>(null);
   const [displayedCommunityLinks, setDisplayedCommunityLinks] = useState<CommunityLink[]>([]);
   
-  const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
-
-  const topCountriesData: CountryDisplayData[] = useMemo(() => {
-    if (!storageBucket) {
-      console.warn("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET is not set. Cannot load Top Destination images from Firebase Storage. Displaying placeholders.");
-      return hardcodedDestinations.map(dest => {
-        const countryInfo = allCountries.find(c => c.name.toLowerCase() === dest.name.toLowerCase());
-        return {
-          name: dest.name,
-          count: countryInfo?.coliving_count || 0,
-          imageUrl: `https://placehold.co/600x400/E0E0E0/757575.png?text=${dest.name}`,
-          dataAiHint: dest.defaultHint.split(" ").slice(0, 2).join(" "),
-          flagImageUrl: countryInfo?.flagImageUrl,
-          flagEmoji: countryInfo?.flag || '🏳️',
-          linkName: dest.linkName,
-        };
-      });
-    }
-
-    return hardcodedDestinations.map(dest => {
-      const countryInfo = allCountries.find(c => c.name.toLowerCase() === dest.name.toLowerCase());
-      const imagePath = `explore-top-destinations/${dest.imageFile}`;
-      const firebaseUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${encodeURIComponent(imagePath)}?alt=media`;
-
-      return {
-        name: dest.name,
-        count: countryInfo?.coliving_count || 0,
-        imageUrl: firebaseUrl,
-        dataAiHint: dest.defaultHint.split(" ").slice(0, 2).join(" "),
-        flagImageUrl: countryInfo?.flagImageUrl,
-        flagEmoji: countryInfo?.flag || '🏳️',
-        linkName: dest.linkName,
-      };
-    });
-  }, [allCountries, storageBucket]);
+  const popularCountriesData: CountryData[] = useMemo(() => {
+    return [...allCountries]
+      .sort((a, b) => {
+        const countDiff = (b.coliving_count || 0) - (a.coliving_count || 0);
+        if (countDiff !== 0) return countDiff;
+        return a.name.localeCompare(b.name);
+      })
+      .slice(0, 8);
+  }, [allCountries]);
 
   const featuredSpaces = useMemo(() => {
     const sortedSpaces = [...allSpaces].sort((a, b) => {
@@ -236,52 +193,47 @@ export function HomePageClientContent({
 
       <section className="py-10">
         <div className="text-center mb-10">
-          <Globe className="h-12 w-12 text-primary mx-auto mb-2" />
-          <h2 className="text-3xl font-semibold">Explore Top Destinations</h2>
-          <p className="text-lg text-foreground/70 mt-2">Discover the most popular coliving hotspots around the world.</p>
+          <Compass className="h-12 w-12 text-primary mx-auto mb-2" />
+          <h2 className="text-3xl font-semibold">Popular Destinations</h2>
+          <p className="text-lg text-foreground/70 mt-2">Discover top countries for digital nomads.</p>
         </div>
-        {topCountriesData.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {topCountriesData.map((country) => (
+        {popularCountriesData.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {popularCountriesData.map((country) => (
               <Link
-                key={country.name}
-                href={`/coliving?country=${encodeURIComponent(country.linkName)}`}
-                className="block group rounded-lg overflow-hidden shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-300 ease-in-out"
+                key={country.id}
+                href={`/coliving?country=${encodeURIComponent(country.name)}`}
+                className="block group"
               >
-                <div className="relative w-full h-72 sm:h-80">
-                  <Image
-                    src={country.imageUrl}
-                    alt={`Picturesque view of ${country.name}`}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    data-ai-hint={country.dataAiHint}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                  />
-                  <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-auto">
-                    <div className="bg-white/95 dark:bg-neutral-900/95 backdrop-blur-sm p-3 rounded-md shadow-md inline-block">
-                      <div className="flex items-center mb-1">
-                        {country.flagImageUrl ? (
-                          <div className="relative w-6 h-4 mr-2 rounded-sm overflow-hidden border border-gray-300 dark:border-gray-700">
-                            <Image src={country.flagImageUrl} alt={`${country.name} flag`} fill className="object-cover" />
-                          </div>
-                        ) : country.flagEmoji ? (
-                          <span className="mr-2 text-lg" role="img" aria-label={`${country.name} flag`}>{country.flagEmoji}</span>
-                        ) : null}
-                        <h3 className="text-base sm:text-lg font-semibold text-neutral-800 dark:text-white whitespace-nowrap">
-                          {country.name}
-                        </h3>
+                <Card className="h-full overflow-hidden shadow-md hover:shadow-lg hover:border-primary/30 transition-all duration-300">
+                  <CardContent className="p-4 flex flex-col items-center text-center space-y-2">
+                    {country.flagImageUrl ? (
+                      <div className="relative w-10 h-auto aspect-[3/2] mb-2">
+                        <Image
+                          src={country.flagImageUrl}
+                          alt={`${country.name} flag`}
+                          fill
+                          className="object-contain rounded-sm"
+                          data-ai-hint={`flag ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
+                          sizes="40px"
+                        />
                       </div>
-                      <p className="text-xs text-neutral-600 dark:text-neutral-300">
-                        Browse {country.count} coliving space{country.count !== 1 ? 's' : ''}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                    ) : (
+                      <span className="text-3xl mb-2" role="img" aria-label={`${country.name} flag`}>{country.flag || '🏳️'}</span>
+                    )}
+                    <h3 className="text-md font-semibold text-foreground group-hover:text-primary transition-colors">
+                      {country.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      Browse {country.coliving_count || 0} coliving space{country.coliving_count !== 1 ? 's' : ''}
+                    </p>
+                  </CardContent>
+                </Card>
               </Link>
             ))}
           </div>
         ) : (
-          <p className="text-center text-muted-foreground">No destination data available yet. Once coliving spaces are added to Firebase, countries will appear here.</p>
+          <p className="text-center text-muted-foreground">No country data available yet. Once coliving spaces and countries are added to Firebase, they will appear here.</p>
         )}
       </section>
 
@@ -353,4 +305,3 @@ export function HomePageClientContent({
     </div>
   );
 }
-
