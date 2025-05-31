@@ -3,7 +3,8 @@ export interface ColivingSpace {
   id: string;
   name: string;
   address: string; // Mapped from Firestore's 'location'
-  logoUrl: string; // Mapped from Firestore's 'cover_image'
+  logoUrl: string; // Mapped from Firestore's 'cover_image' or 'logo'
+  mainImageUrl?: string; // Mapped from Firestore's 'gallery[0]' or 'cover_image'
   description: string;
   videoUrl?: string; // Mapped from 'youtube_video_link'
   whatsappLink?: string; // Mapped from 'contact.whatsapp'
@@ -58,6 +59,8 @@ export interface ColivingSpace {
   created_at?: string; 
   updated_at?: string; 
   status?: string;
+  brand?: string;
+
 
   // Derived/mapped fields for easier component use
   monthlyPrice: number; // Derived from budget_range.min
@@ -130,4 +133,18 @@ export interface CountryData {
   coliving_count?: number; 
 }
 
-```
+// Type for Nomad YouTube Videos
+export interface NomadVideo {
+  id: string;
+  title: string;
+  thumbnailUrl: string;
+  youtubeUrl: string;
+  viewCount: number;
+  likeCount: number;
+  commentCount: number;
+  duration: number; // in seconds
+  publishedAt: string; // ISO string date
+  destination?: string; // e.g., Bali, Portugal, General
+  dataAiHint?: string; // For placeholder images or general keywords
+  engagementScore?: number; // Calculated for Community Favorites
+}

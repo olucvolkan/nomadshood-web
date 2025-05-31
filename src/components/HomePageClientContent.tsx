@@ -6,30 +6,77 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, Lightbulb, Users, MapPin, Video, Globe, Star, MessageSquare, Send, Youtube, Film, Compass } from 'lucide-react';
-import type { ColivingSpace, CommunityLink, CountrySpecificCommunityLinks, CountryData } from '@/types';
+import { List, Lightbulb, Users, MapPin, Globe, Star, MessageSquare, Send, Youtube, Film, Compass, Podcast } from 'lucide-react';
+import type { ColivingSpace, CommunityLink, CountrySpecificCommunityLinks, CountryData, NomadVideo } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export interface HomePageYouTubeVideo {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  youtubeUrl: string;
-  dataAiHint: string;
-}
+// Old interface, replaced by NomadVideo from @/types
+// export interface HomePageYouTubeVideo { ... }
 
 interface HomePageClientContentProps {
   allSpaces: ColivingSpace[];
   allCountries: CountryData[];
-  youTubeVideos: HomePageYouTubeVideo[];
+  // youTubeVideos: HomePageYouTubeVideo[]; // Old prop
+  discoveryVideos: NomadVideo[];
+  communityFavoritesVideos: NomadVideo[];
+  freshTrendingVideos: NomadVideo[];
   countryCommunityLinks: CountrySpecificCommunityLinks[];
 }
+
+// Helper component for rendering a list of videos
+const VideoListSection: React.FC<{ title: string; videos: NomadVideo[] }> = ({ title, videos }) => {
+  if (!videos || videos.length === 0) {
+    return (
+      <div>
+        <h3 className="text-2xl font-semibold mb-4">{title}</h3>
+        <p className="text-muted-foreground">No videos available for this section yet.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h3 className="text-2xl font-semibold mb-6">{title}</h3>
+      <div className="flex overflow-x-auto space-x-4 sm:space-x-6 pb-4 -mb-4 pl-1 sm:pl-0">
+        {videos.map((video) => (
+          <Card key={video.id} className="min-w-[280px] sm:min-w-[300px] flex-shrink-0 shadow-lg hover:shadow-xl transition-shadow">
+            <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
+              <Image
+                src={video.thumbnailUrl}
+                alt={video.title}
+                fill
+                style={{ objectFit: 'cover' }}
+                data-ai-hint={video.dataAiHint || 'video thumbnail'}
+                sizes="(max-width: 640px) 280px, 300px"
+              />
+            </div>
+            <CardHeader className="p-4">
+              <CardTitle className="text-lg line-clamp-2 h-[3.25rem]">{video.title}</CardTitle>
+            </CardHeader>
+            <CardFooter className="p-4 pt-0">
+              <Button asChild variant="outline" className="w-full">
+                <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                  <Youtube className="mr-2 h-5 w-5 text-red-600" />
+                  Watch on YouTube
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 
 export function HomePageClientContent({
   allSpaces,
   allCountries,
-  youTubeVideos,
+  // youTubeVideos, // Old prop
+  discoveryVideos,
+  communityFavoritesVideos,
+  freshTrendingVideos,
   countryCommunityLinks
 }: HomePageClientContentProps) {
   const [selectedCountryForCommunities, setSelectedCountryForCommunities] = useState<string | null>(null);
@@ -37,7 +84,7 @@ export function HomePageClientContent({
   
   const popularCountriesData: CountryData[] = useMemo(() => {
     return [...allCountries]
-      .filter(country => country.name.toLowerCase() !== 'israel') // Exclude Israel
+      .filter(country => country.name.toLowerCase() !== 'israel') 
       .sort((a, b) => {
         const countDiff = (b.coliving_count || 0) - (a.coliving_count || 0);
         if (countDiff !== 0) return countDiff;
@@ -96,6 +143,38 @@ export function HomePageClientContent({
     }
   };
 
+  const fixedDestinations = useMemo(() => {
+    const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+    const baseStorageUrl = storageBucket 
+      ? `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/`
+      : null;
+
+    const destinations = [
+      { name: "Brazil", imageFile: "explore-top-destinations%2Fbrazil.webp", hint: "brazil rio de janeiro" },
+      { name: "Mexico", imageFile: "explore-top-destinations%2Fmexico.jpg", hint: "mexico tulum beach" },
+      { name: "Portugal", imageFile: "explore-top-destinations%2Fportugal.avif", hint: "portugal lisbon city" },
+      { name: "Spain", imageFile: "explore-top-destinations%2Fspain.jpg", hint: "spain barcelona coast" },
+    ];
+
+    return destinations.map(dest => {
+      const countryDetail = allCountries.find(c => c.name.toLowerCase() === dest.name.toLowerCase());
+      const imageUrl = baseStorageUrl 
+        ? `${baseStorageUrl}${dest.imageFile}?alt=media`
+        : `https://placehold.co/600x400.png`; // Fallback if bucket not set
+
+      return {
+        id: countryDetail?.id || dest.name,
+        name: dest.name,
+        imageUrl: imageUrl,
+        flagImageUrl: countryDetail?.flagImageUrl,
+        flag: countryDetail?.flag || '🏳️',
+        coliving_count: countryDetail?.coliving_count || 0,
+        dataAiHint: dest.hint,
+      };
+    });
+  }, [allCountries]);
+
+
   return (
     <div className="space-y-16">
       <section className="text-center py-10 bg-gradient-to-r from-primary/10 via-background to-accent/10 rounded-xl shadow-sm">
@@ -133,7 +212,7 @@ export function HomePageClientContent({
         </Card>
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
-            <Video className="h-10 w-10 text-primary mb-2" />
+            <Film className="h-10 w-10 text-primary mb-2" />
             <CardTitle>Video Showcases</CardTitle>
           </CardHeader>
           <CardContent>
@@ -155,42 +234,20 @@ export function HomePageClientContent({
         </Card>
       </section>
 
+      {/* New Video Podcast Section */}
       <section className="py-10">
         <div className="text-center mb-10">
-          <Film className="h-12 w-12 text-primary mx-auto mb-2" />
-          <h2 className="text-3xl font-semibold">From the NomadsHood Channel</h2>
-          <p className="text-lg text-foreground/70 mt-2">Watch our latest videos, tips, and community showcases.</p>
+          <Podcast className="h-12 w-12 text-primary mx-auto mb-2" />
+          <h2 className="text-3xl font-semibold">NomadsHood Coliving Podcast Listesi</h2>
+          <p className="text-lg text-foreground/70 mt-2">Curated video content for the aspiring and seasoned digital nomad.</p>
         </div>
-        <div className="flex overflow-x-auto space-x-4 sm:space-x-6 pb-4 -mb-4 pl-1 sm:pl-0">
-          {youTubeVideos.map((video) => (
-            <Card key={video.id} className="min-w-[280px] sm:min-w-[300px] flex-shrink-0 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
-                <Image
-                  src={video.thumbnailUrl}
-                  alt={video.title}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  data-ai-hint={video.dataAiHint}
-                />
-              </div>
-              <CardHeader className="p-4">
-                <CardTitle className="text-lg line-clamp-2 h-[3.25rem]">{video.title}</CardTitle>
-              </CardHeader>
-              <CardFooter className="p-4 pt-0">
-                <Button asChild variant="outline" className="w-full">
-                  <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
-                    <Youtube className="mr-2 h-5 w-5 text-red-600" />
-                    Watch on YouTube
-                  </Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+        <div className="space-y-12">
+          <VideoListSection title="Discovery Page" videos={discoveryVideos} />
+          <VideoListSection title="Community Favorites" videos={communityFavoritesVideos} />
+          <VideoListSection title="Fresh & Trending" videos={freshTrendingVideos} />
         </div>
-        {youTubeVideos.length === 0 && (
-          <p className="text-center text-muted-foreground">No videos available at the moment. Check back soon!</p>
-        )}
       </section>
+
 
       <section className="py-10">
         <div className="text-center mb-10">
@@ -206,29 +263,28 @@ export function HomePageClientContent({
                 href={`/coliving?country=${encodeURIComponent(country.name)}`}
                 className="block group"
               >
-                <Card className="h-full overflow-hidden shadow-md hover:shadow-lg hover:border-primary/30 transition-all duration-300">
-                  <CardContent className="p-4 flex flex-col items-center text-center space-y-2">
+                <Card className="h-full overflow-hidden shadow-md hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col items-center justify-center text-center p-4">
+                  
                     {country.flagImageUrl ? (
-                      <div className="relative w-10 h-auto aspect-[3/2] mb-2">
+                      <div className="relative w-16 h-10 mb-3"> 
                         <Image
                           src={country.flagImageUrl}
                           alt={`${country.name} flag`}
                           fill
                           className="object-contain rounded-sm"
                           data-ai-hint={`flag ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
-                          sizes="40px"
+                          sizes="64px"
                         />
                       </div>
                     ) : (
-                      <span className="text-3xl mb-2" role="img" aria-label={`${country.name} flag`}>{country.flag || '🏳️'}</span>
+                      <div className="text-4xl mb-3">{country.flag || '🏳️'}</div>
                     )}
                     <h3 className="text-md font-semibold text-foreground group-hover:text-primary transition-colors">
                       {country.name}
                     </h3>
-                    <p className="text-xs text-muted-foreground">
-                      Browse {country.coliving_count || 0} coliving space{country.coliving_count !== 1 ? 's' : ''}
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {country.coliving_count || 0} coliving space{country.coliving_count !== 1 ? 's' : ''}
                     </p>
-                  </CardContent>
                 </Card>
               </Link>
             ))}
@@ -237,6 +293,7 @@ export function HomePageClientContent({
           <p className="text-center text-muted-foreground">No country data available yet. Once coliving spaces and countries are added to Firebase, they will appear here.</p>
         )}
       </section>
+
 
       <section className="py-10">
         <div className="text-center mb-10">
@@ -306,4 +363,3 @@ export function HomePageClientContent({
     </div>
   );
 }
-

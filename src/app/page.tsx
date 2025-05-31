@@ -1,61 +1,32 @@
 
-// This is now a Server Component
-
-import type { ColivingSpace, CountryData } from '@/types';
+import type { ColivingSpace, CountryData, NomadVideo } from '@/types';
 import { mockCountrySpecificCommunityLinks } from '@/lib/mock-community-links';
 import { getAllColivingSpaces, getAllCountriesFromDB } from '@/services/colivingService';
-import { HomePageClientContent, type HomePageYouTubeVideo } from '@/components/HomePageClientContent';
+import { HomePageClientContent } from '@/components/HomePageClientContent';
+import { getDiscoveryVideos, getCommunityFavoritesVideos, getFreshAndTrendingVideos } from '@/services/videoService';
 
 
-const mockYouTubeVideos: HomePageYouTubeVideo[] = [
-  {
-    id: '1',
-    title: 'Top 5 Digital Nomad Hotspots in 2025',
-    thumbnailUrl: 'https://placehold.co/400x225/E0E0E0/757575.png',
-    youtubeUrl: 'https://www.youtube.com/watch?v=example1',
-    dataAiHint: 'travel global map',
-  },
-  {
-    id: '2',
-    title: 'Packing Light: Essential Gear for Nomads',
-    thumbnailUrl: 'https://placehold.co/400x225/E0E0E0/757575.png',
-    youtubeUrl: 'https://www.youtube.com/watch?v=example2',
-    dataAiHint: 'backpack travel gear',
-  },
-  {
-    id: '3',
-    title: 'Coliving in Bali: A Deep Dive',
-    thumbnailUrl: 'https://placehold.co/400x225/E0E0E0/757575.png',
-    youtubeUrl: 'https://www.youtube.com/watch?v=example3',
-    dataAiHint: 'bali tropical workspace',
-  },
-  {
-    id: '4',
-    title: 'Visa Guide for Aspiring Digital Nomads',
-    thumbnailUrl: 'https://placehold.co/400x225/E0E0E0/757575.png',
-    youtubeUrl: 'https://www.youtube.com/watch?v=example4',
-    dataAiHint: 'passport visa documents',
-  },
-  {
-    id: '5',
-    title: 'Community Spotlight: Lisbon Nomads',
-    thumbnailUrl: 'https://placehold.co/400x225/E0E0E0/757575.png',
-    youtubeUrl: 'https://www.youtube.com/watch?v=example5',
-    dataAiHint: 'lisbon group people',
-  },
-];
+// This was the old mock data for YouTube videos, replaced by Firestore fetching
+// const mockYouTubeVideos: HomePageYouTubeVideo[] = [ ... ];
 
 export default async function HomePage() {
   const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
   const allCountries: CountryData[] = await getAllCountriesFromDB();
 
+  // Fetch video data
+  const discoveryVideos: NomadVideo[] = await getDiscoveryVideos();
+  const communityFavoritesVideos: NomadVideo[] = await getCommunityFavoritesVideos();
+  const freshTrendingVideos: NomadVideo[] = await getFreshAndTrendingVideos();
+
   return (
     <HomePageClientContent
       allSpaces={allSpaces}
       allCountries={allCountries}
-      youTubeVideos={mockYouTubeVideos}
+      // youTubeVideos={mockYouTubeVideos} // Old prop, remove or adapt if needed
+      discoveryVideos={discoveryVideos}
+      communityFavoritesVideos={communityFavoritesVideos}
+      freshTrendingVideos={freshTrendingVideos}
       countryCommunityLinks={mockCountrySpecificCommunityLinks}
     />
   );
 }
-
