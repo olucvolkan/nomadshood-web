@@ -29,10 +29,12 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: R
           {IconComponent && <IconComponent className="mr-3 h-7 w-7 text-primary" />}
           {title}
         </h3>
-        <p className="text-muted-foreground">No videos available for this section yet. This might be due to missing data (check Firestore collection '{title === "NomadsHood Podcast" ? "nomadsHood-videos" : "nomad-videos.json"}' or local JSON), incorrect data structure, or a Firestore query issue (check console for index warnings).</p>
+        <p className="text-muted-foreground">No videos available for this section yet. This might be due to missing data (check Firestore collection '{title === "NomadsHood Podcast" ? "nomadsHood-videos" : "nomad-videos.json"}', Firestore rules, or local JSON for 'Most Watched'), incorrect data structure, or a Firestore query issue (check console for index warnings).</p>
       </div>
     );
   }
+
+  const isMostWatched = title === "Most Watched Videos";
 
   return (
     <div>
@@ -40,33 +42,63 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: R
         {IconComponent && <IconComponent className="mr-3 h-7 w-7 text-primary" />}
         {title}
       </h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {videos.map((video) => (
-          <Card key={video.id} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow">
-            <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
-              <Image
-                src={video.thumbnailUrl}
-                alt={video.title}
-                fill
-                style={{ objectFit: 'cover' }}
-                data-ai-hint={video.dataAiHint || 'video thumbnail'}
-                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
-              />
-            </div>
-            <CardHeader className="p-4 flex-grow">
-              <CardTitle className="text-md leading-tight line-clamp-3 h-[4.5em]">{video.title}</CardTitle> {/* Adjusted for 3 lines approx */}
-            </CardHeader>
-            <CardFooter className="p-4 pt-0">
-              <Button asChild variant="outline" className="w-full">
-                <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
-                  <Youtube className="mr-2 h-5 w-5 text-red-600" />
-                  Watch
-                </Link>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+      {isMostWatched ? (
+        <div className="flex overflow-x-auto space-x-4 pb-4 -mx-4 px-4"> {/* Added -mx-4 px-4 for edge padding */}
+          {videos.map((video) => (
+            <Card key={video.id} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow w-72 flex-shrink-0"> {/* Fixed width and prevent shrinking */}
+              <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
+                <Image
+                  src={video.thumbnailUrl}
+                  alt={video.title}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  data-ai-hint={video.dataAiHint || 'video thumbnail'}
+                  sizes="288px" // Adjusted for w-72 card (288px)
+                />
+              </div>
+              <CardHeader className="p-4 flex-grow">
+                <CardTitle className="text-md leading-tight line-clamp-3 h-[4.5em]">{video.title}</CardTitle>
+              </CardHeader>
+              <CardFooter className="p-4 pt-0">
+                <Button asChild variant="outline" className="w-full">
+                  <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                    <Youtube className="mr-2 h-5 w-5 text-red-600" />
+                    Watch
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {videos.map((video) => (
+            <Card key={video.id} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow">
+              <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
+                <Image
+                  src={video.thumbnailUrl}
+                  alt={video.title}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  data-ai-hint={video.dataAiHint || 'video thumbnail'}
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
+                />
+              </div>
+              <CardHeader className="p-4 flex-grow">
+                <CardTitle className="text-md leading-tight line-clamp-3 h-[4.5em]">{video.title}</CardTitle>
+              </CardHeader>
+              <CardFooter className="p-4 pt-0">
+                <Button asChild variant="outline" className="w-full">
+                  <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                    <Youtube className="mr-2 h-5 w-5 text-red-600" />
+                    Watch
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -329,3 +361,4 @@ export function HomePageClientContent({
     </div>
   );
 }
+

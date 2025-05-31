@@ -1,6 +1,6 @@
 
 import type { NomadVideo, NomadVideoJsonItem } from '@/types';
-import videosData from '@/data/nomad-videos.json'; // Import the local JSON for "Most Watched"
+import videosDataJson from '@/data/nomad-videos.json'; // Import the local JSON for "Most Watched"
 import { db } from '@/lib/firebase';
 import { collection, getDocs, query, orderBy, limit, Timestamp, type DocumentData, type QueryDocumentSnapshot } from 'firebase/firestore';
 
@@ -31,13 +31,13 @@ const mapJsonVideoToNomadVideo = (videoJson: NomadVideoJsonItem): NomadVideo => 
     else if (videoJson.thumbnails.default?.url) thumbnailUrl = videoJson.thumbnails.default.url;
   }
   try { new URL(thumbnailUrl); } catch (_) {
-    console.warn(`mapJsonVideoToNomadVideo: Video ID ${videoJson.videoId} has an invalid thumbnail URL '${thumbnailUrl}'. Using placeholder.`);
+    // console.warn(`mapJsonVideoToNomadVideo: Video ID ${videoJson.videoId} has an invalid thumbnail URL '${thumbnailUrl}'. Using placeholder.`);
     thumbnailUrl = 'https://placehold.co/400x225/E0E0E0/757575.png';
   }
 
   let youtubeUrl = videoJson.url || '#';
   try { new URL(youtubeUrl); } catch (_) {
-    console.warn(`mapJsonVideoToNomadVideo: Video ID ${videoJson.videoId} has an invalid YouTube URL '${youtubeUrl}'. Using '#'.`);
+    // console.warn(`mapJsonVideoToNomadVideo: Video ID ${videoJson.videoId} has an invalid YouTube URL '${youtubeUrl}'. Using '#'.`);
     youtubeUrl = '#';
   }
 
@@ -67,7 +67,7 @@ const mapJsonVideoToNomadVideo = (videoJson: NomadVideoJsonItem): NomadVideo => 
   };
 
   if (video.title === 'Untitled Video' && videoJson.title !== undefined) {
-    console.warn(`mapJsonVideoToNomadVideo: Video ID ${video.id} resulted in 'Untitled Video'. Original title data:`, videoJson.title);
+    // console.warn(`mapJsonVideoToNomadVideo: Video ID ${video.id} resulted in 'Untitled Video'. Original title data:`, videoJson.title);
   }
   return video;
 };
@@ -83,13 +83,13 @@ const mapFirestoreDocToNomadVideo = (doc: QueryDocumentSnapshot<DocumentData>): 
   else if (data.thumbnailUrl) thumbnailUrl = data.thumbnailUrl; // Fallback if structure is flatter
 
   try { new URL(thumbnailUrl); } catch (_) {
-    console.warn(`mapFirestoreDocToNomadVideo: Video ID ${doc.id} has an invalid thumbnail URL '${thumbnailUrl}'. Using placeholder.`);
+    // console.warn(`mapFirestoreDocToNomadVideo: Video ID ${doc.id} has an invalid thumbnail URL '${thumbnailUrl}'. Using placeholder.`);
     thumbnailUrl = 'https://placehold.co/400x225/E0E0E0/757575.png';
   }
 
   let youtubeUrl = data.url || data.youtubeUrl || '#';
   try { new URL(youtubeUrl); } catch (_) {
-    console.warn(`mapFirestoreDocToNomadVideo: Video ID ${doc.id} has an invalid YouTube URL '${youtubeUrl}'. Using '#'.`);
+    // console.warn(`mapFirestoreDocToNomadVideo: Video ID ${doc.id} has an invalid YouTube URL '${youtubeUrl}'. Using '#'.`);
     youtubeUrl = '#';
   }
   
@@ -103,8 +103,13 @@ const mapFirestoreDocToNomadVideo = (doc: QueryDocumentSnapshot<DocumentData>): 
   };
 
   const stats = data.statistics || {};
+  const publishedAtDate = data.publishedAt ? formatDateFromTimestamp(data.publishedAt) : new Date(0).toISOString();
+  // if (publishedAtDate === new Date(0).toISOString() && data.publishedAt) {
+  //   console.warn(`mapFirestoreDocToNomadVideo: Invalid date string for publishedAt: ${JSON.stringify(data.publishedAt)} for video ID: ${doc.id}. Using epoch as fallback.`);
+  // }
 
-  return {
+
+  const video: NomadVideo = {
     id: data.videoId || doc.id,
     title: data.title || 'Untitled Video from Firestore',
     thumbnailUrl,
@@ -113,10 +118,14 @@ const mapFirestoreDocToNomadVideo = (doc: QueryDocumentSnapshot<DocumentData>): 
     likeCount: getStatAsNumber(stats.likeCount ?? data.likeCount),
     commentCount: getStatAsNumber(stats.commentCount ?? data.commentCount),
     duration: getStatAsNumber(stats.duration ?? data.duration),
-    publishedAt: data.publishedAt ? formatDateFromTimestamp(data.publishedAt) : new Date(0).toISOString(),
+    publishedAt: publishedAtDate,
     destination: data.destination || 'General',
     dataAiHint: data.dataAiHint || data.title?.toLowerCase().substring(0, 50) || 'nomad podcast',
   };
+  // if (video.title === 'Untitled Video from Firestore' && data.title !== undefined) {
+  //   console.warn(`mapFirestoreDocToNomadVideo: Video ID ${video.id} resulted in 'Untitled Video from Firestore'. Original title data:`, data.title);
+  // }
+  return video;
 };
 
 
@@ -131,14 +140,14 @@ export async function getNomadsHoodPodcastVideosFromFirestore(): Promise<NomadVi
       return [];
     }
     const videos = querySnapshot.docs.map(mapFirestoreDocToNomadVideo);
-    if (videos.length === 0) {
-      console.warn("getNomadsHoodPodcastVideosFromFirestore: Videos were queried from Firestore but the mapped list is empty. Check mapping logic or data quality.");
+    if (videos.length === 0 && !querySnapshot.empty) {
+      console.warn("getNomadsHoodPodcastVideosFromFirestore: Videos were queried from Firestore but the mapped list is empty. Check mapping logic or data quality. Ensure 'publishedAt' is a Firestore Timestamp.");
     }
     return videos;
   } catch (error) {
     console.error("Error fetching NomadsHood Podcast videos from Firestore:", error);
     if ((error as any)?.code === 'failed-precondition') {
-         console.warn("Firestore query for NomadsHood Podcast Videos requires an index on 'publishedAt' (descending). Please create this index in the Firebase Console.");
+         console.warn("Firestore query for NomadsHood Podcast Videos requires an index on 'publishedAt' (descending). Please create this index in the Firebase Console. The error details: ", (error as any).message);
     }
     return [];
   }
@@ -146,7 +155,7 @@ export async function getNomadsHoodPodcastVideosFromFirestore(): Promise<NomadVi
 
 export async function getMostWatchedVideosFromJson(): Promise<NomadVideo[]> {
   try {
-    const allJsonVideos: NomadVideo[] = (videosData as NomadVideoJsonItem[]).map(mapJsonVideoToNomadVideo);
+    const allJsonVideos: NomadVideo[] = (videosDataJson as NomadVideoJsonItem[]).map(mapJsonVideoToNomadVideo);
     
     if (!allJsonVideos || allJsonVideos.length === 0) {
         console.warn("getMostWatchedVideosFromJson: No videos found in the local JSON data (nomad-videos.json).");
@@ -154,7 +163,7 @@ export async function getMostWatchedVideosFromJson(): Promise<NomadVideo[]> {
     }
     
     const sortedVideos = [...allJsonVideos].sort((a, b) => b.viewCount - a.viewCount);
-    const topVideos = sortedVideos.slice(0, 5); // Get top 5
+    const topVideos = sortedVideos.slice(0, 10); // Get top 10
 
     if (topVideos.length === 0 && allJsonVideos.length > 0) {
         console.warn("getMostWatchedVideosFromJson: Videos were available in JSON, but the list is empty after sorting/slicing. Check 'viewCount' field quality.");
@@ -165,3 +174,8 @@ export async function getMostWatchedVideosFromJson(): Promise<NomadVideo[]> {
     return [];
   }
 }
+
+// Removed getDiscoveryVideos, getCommunityFavoritesVideos, getFreshAndTrendingVideos
+// as they were based on the previous JSON-only or multi-Firestore-query approach.
+// The two functions above now cover the requested video lists.
+
