@@ -36,6 +36,13 @@ interface HomePageClientContentProps {
   countryCommunityLinks: CountrySpecificCommunityLinks[];
 }
 
+const hardcodedDestinations = [
+  { name: 'Brazil', imageFile: 'brazil.webp', defaultHint: 'brazil scenic landscape', linkName: 'Brazil' },
+  { name: 'Mexico', imageFile: 'mexico.jpg', defaultHint: 'mexico beach city', linkName: 'Mexico' },
+  { name: 'Portugal', imageFile: 'portugal.avif', defaultHint: 'portugal coast town', linkName: 'Portugal' },
+  { name: 'Spain', imageFile: 'spain.jpg', defaultHint: 'spain historic architecture', linkName: 'Spain' },
+];
+
 export function HomePageClientContent({
   allSpaces,
   allCountries,
@@ -44,40 +51,42 @@ export function HomePageClientContent({
 }: HomePageClientContentProps) {
   const [selectedCountryForCommunities, setSelectedCountryForCommunities] = useState<string | null>(null);
   const [displayedCommunityLinks, setDisplayedCommunityLinks] = useState<CommunityLink[]>([]);
+  
+  const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
 
   const topCountriesData: CountryDisplayData[] = useMemo(() => {
-    if (!allCountries || allCountries.length === 0) return [];
-
-    const countrySpecificImageHints: { [key: string]: string } = {
-      "Indonesia": "raja ampat beach cliffs", // Updated
-      "Portugal": "porto colorful houses river", // Updated
-      "USA": "new york city skyline", // Kept, or could be more scenic like 'grand canyon'
-      "Japan": "kyoto temple autumn", // Updated
-      "South Africa": "cape town table mountain beach", // Updated
-      "Colombia": "guatape rock lake", // Updated
-      "Spain": "seville plaza espana", // Updated
-      "Thailand": "phi phi islands thailand",
-      "Mexico": "tulum beach ruins",
-      "Germany": "bavaria neuschwanstein castle",
-      // Add more specific hints for other countries if they appear in top
-    };
-
-    return [...allCountries]
-      .sort((a, b) => (b.coliving_count || 0) - (a.coliving_count || 0))
-      .slice(0, 10) // Show top 10 or adjust as needed
-      .map(country => {
-        const defaultHint = `${country.name.toLowerCase()} landmark scenic`;
+    if (!storageBucket) {
+      console.warn("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET is not set. Cannot load Top Destination images from Firebase Storage. Displaying placeholders.");
+      return hardcodedDestinations.map(dest => {
+        const countryInfo = allCountries.find(c => c.name.toLowerCase() === dest.name.toLowerCase());
         return {
-          name: country.name,
-          count: country.coliving_count || 0,
-          imageUrl: country.cover_image || `https://placehold.co/600x400/E0E0E0/757575.png`, // Uses country.cover_image from Firestore
-          dataAiHint: (countrySpecificImageHints[country.name] || defaultHint).split(" ").slice(0, 2).join(" "),
-          flagImageUrl: country.flagImageUrl,
-          flagEmoji: country.flag,
-          linkName: country.name,
+          name: dest.name,
+          count: countryInfo?.coliving_count || 0,
+          imageUrl: `https://placehold.co/600x400/E0E0E0/757575.png?text=${dest.name}`,
+          dataAiHint: dest.defaultHint.split(" ").slice(0, 2).join(" "),
+          flagImageUrl: countryInfo?.flagImageUrl,
+          flagEmoji: countryInfo?.flag || '🏳️',
+          linkName: dest.linkName,
         };
       });
-  }, [allCountries]);
+    }
+
+    return hardcodedDestinations.map(dest => {
+      const countryInfo = allCountries.find(c => c.name.toLowerCase() === dest.name.toLowerCase());
+      const imagePath = `explore-top-destinations/${dest.imageFile}`;
+      const firebaseUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${encodeURIComponent(imagePath)}?alt=media`;
+
+      return {
+        name: dest.name,
+        count: countryInfo?.coliving_count || 0,
+        imageUrl: firebaseUrl,
+        dataAiHint: dest.defaultHint.split(" ").slice(0, 2).join(" "),
+        flagImageUrl: countryInfo?.flagImageUrl,
+        flagEmoji: countryInfo?.flag || '🏳️',
+        linkName: dest.linkName,
+      };
+    });
+  }, [allCountries, storageBucket]);
 
   const featuredSpaces = useMemo(() => {
     const sortedSpaces = [...allSpaces].sort((a, b) => {
@@ -248,7 +257,7 @@ export function HomePageClientContent({
                     data-ai-hint={country.dataAiHint}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                   />
-                  <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-auto"> {/* Adjusted for better responsiveness */}
+                  <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-auto">
                     <div className="bg-white/95 dark:bg-neutral-900/95 backdrop-blur-sm p-3 rounded-md shadow-md inline-block">
                       <div className="flex items-center mb-1">
                         {country.flagImageUrl ? (
