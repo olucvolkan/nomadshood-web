@@ -133,18 +133,53 @@ export interface CountryData {
   coliving_count?: number; 
 }
 
-// Type for Nomad YouTube Videos
-export interface NomadVideo {
-  id: string;
+// Type for Nomad YouTube Videos from JSON
+export interface NomadVideoJsonItem {
+  videoId: string;
   title: string;
-  thumbnailUrl: string;
-  youtubeUrl: string;
-  viewCount: number;
-  likeCount: number;
-  commentCount: number;
-  duration: number; // in seconds
+  description?: string;
   publishedAt: string; // ISO string date
-  destination?: string; // e.g., Bali, Portugal, General
-  dataAiHint?: string; // For placeholder images or general keywords
+  thumbnails: {
+    default?: { url: string; width: number; height: number };
+    medium?: { url: string; width: number; height: number };
+    high?: { url: string; width: number; height: number };
+  };
+  url: string; // This will be mapped to youtubeUrl
+  embedUrl?: string;
+  channel?: {
+    id?: string;
+    title?: string;
+    url?: string;
+    subscriberCount?: string; // Note: often a string
+    videoCount?: string; // Note: often a string
+    thumbnail?: string;
+  };
+  statistics: {
+    viewCount?: number | string; // Can be string
+    likeCount?: number | string; // Can be string
+    commentCount?: number | string; // Can be string
+    duration?: number | string; // Can be string (seconds)
+    durationFormatted?: string;
+  };
+  relevanceScore?: number;
+  extractedAt?: string;
+  tags?: string[];
+  destination?: string; // Optional field for categorization
+  dataAiHint?: string; // Optional field for AI hints
+}
+
+// Standardized NomadVideo type used in the application
+export interface NomadVideo {
+  id: string; // Mapped from videoId
+  title: string;
+  thumbnailUrl: string; // Derived from thumbnails.high.url or fallbacks
+  youtubeUrl: string; // Mapped from url
+  viewCount: number; // Parsed from statistics.viewCount
+  likeCount: number; // Parsed from statistics.likeCount
+  commentCount: number; // Parsed from statistics.commentCount
+  duration: number; // Parsed from statistics.duration (in seconds)
+  publishedAt: string; // ISO string date (already in this format)
+  destination?: string; 
+  dataAiHint?: string; 
   engagementScore?: number; // Calculated for Community Favorites
 }

@@ -1,153 +1,84 @@
 
-import { db } from '@/lib/firebase';
-import { collection, getDocs, query, orderBy, limit, where, Timestamp, type DocumentData, type QueryDocumentSnapshot } from 'firebase/firestore';
-import type { NomadVideo } from '@/types';
+import type { NomadVideo, NomadVideoJsonItem } from '@/types';
+import videosData from '@/data/nomad-videos.json'; // Import the local JSON
 
-const mapDocToNomadVideo = (doc: QueryDocumentSnapshot<DocumentData> | DocumentData): NomadVideo => {
-  const data = doc.data();
-  if (!data) {
-    console.warn(`mapDocToNomadVideo: Document data is undefined for doc id: ${doc.id}. Returning default video structure.`);
-    return {
-      id: doc.id,
-      title: 'Untitled Video',
-      thumbnailUrl: 'https://placehold.co/400x225/E0E0E0/757575.png',
-      youtubeUrl: '#',
-      viewCount: 0,
-      likeCount: 0,
-      commentCount: 0,
-      duration: 0,
-      publishedAt: new Date(0).toISOString(),
-      destination: 'General',
-      dataAiHint: 'video placeholder',
-    };
-  }
-
+// Helper function to map the JSON video structure to our NomadVideo type
+const mapJsonVideoToNomadVideo = (videoJson: NomadVideoJsonItem): NomadVideo => {
   let thumbnailUrl = 'https://placehold.co/400x225/E0E0E0/757575.png';
-  if (data.thumbnails) {
-    if (data.thumbnails.high && typeof data.thumbnails.high.url === 'string') {
-      thumbnailUrl = data.thumbnails.high.url;
-    } else if (data.thumbnails.medium && typeof data.thumbnails.medium.url === 'string') {
-      thumbnailUrl = data.thumbnails.medium.url;
-    } else if (data.thumbnails.default && typeof data.thumbnails.default.url === 'string') {
-      thumbnailUrl = data.thumbnails.default.url;
+  if (videoJson.thumbnails) {
+    if (videoJson.thumbnails.high?.url) {
+      thumbnailUrl = videoJson.thumbnails.high.url;
+    } else if (videoJson.thumbnails.medium?.url) {
+      thumbnailUrl = videoJson.thumbnails.medium.url;
+    } else if (videoJson.thumbnails.default?.url) {
+      thumbnailUrl = videoJson.thumbnails.default.url;
     }
-  } else if (typeof data.thumbnailUrl === 'string') {
-    thumbnailUrl = data.thumbnailUrl;
   }
-  try { new URL(thumbnailUrl); } catch (_) { thumbnailUrl = 'https://placehold.co/400x225/E0E0E0/757575.png'; }
-
-
-  let youtubeUrl = '#';
-  if (typeof data.url === 'string') {
-    youtubeUrl = data.url;
-  } else if (typeof data.youtubeUrl === 'string') {
-    youtubeUrl = data.youtubeUrl;
+  try { new URL(thumbnailUrl); } catch (_) { 
+    console.warn(`mapJsonVideoToNomadVideo: Video ID ${videoJson.videoId} has an invalid thumbnail URL '${thumbnailUrl}'. Using placeholder.`);
+    thumbnailUrl = 'https://placehold.co/400x225/E0E0E0/757575.png'; 
   }
-  try { new URL(youtubeUrl); } catch (_) { youtubeUrl = '#'; }
 
-  const stats = data.statistics || {};
-
-  const getStat = (statName: string): number => {
-    const statValue = stats[statName] ?? data[statName];
-    if (typeof statValue === 'number') {
-      return statValue;
-    }
+  let youtubeUrl = videoJson.url || '#';
+  try { new URL(youtubeUrl); } catch (_) { 
+    console.warn(`mapJsonVideoToNomadVideo: Video ID ${videoJson.videoId} has an invalid YouTube URL '${youtubeUrl}'. Using '#'.`);
+    youtubeUrl = '#'; 
+  }
+  
+  const getStatAsNumber = (statValue: number | string | undefined): number => {
+    if (typeof statValue === 'number') return statValue;
     if (typeof statValue === 'string') {
-        const parsed = parseInt(statValue, 10);
-        if (!isNaN(parsed)) return parsed;
+      const parsed = parseInt(statValue, 10);
+      if (!isNaN(parsed)) return parsed;
     }
-    // console.warn(`mapDocToNomadVideo: Video ID ${doc.id}, stat '${statName}' is missing or not a number. Original data:`, statValue);
     return 0;
   };
 
-  let publishedAtValue: string = new Date(0).toISOString();
-  if (data.publishedAt instanceof Timestamp) {
-    publishedAtValue = data.publishedAt.toDate().toISOString();
-  } else if (typeof data.publishedAt === 'string') {
-    try {
-        const date = new Date(data.publishedAt);
-        if (!isNaN(date.getTime())) {
-            publishedAtValue = date.toISOString();
-        } else {
-           console.warn(`mapDocToNomadVideo: Invalid date string for publishedAt: ${data.publishedAt} for video ID: ${doc.id}. Using default date.`);
-        }
-    } catch (e) {
-        console.warn(`mapDocToNomadVideo: Error parsing publishedAt string: ${data.publishedAt} for video ID: ${doc.id}. Using default date.`, e);
-    }
-  } else if (data.publishedAt) {
-     console.warn(`mapDocToNomadVideo: Unexpected type for publishedAt: ${typeof data.publishedAt} for video ID: ${doc.id}. Using default date.`);
-  }
+  const stats = videoJson.statistics || {};
 
-
-  const videoEntry: NomadVideo = {
-    id: doc.id,
-    title: typeof data.title === 'string' ? data.title : 'Untitled Video',
-    thumbnailUrl: thumbnailUrl,
-    youtubeUrl: youtubeUrl,
-    viewCount: getStat('viewCount'),
-    likeCount: getStat('likeCount'),
-    commentCount: getStat('commentCount'),
-    duration: getStat('duration'),
-    publishedAt: publishedAtValue,
-    destination: typeof data.destination === 'string' ? data.destination : 'General',
-    dataAiHint: typeof data.dataAiHint === 'string' ? data.dataAiHint : 'digital nomad lifestyle',
+  const video: NomadVideo = {
+    id: videoJson.videoId,
+    title: videoJson.title || 'Untitled Video',
+    thumbnailUrl,
+    youtubeUrl,
+    viewCount: getStatAsNumber(stats.viewCount),
+    likeCount: getStatAsNumber(stats.likeCount),
+    commentCount: getStatAsNumber(stats.commentCount),
+    duration: getStatAsNumber(stats.duration), // Assuming duration is in seconds
+    publishedAt: videoJson.publishedAt, // Already an ISO string
+    destination: videoJson.destination || 'General',
+    dataAiHint: videoJson.dataAiHint || videoJson.title.toLowerCase().substring(0, 50) || 'digital nomad lifestyle',
   };
 
-  if (videoEntry.title === 'Untitled Video' && data.title !== undefined) {
-    console.warn(`mapDocToNomadVideo: Video ID ${doc.id} resulted in 'Untitled Video'. Original title data:`, data.title);
-  }
-  if (videoEntry.thumbnailUrl.includes('placehold.co') && (data.thumbnails || data.thumbnailUrl)) {
-    console.warn(`mapDocToNomadVideo: Video ID ${doc.id} is using a placeholder thumbnail. Original thumbnails/thumbnailUrl data:`, data.thumbnails, data.thumbnailUrl);
-  }
-  if (videoEntry.youtubeUrl === '#' && (data.url || data.youtubeUrl)) {
-    console.warn(`mapDocToNomadVideo: Video ID ${doc.id} has an invalid YouTube URL. Original url/youtubeUrl data:`, data.url, data.youtubeUrl);
-  }
-   if (publishedAtValue === new Date(0).toISOString() && data.publishedAt) {
-    console.warn(`mapDocToNomadVideo: Video ID ${doc.id} ended up with a default publishedAt date, but original data was present:`, data.publishedAt);
+  if (video.title === 'Untitled Video' && videoJson.title !== undefined) {
+    console.warn(`mapJsonVideoToNomadVideo: Video ID ${video.id} resulted in 'Untitled Video'. Original title data:`, videoJson.title);
   }
 
-  return videoEntry;
+  return video;
 };
+
+const allVideos: NomadVideo[] = (videosData as NomadVideoJsonItem[]).map(mapJsonVideoToNomadVideo);
 
 export async function getDiscoveryVideos(): Promise<NomadVideo[]> {
   try {
-    const videosCollectionRef = collection(db, 'nomad-videos');
-    const q = query(videosCollectionRef, orderBy('viewCount', 'desc'), limit(4));
-    const querySnapshot = await getDocs(q);
+    const sortedVideos = [...allVideos].sort((a, b) => b.viewCount - a.viewCount);
+    const topVideos = sortedVideos.slice(0, 4);
 
-    if (querySnapshot.empty) {
-        console.warn("getDiscoveryVideos: Firestore query (orderBy viewCount desc) returned an empty snapshot. No documents matched. Ensure 'nomad-videos' collection has documents with a numeric 'viewCount' field and check for potential index requirements if this warning persists despite having data.");
+    if (topVideos.length === 0 && allVideos.length > 0) {
+        console.warn("getDiscoveryVideos: Videos were available in JSON, but the list is empty after sorting/slicing. Check sorting logic or data quality (e.g., viewCount).");
+    } else if (allVideos.length === 0) {
+        console.warn("getDiscoveryVideos: No videos found in the local JSON data.");
     }
-
-    const videos = querySnapshot.docs.map(mapDocToNomadVideo);
-
-    if (videos.length === 0 && !querySnapshot.empty) {
-        console.warn("getDiscoveryVideos: Videos were fetched from Firestore, but the list is empty after mapping. This could indicate issues with the data structure in all fetched documents (e.g., missing titles, invalid URLs, non-numeric viewCount). Check individual 'mapDocToNomadVideo' warnings in the console.");
-    } else if (videos.length === 0 && querySnapshot.empty) {
-        console.warn("getDiscoveryVideos: No videos found. The 'nomad-videos' collection might be empty or no documents met the query criteria (orderBy viewCount desc).");
-    }
-    return videos;
+    return topVideos;
   } catch (error) {
-    console.error("Error fetching discovery videos:", error);
-    if (error instanceof Error && error.message.includes("query requires an index")) {
-        console.warn("Firestore query for Discovery Videos (orderBy 'viewCount' desc) may require an index. Please check Firebase Console. The error message should contain a link to create it. The required index is likely on 'viewCount' (descending).");
-    }
+    console.error("Error processing discovery videos from JSON:", error);
     return [];
   }
 }
 
 export async function getCommunityFavoritesVideos(): Promise<NomadVideo[]> {
   try {
-    const videosCollectionRef = collection(db, 'nomad-videos');
-    const q = query(videosCollectionRef, orderBy('likeCount', 'desc'), limit(50));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.empty) {
-        console.warn("getCommunityFavoritesVideos: Firestore query (orderBy likeCount desc) returned an empty snapshot. No documents matched. Ensure 'nomad-videos' has documents with numeric 'likeCount', 'commentCount', and 'duration' fields. Check for index requirements if this persists.");
-    }
-
-    const videosWithScores = querySnapshot.docs.map(doc => {
-      const video = mapDocToNomadVideo(doc);
+    const videosWithScores = allVideos.map(video => {
       const engagementScore = video.duration > 0
         ? (video.likeCount + video.commentCount) / video.duration
         : 0;
@@ -156,83 +87,74 @@ export async function getCommunityFavoritesVideos(): Promise<NomadVideo[]> {
 
     videosWithScores.sort((a, b) => (b.engagementScore || 0) - (a.engagementScore || 0));
     
-    const finalVideos = videosWithScores.slice(0, 4);
+    const topVideos = videosWithScores.slice(0, 4);
 
-    if (finalVideos.length === 0 && !querySnapshot.empty) {
-        console.warn("getCommunityFavoritesVideos: Videos were fetched, but the final list after scoring and slicing is empty. This could be due to issues in data mapping or all videos having a zero engagement score. Check 'mapDocToNomadVideo' warnings.");
-    } else if (finalVideos.length === 0 && querySnapshot.empty) {
-        console.warn("getCommunityFavoritesVideos: No videos found. Collection might be empty or no documents met query criteria (orderBy likeCount desc).");
+    if (topVideos.length === 0 && allVideos.length > 0) {
+        console.warn("getCommunityFavoritesVideos: Videos were available, but the final list after scoring and slicing is empty. Check scoring logic or data quality.");
+    } else if (allVideos.length === 0) {
+        console.warn("getCommunityFavoritesVideos: No videos found in local JSON data.");
     }
-    return finalVideos;
+    return topVideos;
   } catch (error) {
-    console.error("Error fetching community favorites videos:", error);
-    if (error instanceof Error && error.message.includes("query requires an index")) {
-        console.warn("Firestore query for Community Favorites (orderBy 'likeCount' desc) may require an index. Please check Firebase Console. The error message should provide a link. The required index is likely on 'likeCount' (descending).");
-    }
+    console.error("Error processing community favorites videos from JSON:", error);
     return [];
   }
 }
 
 export async function getFreshAndTrendingVideos(): Promise<NomadVideo[]> {
   try {
-    const videosCollectionRef = collection(db, 'nomad-videos');
     const date90DaysAgo = new Date();
     date90DaysAgo.setDate(date90DaysAgo.getDate() - 90);
-    const firestoreTimestamp90DaysAgo = Timestamp.fromDate(date90DaysAgo);
 
-    const q = query(
-      videosCollectionRef,
-      where('publishedAt', '>=', firestoreTimestamp90DaysAgo),
-      orderBy('publishedAt', 'desc'),
-      orderBy('viewCount', 'desc'),
-      limit(4)
-    );
-    const querySnapshot = await getDocs(q);
+    const recentVideos = allVideos.filter(video => {
+      try {
+        const publishedDate = new Date(video.publishedAt);
+        return publishedDate >= date90DaysAgo;
+      } catch (e) {
+        console.warn(`getFreshAndTrendingVideos: Could not parse publishedAt date '${video.publishedAt}' for video ID ${video.id}. Excluding from list.`);
+        return false;
+      }
+    });
+    
+    recentVideos.sort((a, b) => b.viewCount - a.viewCount); // Secondary sort by viewCount
+    // Note: The primary sort by publishedAt (desc) is implicitly handled if you want most recent *of the trending by views*
+    // If you need strict primary sort by date then secondary by views:
+    // recentVideos.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime() || b.viewCount - a.viewCount);
+    
+    const topVideos = recentVideos.slice(0, 4);
 
-    if (querySnapshot.empty) {
-        console.warn("getFreshAndTrendingVideos: Firestore query (publishedAt >= 90 days ago, orderBy publishedAt desc, viewCount desc) returned an empty snapshot. No documents matched. Ensure 'nomad-videos' has recent documents with Firestore Timestamp 'publishedAt' and numeric 'viewCount'. THIS QUERY REQUIRES A COMPOSITE INDEX.");
+    if (topVideos.length === 0 && allVideos.length > 0) {
+        console.warn("getFreshAndTrendingVideos: Videos were available, but the list is empty after filtering/sorting. Check date formats or view counts in recent videos.");
+    } else if (allVideos.length === 0) {
+         console.warn("getFreshAndTrendingVideos: No videos found in local JSON data.");
     }
-
-    const videos = querySnapshot.docs.map(mapDocToNomadVideo);
-
-    if (videos.length === 0 && !querySnapshot.empty) {
-        console.warn("getFreshAndTrendingVideos: Videos were fetched, but the list is empty after mapping. Check 'mapDocToNomadVideo' warnings for data structure issues in the fetched recent videos.");
-    } else if (videos.length === 0 && querySnapshot.empty) {
-        console.warn("getFreshAndTrendingVideos: No videos found. Collection might be empty, no videos in the last 90 days, or the required composite index is missing/misconfigured.");
-    }
-    return videos;
+    return topVideos;
   } catch (error) {
-    console.error("Error fetching fresh and trending videos:", error);
-    if (error instanceof Error && error.message.includes("query requires an index")) {
-        console.warn("Firestore query for Fresh & Trending Videos REQUIRES A COMPOSITE INDEX (on 'publishedAt' (descending) then 'viewCount' (descending), with 'publishedAt' used in the 'where' clause). Please ensure this index is created and enabled in the Firebase Console. The error message should contain a link to create it.");
-    }
+    console.error("Error processing fresh and trending videos from JSON:", error);
     return [];
   }
 }
 
 export async function getNomadsHoodPodcastVideos(): Promise<NomadVideo[]> {
   try {
-    const videosCollectionRef = collection(db, 'nomad-videos');
-    const q = query(videosCollectionRef, orderBy('publishedAt', 'desc'), limit(4));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.empty) {
-        console.warn("getNomadsHoodPodcastVideos: Firestore query (orderBy publishedAt desc) returned an empty snapshot. No documents matched. Ensure 'nomad-videos' has documents with Firestore Timestamp 'publishedAt'. Check for index requirements if this persists.");
-    }
-
-    const videos = querySnapshot.docs.map(mapDocToNomadVideo);
+    const sortedVideos = [...allVideos].sort((a, b) => {
+        try {
+            return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+        } catch (e) {
+            console.warn(`getNomadsHoodPodcastVideos: Could not parse publishedAt date for video ID ${a.id} or ${b.id}.`);
+            return 0;
+        }
+    });
+    const topVideos = sortedVideos.slice(0, 4);
     
-    if (videos.length === 0 && !querySnapshot.empty) {
-        console.warn("getNomadsHoodPodcastVideos: Videos were fetched from Firestore, but the list is empty after mapping. Check 'mapDocToNomadVideo' warnings for data structure issues in the fetched recent videos.");
-    } else if (videos.length === 0 && querySnapshot.empty) {
-        console.warn("getNomadsHoodPodcastVideos: No videos found. The 'nomad-videos' collection might be empty or no documents met the query criteria (orderBy publishedAt desc).");
+    if (topVideos.length === 0 && allVideos.length > 0) {
+        console.warn("getNomadsHoodPodcastVideos: Videos were available, but the list is empty after sorting. Check publishedAt dates.");
+    } else if (allVideos.length === 0) {
+        console.warn("getNomadsHoodPodcastVideos: No videos found in local JSON data.");
     }
-    return videos;
+    return topVideos;
   } catch (error) {
-    console.error("Error fetching NomadsHood Podcast videos:", error);
-    if (error instanceof Error && error.message.includes("query requires an index")) {
-        console.warn("Firestore query for NomadsHood Podcast (orderBy 'publishedAt' desc) may require an index. Please check Firebase Console. The error message should provide a link. The required index is likely on 'publishedAt' (descending).");
-    }
+    console.error("Error fetching NomadsHood Podcast videos from JSON:", error);
     return [];
   }
 }
