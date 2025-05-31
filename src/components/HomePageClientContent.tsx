@@ -7,15 +7,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Image from 'next/image';
 import Link from 'next/link';
 import { List, Lightbulb, Users, MapPin, Video, Globe, Star, MessageSquare, Send, Youtube, Film } from 'lucide-react';
-import type { ColivingSpace, CommunityLink, CountrySpecificCommunityLinks } from '@/types';
+import type { ColivingSpace, CommunityLink, CountrySpecificCommunityLinks, CountryData } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface CountryDisplayData {
   name: string;
   count: number;
-  imageUrl: string;
-  dataAiHint: string;
+  imageUrl: string; // This is the country's main visual/cover image
+  dataAiHint: string; // For main visual
+  flagImageUrl?: string;
+  flagEmoji?: string;
+  linkName: string; // Name used for the link URL
 }
 
 export interface HomePageYouTubeVideo {
@@ -28,29 +31,23 @@ export interface HomePageYouTubeVideo {
 
 interface HomePageClientContentProps {
   allSpaces: ColivingSpace[];
+  allCountries: CountryData[];
   youTubeVideos: HomePageYouTubeVideo[];
   countryCommunityLinks: CountrySpecificCommunityLinks[];
 }
 
-export function HomePageClientContent({ 
-  allSpaces, 
-  youTubeVideos, 
-  countryCommunityLinks 
+export function HomePageClientContent({
+  allSpaces,
+  allCountries,
+  youTubeVideos,
+  countryCommunityLinks
 }: HomePageClientContentProps) {
   const [selectedCountryForCommunities, setSelectedCountryForCommunities] = useState<string | null>(null);
   const [displayedCommunityLinks, setDisplayedCommunityLinks] = useState<CommunityLink[]>([]);
 
-  const countryCounts: { [country: string]: number } = useMemo(() => {
-    const counts: { [country: string]: number } = {};
-    allSpaces.forEach(space => {
-      if (space && space.country) { 
-        counts[space.country] = (counts[space.country] || 0) + 1;
-      }
-    });
-    return counts;
-  }, [allSpaces]);
-
   const topCountriesData: CountryDisplayData[] = useMemo(() => {
+    if (!allCountries || allCountries.length === 0) return [];
+
     const countrySpecificImageHints: { [key: string]: string } = {
       "Indonesia": "bali tropical",
       "Portugal": "lisbon tram",
@@ -58,25 +55,28 @@ export function HomePageClientContent({
       "Japan": "tokyo street",
       "South Africa": "cape town mountain",
       "Colombia": "medellin valley",
-      "Spain": "barcelona gaudi", 
+      "Spain": "barcelona gaudi",
     };
-    return Object.entries(countryCounts)
-    .map(([countryName, count]) => {
-      const hintKey = countryName.split(" ").slice(0,1).join("").toLowerCase();
-      const defaultHint = `${hintKey} landmark`;
-      return {
-        name: countryName,
-        count: count,
-        imageUrl: `https://placehold.co/600x400/E0E0E0/757575.png`, 
-        dataAiHint: (countrySpecificImageHints[countryName] || defaultHint).split(" ").slice(0,2).join(" "),
-      };
-    })
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10); // Get top 10 countries
-  } , [countryCounts]);
-  
+
+    return [...allCountries]
+      .sort((a, b) => (b.coliving_count || 0) - (a.coliving_count || 0))
+      .slice(0, 10)
+      .map(country => {
+        const hintKey = country.name.split(" ").slice(0, 1).join("").toLowerCase();
+        const defaultHint = `${hintKey} landmark`;
+        return {
+          name: country.name,
+          count: country.coliving_count || 0,
+          imageUrl: country.cover_image || `https://placehold.co/600x400/E0E0E0/757575.png`,
+          dataAiHint: (countrySpecificImageHints[country.name] || defaultHint).split(" ").slice(0, 2).join(" "),
+          flagImageUrl: country.flagImageUrl,
+          flagEmoji: country.flag,
+          linkName: country.name,
+        };
+      });
+  }, [allCountries]);
+
   const featuredSpaces = useMemo(() => {
-    // Sort by rating (desc) and then by reviews_count (desc) as a tie-breaker
     const sortedSpaces = [...allSpaces].sort((a, b) => {
       if ((b.rating ?? 0) !== (a.rating ?? 0)) {
         return (b.rating ?? 0) - (a.rating ?? 0);
@@ -88,9 +88,9 @@ export function HomePageClientContent({
 
   const uniqueCountriesForSelector = useMemo(() => {
     const countries = new Set<string>();
-    allSpaces.forEach(space => {
-      if (space && space.country) { 
-        countries.add(space.country);
+    allCountries.forEach(country => {
+      if (country && country.name) {
+        countries.add(country.name);
       }
     });
     countryCommunityLinks.forEach(countryLinkData => {
@@ -99,7 +99,7 @@ export function HomePageClientContent({
       }
     });
     return Array.from(countries).sort();
-  }, [allSpaces, countryCommunityLinks]);
+  }, [allCountries, countryCommunityLinks]);
 
   const handleCountryChangeForCommunities = (countryName: string) => {
     setSelectedCountryForCommunities(countryName);
@@ -184,7 +184,7 @@ export function HomePageClientContent({
           </CardContent>
         </Card>
       </section>
-      
+
       <section className="py-10">
         <div className="text-center mb-10">
           <Film className="h-12 w-12 text-primary mx-auto mb-2" />
@@ -199,7 +199,7 @@ export function HomePageClientContent({
                   src={video.thumbnailUrl}
                   alt={video.title}
                   fill
-                  style={{objectFit: 'cover'}}
+                  style={{ objectFit: 'cover' }}
                   data-ai-hint={video.dataAiHint}
                 />
               </div>
@@ -231,9 +231,9 @@ export function HomePageClientContent({
         {topCountriesData.length > 0 ? (
           <div className="flex overflow-x-auto space-x-4 sm:space-x-6 pb-4 -mb-4 pl-1 sm:pl-0">
             {topCountriesData.map((country) => (
-              <Link 
-                key={country.name} 
-                href={`/coliving?country=${encodeURIComponent(country.name)}`} 
+              <Link
+                key={country.name}
+                href={`/coliving?country=${encodeURIComponent(country.linkName)}`}
                 className="block group rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-w-[280px] sm:min-w-[300px] flex-shrink-0"
               >
                 <Card className="h-full transition-all duration-300 ease-in-out group-hover:shadow-xl group-focus-within:shadow-xl group-hover:border-primary/50 group-focus-within:border-primary/50 border border-transparent">
@@ -246,6 +246,22 @@ export function HomePageClientContent({
                       data-ai-hint={country.dataAiHint}
                       sizes="(max-width: 640px) 280px, 300px"
                     />
+                    {country.flagImageUrl ? (
+                      <div className="absolute top-3 right-3 w-10 h-7 rounded-sm overflow-hidden shadow-md border border-white/50">
+                        <Image
+                          src={country.flagImageUrl}
+                          alt={`${country.name} flag`}
+                          fill
+                          className="object-cover"
+                          data-ai-hint={`flag ${country.name.toLowerCase()}`}
+                        />
+                      </div>
+                    ) : country.flagEmoji ? (
+                      <div className="absolute top-3 right-3 text-3xl bg-black/20 p-1 rounded-sm shadow-md" 
+                           aria-label={`${country.name} flag`}>
+                        {country.flagEmoji}
+                      </div>
+                    ) : null}
                   </div>
                   <CardHeader className="p-4">
                     <CardTitle className="text-xl">{country.name}</CardTitle>
@@ -275,7 +291,7 @@ export function HomePageClientContent({
             <ColivingCard key={space.id} space={space} showViewDetailsButton={true} />
           ))}
         </div>
-         {allSpaces.length > 0 && featuredSpaces.length === 0 && ( 
+         {allSpaces.length > 0 && featuredSpaces.length === 0 && (
           <p className="text-center text-muted-foreground">Loading featured spaces...</p>
         )}
         {allSpaces.length === 0 && (
@@ -332,4 +348,3 @@ export function HomePageClientContent({
     </div>
   );
 }
-
