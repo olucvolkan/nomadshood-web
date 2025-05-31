@@ -11,16 +11,14 @@ import type { ColivingSpace, CommunityLink, CountrySpecificCommunityLinks, Count
 import { ColivingCard } from '@/components/ColivingCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// Old interface, replaced by NomadVideo from @/types
-// export interface HomePageYouTubeVideo { ... }
 
 interface HomePageClientContentProps {
   allSpaces: ColivingSpace[];
   allCountries: CountryData[];
-  // youTubeVideos: HomePageYouTubeVideo[]; // Old prop
   discoveryVideos: NomadVideo[];
   communityFavoritesVideos: NomadVideo[];
   freshTrendingVideos: NomadVideo[];
+  nomadsHoodPodcastVideos: NomadVideo[]; // New prop for the podcast list
   countryCommunityLinks: CountrySpecificCommunityLinks[];
 }
 
@@ -30,7 +28,7 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[] }> = ({ t
     return (
       <div>
         <h3 className="text-2xl font-semibold mb-4">{title}</h3>
-        <p className="text-muted-foreground">No videos available for this section yet.</p>
+        <p className="text-muted-foreground">No videos available for this section yet. This might be due to missing data in Firestore, incorrect data structure, or a Firestore query issue (check console for index warnings).</p>
       </div>
     );
   }
@@ -73,10 +71,10 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[] }> = ({ t
 export function HomePageClientContent({
   allSpaces,
   allCountries,
-  // youTubeVideos, // Old prop
   discoveryVideos,
   communityFavoritesVideos,
   freshTrendingVideos,
+  nomadsHoodPodcastVideos, // Destructure new prop
   countryCommunityLinks
 }: HomePageClientContentProps) {
   const [selectedCountryForCommunities, setSelectedCountryForCommunities] = useState<string | null>(null);
@@ -160,7 +158,7 @@ export function HomePageClientContent({
       const countryDetail = allCountries.find(c => c.name.toLowerCase() === dest.name.toLowerCase());
       const imageUrl = baseStorageUrl 
         ? `${baseStorageUrl}${dest.imageFile}?alt=media`
-        : `https://placehold.co/600x400.png`; // Fallback if bucket not set
+        : `https://placehold.co/600x400.png`; 
 
       return {
         id: countryDetail?.id || dest.name,
@@ -234,7 +232,6 @@ export function HomePageClientContent({
         </Card>
       </section>
 
-      {/* New Video Podcast Section */}
       <section className="py-10">
         <div className="text-center mb-10">
           <Podcast className="h-12 w-12 text-primary mx-auto mb-2" />
@@ -242,6 +239,7 @@ export function HomePageClientContent({
           <p className="text-lg text-foreground/70 mt-2">Curated video content for the aspiring and seasoned digital nomad.</p>
         </div>
         <div className="space-y-12">
+          <VideoListSection title="NomadsHood Podcast" videos={nomadsHoodPodcastVideos} />
           <VideoListSection title="Discovery Page" videos={discoveryVideos} />
           <VideoListSection title="Community Favorites" videos={communityFavoritesVideos} />
           <VideoListSection title="Fresh & Trending" videos={freshTrendingVideos} />

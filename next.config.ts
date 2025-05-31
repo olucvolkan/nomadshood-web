@@ -64,6 +64,12 @@ const nextConfig: NextConfig = {
         hostname: 'villasantafe.eu', // Added for this specific error
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com', // Added for YouTube thumbnails
+        port: '',
+        pathname: '/**',
       }
     ],
   },
