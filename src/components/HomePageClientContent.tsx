@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, Lightbulb, Users, MapPin, Globe, Star, MessageSquare, Send, Youtube, Film, Compass, Podcast } from 'lucide-react';
+import { List, Lightbulb, Users, MapPin, Globe, Star, MessageSquare, Send, Youtube, Film, Compass, Podcast, Eye } from 'lucide-react';
 import type { ColivingSpace, CommunityLink, CountrySpecificCommunityLinks, CountryData, NomadVideo } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -15,30 +15,34 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface HomePageClientContentProps {
   allSpaces: ColivingSpace[];
   allCountries: CountryData[];
-  discoveryVideos: NomadVideo[];
-  communityFavoritesVideos: NomadVideo[];
-  freshTrendingVideos: NomadVideo[];
-  nomadsHoodPodcastVideos: NomadVideo[]; // New prop for the podcast list
+  mostWatchedVideos: NomadVideo[];
+  nomadsHoodPodcastVideos: NomadVideo[];
   countryCommunityLinks: CountrySpecificCommunityLinks[];
 }
 
 // Helper component for rendering a list of videos
-const VideoListSection: React.FC<{ title: string; videos: NomadVideo[] }> = ({ title, videos }) => {
+const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: React.ElementType }> = ({ title, videos, icon: IconComponent }) => {
   if (!videos || videos.length === 0) {
     return (
       <div>
-        <h3 className="text-2xl font-semibold mb-4">{title}</h3>
-        <p className="text-muted-foreground">No videos available for this section yet. This might be due to missing data in Firestore, incorrect data structure, or a Firestore query issue (check console for index warnings).</p>
+        <h3 className="text-2xl font-semibold mb-4 flex items-center">
+          {IconComponent && <IconComponent className="mr-3 h-7 w-7 text-primary" />}
+          {title}
+        </h3>
+        <p className="text-muted-foreground">No videos available for this section yet. This might be due to missing data (check Firestore collection '{title === "NomadsHood Podcast" ? "nomadsHood-videos" : "nomad-videos.json"}' or local JSON), incorrect data structure, or a Firestore query issue (check console for index warnings).</p>
       </div>
     );
   }
 
   return (
     <div>
-      <h3 className="text-2xl font-semibold mb-6">{title}</h3>
-      <div className="flex overflow-x-auto space-x-4 sm:space-x-6 pb-4 -mb-4 pl-1 sm:pl-0">
+      <h3 className="text-2xl font-semibold mb-6 flex items-center">
+        {IconComponent && <IconComponent className="mr-3 h-7 w-7 text-primary" />}
+        {title}
+      </h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {videos.map((video) => (
-          <Card key={video.id} className="min-w-[280px] sm:min-w-[300px] flex-shrink-0 shadow-lg hover:shadow-xl transition-shadow">
+          <Card key={video.id} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow">
             <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
               <Image
                 src={video.thumbnailUrl}
@@ -46,17 +50,17 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[] }> = ({ t
                 fill
                 style={{ objectFit: 'cover' }}
                 data-ai-hint={video.dataAiHint || 'video thumbnail'}
-                sizes="(max-width: 640px) 280px, 300px"
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
               />
             </div>
-            <CardHeader className="p-4">
-              <CardTitle className="text-lg line-clamp-2 h-[3.25rem]">{video.title}</CardTitle>
+            <CardHeader className="p-4 flex-grow">
+              <CardTitle className="text-md leading-tight line-clamp-3 h-[4.5em]">{video.title}</CardTitle> {/* Adjusted for 3 lines approx */}
             </CardHeader>
             <CardFooter className="p-4 pt-0">
               <Button asChild variant="outline" className="w-full">
                 <Link href={video.youtubeUrl} target="_blank" rel="noopener noreferrer">
                   <Youtube className="mr-2 h-5 w-5 text-red-600" />
-                  Watch on YouTube
+                  Watch
                 </Link>
               </Button>
             </CardFooter>
@@ -71,18 +75,16 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[] }> = ({ t
 export function HomePageClientContent({
   allSpaces,
   allCountries,
-  discoveryVideos,
-  communityFavoritesVideos,
-  freshTrendingVideos,
-  nomadsHoodPodcastVideos, // Destructure new prop
+  mostWatchedVideos,
+  nomadsHoodPodcastVideos,
   countryCommunityLinks
 }: HomePageClientContentProps) {
   const [selectedCountryForCommunities, setSelectedCountryForCommunities] = useState<string | null>(null);
   const [displayedCommunityLinks, setDisplayedCommunityLinks] = useState<CommunityLink[]>([]);
-  
+
   const popularCountriesData: CountryData[] = useMemo(() => {
     return [...allCountries]
-      .filter(country => country.name.toLowerCase() !== 'israel') 
+      .filter(country => country.name.toLowerCase() !== 'israel')
       .sort((a, b) => {
         const countDiff = (b.coliving_count || 0) - (a.coliving_count || 0);
         if (countDiff !== 0) return countDiff;
@@ -140,37 +142,6 @@ export function HomePageClientContent({
         return <Globe className="mr-2 h-5 w-5" />;
     }
   };
-
-  const fixedDestinations = useMemo(() => {
-    const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
-    const baseStorageUrl = storageBucket 
-      ? `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/`
-      : null;
-
-    const destinations = [
-      { name: "Brazil", imageFile: "explore-top-destinations%2Fbrazil.webp", hint: "brazil rio de janeiro" },
-      { name: "Mexico", imageFile: "explore-top-destinations%2Fmexico.jpg", hint: "mexico tulum beach" },
-      { name: "Portugal", imageFile: "explore-top-destinations%2Fportugal.avif", hint: "portugal lisbon city" },
-      { name: "Spain", imageFile: "explore-top-destinations%2Fspain.jpg", hint: "spain barcelona coast" },
-    ];
-
-    return destinations.map(dest => {
-      const countryDetail = allCountries.find(c => c.name.toLowerCase() === dest.name.toLowerCase());
-      const imageUrl = baseStorageUrl 
-        ? `${baseStorageUrl}${dest.imageFile}?alt=media`
-        : `https://placehold.co/600x400.png`; 
-
-      return {
-        id: countryDetail?.id || dest.name,
-        name: dest.name,
-        imageUrl: imageUrl,
-        flagImageUrl: countryDetail?.flagImageUrl,
-        flag: countryDetail?.flag || '🏳️',
-        coliving_count: countryDetail?.coliving_count || 0,
-        dataAiHint: dest.hint,
-      };
-    });
-  }, [allCountries]);
 
 
   return (
@@ -234,15 +205,12 @@ export function HomePageClientContent({
 
       <section className="py-10">
         <div className="text-center mb-10">
-          <Podcast className="h-12 w-12 text-primary mx-auto mb-2" />
-          <h2 className="text-3xl font-semibold">NomadsHood Coliving Podcast Listesi</h2>
+          <h2 className="text-3xl font-semibold">NomadsHood Video Hub</h2>
           <p className="text-lg text-foreground/70 mt-2">Curated video content for the aspiring and seasoned digital nomad.</p>
         </div>
         <div className="space-y-12">
-          <VideoListSection title="NomadsHood Podcast" videos={nomadsHoodPodcastVideos} />
-          <VideoListSection title="Discovery Page" videos={discoveryVideos} />
-          <VideoListSection title="Community Favorites" videos={communityFavoritesVideos} />
-          <VideoListSection title="Fresh & Trending" videos={freshTrendingVideos} />
+          <VideoListSection title="NomadsHood Podcast" videos={nomadsHoodPodcastVideos} icon={Podcast} />
+          <VideoListSection title="Most Watched Videos" videos={mostWatchedVideos} icon={Eye} />
         </div>
       </section>
 
@@ -262,9 +230,9 @@ export function HomePageClientContent({
                 className="block group"
               >
                 <Card className="h-full overflow-hidden shadow-md hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col items-center justify-center text-center p-4">
-                  
+
                     {country.flagImageUrl ? (
-                      <div className="relative w-16 h-10 mb-3"> 
+                      <div className="relative w-16 h-10 mb-3">
                         <Image
                           src={country.flagImageUrl}
                           alt={`${country.name} flag`}

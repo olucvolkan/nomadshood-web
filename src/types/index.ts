@@ -56,8 +56,8 @@ export interface ColivingSpace {
     public_transport?: string;
     bike_rental?: boolean;
   };
-  created_at?: string; 
-  updated_at?: string; 
+  created_at?: string;
+  updated_at?: string;
   status?: string;
   brand?: string;
 
@@ -130,7 +130,7 @@ export interface CountryData {
   currency?: string;
   timezone?: string;
   popular_cities?: string[];
-  coliving_count?: number; 
+  coliving_count?: number;
 }
 
 // Type for Nomad YouTube Videos from JSON
@@ -170,16 +170,16 @@ export interface NomadVideoJsonItem {
 
 // Standardized NomadVideo type used in the application
 export interface NomadVideo {
-  id: string; // Mapped from videoId
+  id: string; // Mapped from videoId or Firestore document ID
   title: string;
   thumbnailUrl: string; // Derived from thumbnails.high.url or fallbacks
-  youtubeUrl: string; // Mapped from url
-  viewCount: number; // Parsed from statistics.viewCount
-  likeCount: number; // Parsed from statistics.likeCount
-  commentCount: number; // Parsed from statistics.commentCount
-  duration: number; // Parsed from statistics.duration (in seconds)
-  publishedAt: string; // ISO string date (already in this format)
-  destination?: string; 
-  dataAiHint?: string; 
-  engagementScore?: number; // Calculated for Community Favorites
+  youtubeUrl: string; // Mapped from url or a direct field in Firestore
+  viewCount: number; // Parsed from statistics.viewCount or direct field
+  likeCount: number; // Parsed from statistics.likeCount or direct field
+  commentCount: number; // Parsed from statistics.commentCount or direct field
+  duration: number; // Parsed from statistics.duration (in seconds) or direct field
+  publishedAt: string; // ISO string date (from JSON or converted from Firestore Timestamp)
+  destination?: string;
+  dataAiHint?: string;
+  engagementScore?: number; // Calculated for Community Favorites (if that list is re-enabled)
 }
