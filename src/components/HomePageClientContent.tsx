@@ -37,6 +37,7 @@ export function HomePageClientContent({
   
   const popularCountriesData: CountryData[] = useMemo(() => {
     return [...allCountries]
+      .filter(country => country.name.toLowerCase() !== 'israel') // Exclude Israel
       .sort((a, b) => {
         const countDiff = (b.coliving_count || 0) - (a.coliving_count || 0);
         if (countDiff !== 0) return countDiff;
