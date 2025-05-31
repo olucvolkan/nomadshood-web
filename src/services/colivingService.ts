@@ -121,15 +121,16 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
   }
   
   let processedCoordinates: { latitude?: number; longitude?: number } | undefined = undefined;
-  if (data.coordinates && (data.coordinates.latitude !== undefined || data.coordinates.longitude !== undefined)) {
-    processedCoordinates = {
-      latitude: parseCoordinate(data.coordinates.latitude),
-      longitude: parseCoordinate(data.coordinates.longitude),
-    };
-  } else if (data.lat !== undefined || data.lng !== undefined) {
+  // Directly use lat and lng from the document root if they exist
+  if (data.lat !== undefined || data.lng !== undefined) {
      processedCoordinates = {
       latitude: parseCoordinate(data.lat),
       longitude: parseCoordinate(data.lng),
+    };
+  } else if (data.coordinates && (data.coordinates.latitude !== undefined || data.coordinates.longitude !== undefined)) { // Fallback to nested coordinates if lat/lng not found
+    processedCoordinates = {
+      latitude: parseCoordinate(data.coordinates.latitude),
+      longitude: parseCoordinate(data.coordinates.longitude),
     };
   }
 
@@ -142,9 +143,7 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     country: data.country || 'Unknown Country',
     city: data.city || 'Unknown City',
     address: displayAddress,
-    lat: processedCoordinates?.latitude, // Keep for backward compatibility if used elsewhere
-    lng: processedCoordinates?.longitude, // Keep for backward compatibility
-    coordinates: processedCoordinates,
+    coordinates: processedCoordinates, // This will now use the direct lat/lng if available
     description: data.description || 'No description available.',
     amenities: amenitiesArray,
     currency: data.currency || data.budget_range?.currency,
@@ -292,3 +291,4 @@ export async function getAllCountriesFromDB(): Promise<CountryData[]> {
     return [];
   }
 }
+
