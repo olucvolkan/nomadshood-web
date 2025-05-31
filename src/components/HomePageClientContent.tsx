@@ -199,7 +199,7 @@ export function HomePageClientContent({
           <p className="text-lg text-foreground/70 mt-2">Discover top countries for digital nomads.</p>
         </div>
         {popularCountriesData.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {popularCountriesData.map((country) => (
               <Link
                 key={country.id}
@@ -306,3 +306,4 @@ export function HomePageClientContent({
     </div>
   );
 }
+
