@@ -14,11 +14,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface CountryDisplayData {
   name: string;
   count: number;
-  imageUrl: string; // This is the country's main visual/cover image
-  dataAiHint: string; // For main visual
+  imageUrl: string;
+  dataAiHint: string;
   flagImageUrl?: string;
   flagEmoji?: string;
-  linkName: string; // Name used for the link URL
+  linkName: string;
 }
 
 export interface HomePageYouTubeVideo {
@@ -49,25 +49,28 @@ export function HomePageClientContent({
     if (!allCountries || allCountries.length === 0) return [];
 
     const countrySpecificImageHints: { [key: string]: string } = {
-      "Indonesia": "bali tropical",
-      "Portugal": "lisbon tram",
-      "USA": "new york city",
-      "Japan": "tokyo street",
-      "South Africa": "cape town mountain",
-      "Colombia": "medellin valley",
-      "Spain": "barcelona gaudi",
+      "Indonesia": "raja ampat beach cliffs", // Updated
+      "Portugal": "porto colorful houses river", // Updated
+      "USA": "new york city skyline", // Kept, or could be more scenic like 'grand canyon'
+      "Japan": "kyoto temple autumn", // Updated
+      "South Africa": "cape town table mountain beach", // Updated
+      "Colombia": "guatape rock lake", // Updated
+      "Spain": "seville plaza espana", // Updated
+      "Thailand": "phi phi islands thailand",
+      "Mexico": "tulum beach ruins",
+      "Germany": "bavaria neuschwanstein castle",
+      // Add more specific hints for other countries if they appear in top
     };
 
     return [...allCountries]
       .sort((a, b) => (b.coliving_count || 0) - (a.coliving_count || 0))
-      .slice(0, 10)
+      .slice(0, 10) // Show top 10 or adjust as needed
       .map(country => {
-        const hintKey = country.name.split(" ").slice(0, 1).join("").toLowerCase();
-        const defaultHint = `${hintKey} landmark`;
+        const defaultHint = `${country.name.toLowerCase()} landmark scenic`;
         return {
           name: country.name,
           count: country.coliving_count || 0,
-          imageUrl: country.cover_image || `https://placehold.co/600x400/E0E0E0/757575.png`,
+          imageUrl: country.cover_image || `https://placehold.co/600x400/E0E0E0/757575.png`, // Uses country.cover_image from Firestore
           dataAiHint: (countrySpecificImageHints[country.name] || defaultHint).split(" ").slice(0, 2).join(" "),
           flagImageUrl: country.flagImageUrl,
           flagEmoji: country.flag,
@@ -229,49 +232,42 @@ export function HomePageClientContent({
           <p className="text-lg text-foreground/70 mt-2">Discover the most popular coliving hotspots around the world.</p>
         </div>
         {topCountriesData.length > 0 ? (
-          <div className="flex overflow-x-auto space-x-4 sm:space-x-6 pb-4 -mb-4 pl-1 sm:pl-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {topCountriesData.map((country) => (
               <Link
                 key={country.name}
                 href={`/coliving?country=${encodeURIComponent(country.linkName)}`}
-                className="block group rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-w-[280px] sm:min-w-[300px] flex-shrink-0"
+                className="block group rounded-lg overflow-hidden shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-300 ease-in-out"
               >
-                <Card className="h-full transition-all duration-300 ease-in-out group-hover:shadow-xl group-focus-within:shadow-xl group-hover:border-primary/50 group-focus-within:border-primary/50 border border-transparent">
-                  <div className="relative h-48 w-full">
-                    <Image
-                      src={country.imageUrl}
-                      alt={`View of ${country.name}`}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      data-ai-hint={country.dataAiHint}
-                      sizes="(max-width: 640px) 280px, 300px"
-                    />
-                    {country.flagImageUrl ? (
-                      <div className="absolute top-3 right-3 w-10 h-7 rounded-sm overflow-hidden shadow-md border border-white/50">
-                        <Image
-                          src={country.flagImageUrl}
-                          alt={`${country.name} flag`}
-                          fill
-                          className="object-cover"
-                          data-ai-hint={`flag ${country.name.toLowerCase()}`}
-                        />
+                <div className="relative w-full h-72 sm:h-80">
+                  <Image
+                    src={country.imageUrl}
+                    alt={`Picturesque view of ${country.name}`}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    data-ai-hint={country.dataAiHint}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                  />
+                  <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-auto"> {/* Adjusted for better responsiveness */}
+                    <div className="bg-white/95 dark:bg-neutral-900/95 backdrop-blur-sm p-3 rounded-md shadow-md inline-block">
+                      <div className="flex items-center mb-1">
+                        {country.flagImageUrl ? (
+                          <div className="relative w-6 h-4 mr-2 rounded-sm overflow-hidden border border-gray-300 dark:border-gray-700">
+                            <Image src={country.flagImageUrl} alt={`${country.name} flag`} fill className="object-cover" />
+                          </div>
+                        ) : country.flagEmoji ? (
+                          <span className="mr-2 text-lg" role="img" aria-label={`${country.name} flag`}>{country.flagEmoji}</span>
+                        ) : null}
+                        <h3 className="text-base sm:text-lg font-semibold text-neutral-800 dark:text-white whitespace-nowrap">
+                          {country.name}
+                        </h3>
                       </div>
-                    ) : country.flagEmoji ? (
-                      <div className="absolute top-3 right-3 text-3xl bg-black/20 p-1 rounded-sm shadow-md" 
-                           aria-label={`${country.name} flag`}>
-                        {country.flagEmoji}
-                      </div>
-                    ) : null}
+                      <p className="text-xs text-neutral-600 dark:text-neutral-300">
+                        Browse {country.count} coliving space{country.count !== 1 ? 's' : ''}
+                      </p>
+                    </div>
                   </div>
-                  <CardHeader className="p-4">
-                    <CardTitle className="text-xl">{country.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-0">
-                    <p className="text-sm text-muted-foreground">
-                      {country.count} coliving space{country.count !== 1 ? 's' : ''} available
-                    </p>
-                  </CardContent>
-                </Card>
+                </div>
               </Link>
             ))}
           </div>
@@ -348,3 +344,4 @@ export function HomePageClientContent({
     </div>
   );
 }
+
