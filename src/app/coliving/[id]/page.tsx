@@ -10,19 +10,23 @@ import { Separator } from '@/components/ui/separator';
 import {
   ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Briefcase, Home, ExternalLink,
   Star, Users2, Wifi, Clock, LanguagesIcon, Mountain, Building2, Info,
-  CalendarClock, Thermometer, Globe2, Smile, LocateFixed, Map, Plane, Bus, Bike, Phone, Mail
+  CalendarClock, Thermometer, Globe2, Smile, LocateFixed, Map, Plane, Bus, Bike, Phone, Mail, AlertCircle
 } from 'lucide-react';
 import { getColivingSpaceById } from '@/services/colivingService';
 
-export default async function ColivingDetailPage({ params }: { params: { id: string } }) {
+export default async function ColivingDetailPage({ params: paramsProp }: { params: { id: string } }) {
+  const params = await paramsProp;
   const space: ColivingSpace | null = await getColivingSpaceById(params.id);
 
   if (!space) {
     notFound();
   }
+  
+  console.log(`Coliving Detail Page for ID: ${params.id}, Coordinates:`, space.coordinates);
+
 
   const displayAddress = space.address || 'Location not specified';
-  const hasCoordinates = space.coordinates?.latitude && space.coordinates?.longitude;
+  const hasValidCoordinates = typeof space.coordinates?.latitude === 'number' && typeof space.coordinates?.longitude === 'number';
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -217,10 +221,10 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
             </div>
           )}
         
-          {(hasCoordinates || space.transportation) && (
+          {(hasValidCoordinates || space.transportation) && (
             <div className="mt-4">
               <h3 className="text-lg font-semibold mb-4 text-foreground">Location & Transportation:</h3>
-              {hasCoordinates && (
+              {hasValidCoordinates && space.coordinates?.latitude && space.coordinates?.longitude && (
                 <div className="mb-4">
                   <iframe
                     width="100%"
@@ -228,15 +232,21 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
                     loading="lazy"
                     allowFullScreen
                     className="rounded-md border shadow-sm"
-                    src={`https://maps.google.com/maps?q=${space.coordinates!.latitude},${space.coordinates!.longitude}&z=15&output=embed&hl=en`}
+                    src={`https://maps.google.com/maps?q=${space.coordinates.latitude},${space.coordinates.longitude}&z=15&output=embed&hl=en`}
                     title={`Map of ${space.name}`}
                   ></iframe>
-                   <Link href={`https://www.google.com/maps?q=${space.coordinates!.latitude},${space.coordinates!.longitude}`} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center text-sm text-primary hover:underline">
+                   <Link href={`https://www.google.com/maps?q=${space.coordinates.latitude},${space.coordinates.longitude}`} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center text-sm text-primary hover:underline">
                     <Map className="h-4 w-4 mr-2" />
-                    View on Google Maps ({space.coordinates!.latitude.toFixed(4)}, {space.coordinates!.longitude.toFixed(4)})
+                    View on Google Maps ({space.coordinates.latitude.toFixed(4)}, {space.coordinates.longitude.toFixed(4)})
                     <ExternalLink className="ml-1 h-3 w-3" />
                   </Link>
                 </div>
+              )}
+              {!hasValidCoordinates && space.transportation && (
+                 <div className="flex items-center text-sm text-muted-foreground p-3 bg-muted/30 rounded-md mb-4">
+                    <AlertCircle className="h-4 w-4 mr-2 text-amber-500" />
+                    Map data is currently unavailable for this location.
+                  </div>
               )}
               {(space.transportation?.airport_distance || space.transportation?.public_transport || typeof space.transportation?.bike_rental === 'boolean') && (
                 <div className="space-y-2 text-sm">

@@ -3,6 +3,18 @@ import { db } from '@/lib/firebase'; // db is Firestore instance
 import { collection, getDocs, doc, getDoc, type DocumentData, type QueryDocumentSnapshot, query, Timestamp } from 'firebase/firestore';
 import type { ColivingSpace, CountryData } from '@/types';
 
+// Helper function to parse coordinate values to number if they are string representations
+const parseCoordinate = (value: any): number | undefined => {
+  if (typeof value === 'number') {
+    return value;
+  }
+  if (typeof value === 'string') {
+    const parsed = parseFloat(value);
+    return isNaN(parsed) ? undefined : parsed;
+  }
+  return undefined;
+};
+
 // Helper function to map Firestore document to ColivingSpace
 const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | DocumentData): ColivingSpace => {
   const rawData = document.data();
@@ -52,14 +64,13 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     }
     try {
       const parsedUrl = new URL(url);
-      // Check for http or https protocol
       if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
         return false;
       }
-      // Simple check for common image extensions (optional but good practice)
       const path = parsedUrl.pathname.toLowerCase();
       if (!path.endsWith('.jpg') && !path.endsWith('.jpeg') && !path.endsWith('.png') && !path.endsWith('.gif') && !path.endsWith('.webp')) {
-        return false;
+        // Allow if no extension but path is not empty (could be a serving endpoint)
+        return path.length > 1; 
       }
       return true;
     } catch (e) {
@@ -67,26 +78,17 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     }
   };
 
-  // 2. Construct finalMainImageUrl (for detail page, larger image)
   let finalMainImageUrl: string | undefined = undefined;
 
-  // Try gallery first
   if (Array.isArray(data.gallery) && data.gallery.length > 0 && typeof data.gallery[0] === 'string' && isAbsoluteImageUrl(data.gallery[0])) {
     finalMainImageUrl = data.gallery[0];
   }
 
-  // Try cover_image if gallery didn't provide a URL
   if (!finalMainImageUrl && data.cover_image && typeof data.cover_image === 'string' && isAbsoluteImageUrl(data.cover_image)) {
     finalMainImageUrl = data.cover_image;
   }
   
-  // Fallback to finalLogoUrl if it's not the small placeholder and is a valid URL
-
-  // Final fallback to large placeholder if no valid main image found
   if (!finalMainImageUrl) {
-    if (finalMainImageUrl) { // Log if it was set but then deemed invalid
-        console.warn(`Document ID ${document.id}: 'finalMainImageUrl' ('${finalMainImageUrl}') was not a valid absolute URL. Using large placeholder.`);
-    }
     finalMainImageUrl = `https://placehold.co/600x400/E0E0E0/757575.png`;
   }
   
@@ -112,11 +114,25 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
   let displayAddress = 'Location not specified';
   if (data.location && typeof data.location === 'string' && data.location.trim() !== '') {
     displayAddress = data.location;
-  } else if (data.address && typeof data.address === 'string' && data.address.trim() !== '') { // Fallback to direct address field if location is missing
+  } else if (data.address && typeof data.address === 'string' && data.address.trim() !== '') {
     displayAddress = data.address;
   } else if (data.city && data.country) {
     displayAddress = `${data.city}, ${data.country}`;
   }
+  
+  let processedCoordinates: { latitude?: number; longitude?: number } | undefined = undefined;
+  if (data.coordinates && (data.coordinates.latitude !== undefined || data.coordinates.longitude !== undefined)) {
+    processedCoordinates = {
+      latitude: parseCoordinate(data.coordinates.latitude),
+      longitude: parseCoordinate(data.coordinates.longitude),
+    };
+  } else if (data.lat !== undefined || data.lng !== undefined) {
+     processedCoordinates = {
+      latitude: parseCoordinate(data.lat),
+      longitude: parseCoordinate(data.lng),
+    };
+  }
+
 
   return {
     id: document.id,
@@ -126,9 +142,9 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     country: data.country || 'Unknown Country',
     city: data.city || 'Unknown City',
     address: displayAddress,
-    lat: typeof data.lat === 'number' ? data.lat : (data.coordinates?.latitude),
-    lng: typeof data.lng === 'number' ? data.lng : (data.coordinates?.longitude),
-    coordinates: data.coordinates, // Keep original object if present
+    lat: processedCoordinates?.latitude, // Keep for backward compatibility if used elsewhere
+    lng: processedCoordinates?.longitude, // Keep for backward compatibility
+    coordinates: processedCoordinates,
     description: data.description || 'No description available.',
     amenities: amenitiesArray,
     currency: data.currency || data.budget_range?.currency,
@@ -140,7 +156,6 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     phone: data.phone,
     email: data.email,
     logo: data.logo, 
-// Suggested code may be subject to a license. Learn more: ~LicenseLog:1426092493.
     logoUrl: data.logo ?? `https://placehold.co/80x80/E0E0E0/757575.png`,
     cover_image: data.cover_image, 
     mainImageUrl: finalMainImageUrl,
@@ -157,8 +172,8 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     tags: Array.isArray(data.tags) ? data.tags.filter((t: any) => typeof t === 'string') : [],
     youtube_video_link: data.youtube_video_link,
     videoUrl: data.youtube_video_link,
-    contact: data.contact || { email: data.email, phone: data.phone, whatsapp: data.whatsappLink }, // Ensure contact object exists
-    whatsappLink: data.contact?.whatsapp || data.whatsapp, // Prioritize contact.whatsapp
+    contact: data.contact || { email: data.email, phone: data.phone, whatsapp: data.whatsappLink },
+    whatsappLink: data.contact?.whatsapp || data.whatsapp, 
     capacity: typeof data.capacity === 'number' ? data.capacity : undefined,
     minimum_stay: data.minimum_stay,
     check_in: data.check_in,
@@ -205,8 +220,6 @@ export async function getColivingSpaceById(id: string): Promise<ColivingSpace | 
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      // For single document, docSnap itself is the DocumentData, not QueryDocumentSnapshot
-      // So we directly pass it to mapDocToColivingSpace
       return mapDocToColivingSpace(docSnap);
     } else {
       console.warn(`No coliving space found with id: ${id} in Firestore.`);
@@ -255,7 +268,7 @@ const mapDocToCountryData = (document: QueryDocumentSnapshot<DocumentData> | Doc
     flag: data.flag || '🏳️',
     flagImageUrl: flagImageUrl,
     continent: data.continent || '',
- currency: data.currency || '',
+    currency: data.currency || '',
     timezone: data.timezone || '',
     popular_cities: Array.isArray(data.popular_cities) ? data.popular_cities.filter((pc: any) => typeof pc === 'string') : [],
     coliving_count: typeof data.coliving_count === 'number' ? data.coliving_count : 0,
