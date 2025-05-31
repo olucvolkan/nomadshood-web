@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Separator } from '@/components/ui/separator';
 import {
   ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Briefcase, Home, ExternalLink,
-  CheckCircle, XCircle, Tag, Star, Users2, Wifi, Clock, LanguagesIcon, Mountain, Building2, Info,
+  Star, Users2, Wifi, Clock, LanguagesIcon, Mountain, Building2, Info,
   CalendarClock, Thermometer, Globe2, Smile, LocateFixed, Map, Plane, Bus, Bike, Phone, Mail
 } from 'lucide-react';
 import { getColivingSpaceById } from '@/services/colivingService';
@@ -22,6 +22,7 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
   }
 
   const displayAddress = space.address || 'Location not specified';
+  const hasCoordinates = space.coordinates?.latitude && space.coordinates?.longitude;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -49,8 +50,8 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
 
         <CardHeader className="p-6">
           <div className="flex flex-col sm:flex-row items-start gap-4">
-            {space.logoUrl && (
-              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-md overflow-hidden border flex-shrink-0 mt-1 shadow-sm">
+            {space.logoUrl && !space.logoUrl.includes('placehold.co') && (
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-md overflow-hidden border flex-shrink-0 mt-1 shadow-sm bg-card p-1">
                 <Image
                   src={space.logoUrl}
                   alt={`${space.name || 'Coliving'} logo`}
@@ -108,9 +109,13 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
                 <span>Approx. Price: ${space.monthlyPrice} {space.currency || ''}/month</span>
               </div>
             )}
+             <div className="flex items-center">
+              <Building2 className="h-4 w-4 mr-2 text-primary" />
+              <span>Type: Coliving Space</span>
+            </div>
             <div className="flex items-center">
               <Briefcase className="h-4 w-4 mr-2 text-primary" />
-              <span>Coworking: {space.hasCoworking ? (space.coworking_access && typeof space.coworking_access === 'string' && !['yes', 'available', '24/7', 'true'].some(term => space.coworking_access!.toLowerCase().includes(term)) ? space.coworking_access : 'Available') : 'Not Available'}</span>
+              <span>Coworking: {space.hasCoworking ? (typeof space.coworking_access === 'string' && !['yes', 'available', '24/7', 'true', ''].some(term => space.coworking_access!.toLowerCase().includes(term)) ? space.coworking_access : 'Available') : 'Not Available'}</span>
             </div>
             <div className="flex items-center">
               <Home className="h-4 w-4 mr-2 text-primary" />
@@ -211,37 +216,50 @@ export default async function ColivingDetailPage({ params }: { params: { id: str
               </div>
             </div>
           )}
-
-          {(space.coordinates?.latitude && space.coordinates?.longitude || space.transportation) && (
+        
+          {(hasCoordinates || space.transportation) && (
             <div className="mt-4">
-              <h3 className="text-lg font-semibold mb-3 text-foreground">Location & Transportation:</h3>
-              <div className="space-y-2 text-sm">
-                {space.coordinates?.latitude && space.coordinates?.longitude && (
-                   <Link href={`https://www.google.com/maps?q=${space.coordinates.latitude},${space.coordinates.longitude}`} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-primary">
-                    <Map className="h-4 w-4 mr-2 text-primary" />
-                    View on Google Maps ({space.coordinates.latitude.toFixed(4)}, {space.coordinates.longitude.toFixed(4)})
+              <h3 className="text-lg font-semibold mb-4 text-foreground">Location & Transportation:</h3>
+              {hasCoordinates && (
+                <div className="mb-4">
+                  <iframe
+                    width="100%"
+                    height="300"
+                    loading="lazy"
+                    allowFullScreen
+                    className="rounded-md border shadow-sm"
+                    src={`https://maps.google.com/maps?q=${space.coordinates!.latitude},${space.coordinates!.longitude}&z=15&output=embed&hl=en`}
+                    title={`Map of ${space.name}`}
+                  ></iframe>
+                   <Link href={`https://www.google.com/maps?q=${space.coordinates!.latitude},${space.coordinates!.longitude}`} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center text-sm text-primary hover:underline">
+                    <Map className="h-4 w-4 mr-2" />
+                    View on Google Maps ({space.coordinates!.latitude.toFixed(4)}, {space.coordinates!.longitude.toFixed(4)})
                     <ExternalLink className="ml-1 h-3 w-3" />
                   </Link>
-                )}
-                {space.transportation?.airport_distance && (
-                  <div className="flex items-center">
-                    <Plane className="h-4 w-4 mr-2 text-primary" />
-                    <span>Airport Distance: {space.transportation.airport_distance}</span>
-                  </div>
-                )}
-                {space.transportation?.public_transport && (
-                  <div className="flex items-center">
-                    <Bus className="h-4 w-4 mr-2 text-primary" />
-                    <span>Public Transport: {space.transportation.public_transport}</span>
-                  </div>
-                )}
-                 {typeof space.transportation?.bike_rental === 'boolean' && (
-                  <div className="flex items-center">
-                    <Bike className="h-4 w-4 mr-2 text-primary" />
-                    <span>Bike Rental: {space.transportation.bike_rental ? 'Available' : 'Not Available'}</span>
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
+              {(space.transportation?.airport_distance || space.transportation?.public_transport || typeof space.transportation?.bike_rental === 'boolean') && (
+                <div className="space-y-2 text-sm">
+                  {space.transportation?.airport_distance && (
+                    <div className="flex items-center">
+                      <Plane className="h-4 w-4 mr-2 text-primary" />
+                      <span>Airport Distance: {space.transportation.airport_distance}</span>
+                    </div>
+                  )}
+                  {space.transportation?.public_transport && (
+                    <div className="flex items-center">
+                      <Bus className="h-4 w-4 mr-2 text-primary" />
+                      <span>Public Transport: {space.transportation.public_transport}</span>
+                    </div>
+                  )}
+                  {typeof space.transportation?.bike_rental === 'boolean' && (
+                    <div className="flex items-center">
+                      <Bike className="h-4 w-4 mr-2 text-primary" />
+                      <span>Bike Rental: {space.transportation.bike_rental ? 'Available' : 'Not Available'}</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
           
