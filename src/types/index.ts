@@ -68,18 +68,6 @@ export interface ColivingSpace {
   hasCoworking?: boolean; // Derived from coworking_access
 }
 
-export interface CommunityLink {
-  platform: 'Slack' | 'WhatsApp' | 'Telegram' | 'Other';
-  name: string;
-  url: string;
-  dataAiHint?: string;
-}
-
-export interface CountrySpecificCommunityLinks {
-  countryName: string;
-  links: CommunityLink[];
-}
-
 // --- Types for Trip Planner ---
 export interface TripPlanInput {
   location: string;
@@ -133,41 +121,6 @@ export interface CountryData {
   coliving_count?: number;
 }
 
-// Type for Nomad YouTube Videos from JSON
-export interface NomadVideoJsonItem {
-  videoId: string;
-  title: string;
-  description?: string;
-  publishedAt: string; // ISO string date
-  thumbnails: {
-    default?: { url: string; width: number; height: number };
-    medium?: { url: string; width: number; height: number };
-    high?: { url: string; width: number; height: number };
-  };
-  url: string; // This will be mapped to youtubeUrl
-  embedUrl?: string;
-  channel?: {
-    id?: string;
-    title?: string;
-    url?: string;
-    subscriberCount?: string; // Note: often a string
-    videoCount?: string; // Note: often a string
-    thumbnail?: string;
-  };
-  statistics: {
-    viewCount?: number | string; // Can be string
-    likeCount?: number | string; // Can be string
-    commentCount?: number | string; // Can be string
-    duration?: number | string; // Can be string (seconds)
-    durationFormatted?: string;
-  };
-  relevanceScore?: number;
-  extractedAt?: string;
-  tags?: string[];
-  destination?: string; // Optional field for categorization
-  dataAiHint?: string; // Optional field for AI hints
-}
-
 // Standardized NomadVideo type used in the application
 export interface NomadVideo {
   id: string; // Mapped from videoId or Firestore document ID
@@ -181,5 +134,38 @@ export interface NomadVideo {
   publishedAt: string; // ISO string date (from JSON or converted from Firestore Timestamp)
   destination?: string;
   dataAiHint?: string;
-  engagementScore?: number; // Calculated for Community Favorites (if that list is re-enabled)
+}
+
+
+// Types for Country Communities JSON
+export interface Community {
+  id?: string;
+  name: string;
+  type?: string;
+  platform: string;
+  city?: string;
+  groupLink: string;
+  memberCount?: number;
+  membersText?: string;
+  tags?: string[];
+  requirementToJoin?: string;
+  flag?: string;
+}
+
+export interface CountryWithCommunities {
+  code: string;
+  name: string;
+  cover_image?: string;
+  flag?: string;
+  continent?: string;
+  currency?: string;
+  timezone?: string;
+  popular_cities?: string[];
+  coliving_count?: number;
+  source?: string;
+  community_count?: number;
+  community_members?: number;
+  community_cities?: string[];
+  community_platforms?: string[];
+  communities: Community[];
 }

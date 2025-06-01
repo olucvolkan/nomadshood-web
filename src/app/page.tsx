@@ -3,7 +3,7 @@ import type { ColivingSpace, CountryData, NomadVideo, CountryWithCommunities } f
 import { getAllColivingSpaces, getAllCountriesFromDB } from '@/services/colivingService';
 import { getNomadsHoodPodcastVideosFromFirestore } from '@/services/videoService';
 import { HomePageClientContent } from '@/components/HomePageClientContent';
-import countryCommunityDataFromFile from '@/data/country-communities.json'; // Corrected import: default import for JSON array
+import countryCommunityDataFromFile from '@/data/country-communities.json'; // Default import
 
 export default async function HomePage() {
   const allSpaces: ColivingSpace[] = await getAllColivingSpaces();

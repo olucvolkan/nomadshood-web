@@ -30,7 +30,7 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: R
   }
 
   const videoCardBaseClasses = "flex flex-col shadow-lg hover:shadow-xl transition-shadow";
-  const sliderItemClasses = isSlider ? "w-72 flex-shrink-0" : "sm:w-auto";
+  const sliderItemClasses = isSlider ? "w-72 flex-shrink-0" : "sm:w-auto"; // Adjusted width for slider items
 
   return (
     <div className="py-4">
@@ -94,7 +94,7 @@ export function HomePageClientContent({
 
   const popularCountriesData: CountryData[] = useMemo(() => {
     return [...allCountries]
-      .filter(country => country.name.toLowerCase() !== 'israel')
+      .filter(country => country.name.toLowerCase() !== 'israel') // Example filter if needed
       .sort((a, b) => {
         const countDiff = (b.coliving_count || 0) - (a.coliving_count || 0);
         if (countDiff !== 0) return countDiff;
@@ -115,7 +115,7 @@ export function HomePageClientContent({
 
   const uniqueCountriesForSelector = useMemo(() => {
     const countries = new Set<string>();
-    if (countriesWithCommunities && Array.isArray(countriesWithCommunities)) { // Added safety check
+    if (countriesWithCommunities && Array.isArray(countriesWithCommunities)) {
       countriesWithCommunities.forEach(countryData => {
         if (countryData && countryData.name) {
           countries.add(countryData.name);
@@ -138,16 +138,16 @@ export function HomePageClientContent({
       case 'whatsapp':
         return <MessageSquare className="mr-2 h-5 w-5 text-green-500" />;
       case 'slack':
-        return <Users className="mr-2 h-5 w-5 text-purple-600" />;
+        return <Users className="mr-2 h-5 w-5 text-purple-600" />; // Example, Slack icon not in lucide
       case 'telegram':
-        return <Send className="mr-2 h-5 w-5 text-sky-500" />;
+        return <Send className="mr-2 h-5 w-5 text-sky-500" />; // Example, Telegram icon not in lucide
       default:
         return <Globe className="mr-2 h-5 w-5" />;
     }
   };
 
   const fullSelectedCountryData = useMemo(() => {
-    if (!selectedCountryNameForCommunities || !countriesWithCommunities || !Array.isArray(countriesWithCommunities)) return null; // Added safety check for array
+    if (!selectedCountryNameForCommunities || !countriesWithCommunities || !Array.isArray(countriesWithCommunities)) return null;
     return countriesWithCommunities.find(country => country.name === selectedCountryNameForCommunities);
   }, [selectedCountryNameForCommunities, countriesWithCommunities]);
 
@@ -217,7 +217,7 @@ export function HomePageClientContent({
           <p className="text-lg text-foreground/70 mt-2">Curated video content for the aspiring and seasoned digital nomad.</p>
         </div>
         <div className="space-y-12">
-          <VideoListSection title="NomadsHood Podcast" videos={nomadsHoodPodcastVideos} icon={Podcast} isSlider={false} />
+           <VideoListSection title="NomadsHood Podcast" videos={nomadsHoodPodcastVideos} icon={Podcast} isSlider={false} />
         </div>
       </section>
 
@@ -297,7 +297,7 @@ export function HomePageClientContent({
         <div className="max-w-md mx-auto mb-8">
           <Select
             onValueChange={handleCountryChangeForCommunities}
-            value={selectedCountryNameForCommunities || undefined}
+            value={selectedCountryNameForCommunities || ""} // Use empty string for placeholder
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a country..." />
@@ -313,7 +313,7 @@ export function HomePageClientContent({
         {fullSelectedCountryData && fullSelectedCountryData.communities && fullSelectedCountryData.communities.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
             {fullSelectedCountryData.communities.map((community: Community, index: number) => (
-              <Card key={community.id || index} className="shadow-md hover:shadow-lg transition-shadow text-left">
+              <Card key={community.id || `community-${index}`} className="shadow-md hover:shadow-lg transition-shadow text-left flex flex-col">
                 <CardHeader>
                   <CardTitle className="text-lg">
                     <Link href={community.groupLink} target="_blank" rel="noopener noreferrer" className="hover:text-primary flex items-center">
@@ -323,10 +323,10 @@ export function HomePageClientContent({
                   </CardTitle>
                   <CardDescription className="text-sm">
                     {community.platform}
-                    {community.city && community.city !== fullSelectedCountryData.name ? ` - ${community.city}` : ''}
+                    {community.city && community.city !== fullSelectedCountryData.name && community.city.toLowerCase() !== fullSelectedCountryData.name.toLowerCase() ? ` - ${community.city}` : ''}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-grow">
                   {typeof community.memberCount === 'number' && (
                     <p className="text-sm text-muted-foreground mb-2 flex items-center">
                       <Users className="inline h-4 w-4 mr-1.5" />
