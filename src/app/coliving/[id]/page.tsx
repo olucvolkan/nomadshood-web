@@ -14,10 +14,10 @@ import {
   CalendarClock, Thermometer, Globe2, Smile, LocateFixed, Map, Plane, Bus, Bike, Phone, Mail, AlertCircle, MessageCircle
 } from 'lucide-react';
 import { getColivingSpaceById, getColivingReviewsByColivingId } from '@/services/colivingService';
+import { ImageSlider } from '@/components/ImageSlider'; // Import the new ImageSlider component
 
 const StarRating: React.FC<{ rating: number; maxStars?: number, starSize?: string }> = ({ rating, maxStars = 5, starSize = "h-4 w-4" }) => {
   const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 !== 0; // Not currently used, but could be for half-star icons
   const emptyStars = maxStars - Math.ceil(rating);
 
   return (
@@ -25,9 +25,8 @@ const StarRating: React.FC<{ rating: number; maxStars?: number, starSize?: strin
       {[...Array(fullStars)].map((_, i) => (
         <Star key={`full-${i}`} className={`${starSize} text-yellow-500 fill-current`} />
       ))}
-      {/* For simplicity, not rendering half stars currently. Add if specific half-star icon is available/needed */}
       {[...Array(emptyStars)].map((_, i) => (
-        <Star key={`empty-${i}`} className={`${starSize} text-yellow-300`} /> // Use a slightly different color for empty or just outline
+        <Star key={`empty-${i}`} className={`${starSize} text-yellow-300`} />
       ))}
     </div>
   );
@@ -49,6 +48,17 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
   const displayAddress = space.address || 'Location not specified';
   const hasValidCoordinates = typeof space.coordinates?.latitude === 'number' && typeof space.coordinates?.longitude === 'number';
 
+  // Prepare images for the slider
+  let sliderImages: string[] = [];
+  if (space.gallery && space.gallery.length > 0) {
+    sliderImages = space.gallery.filter(img => typeof img === 'string' && img.trim() !== '');
+  }
+  // If gallery is empty but mainImageUrl exists and is valid, use it as a single-item gallery
+  if (sliderImages.length === 0 && space.mainImageUrl && !space.mainImageUrl.includes('placehold.co')) {
+    sliderImages = [space.mainImageUrl];
+  }
+  // If still no images, ImageSlider component will use its own placeholder
+
   return (
     <div className="container mx-auto px-4 py-8">
       <Button variant="outline" asChild className="mb-8">
@@ -59,19 +69,8 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
       </Button>
 
       <Card className="overflow-hidden shadow-xl">
-        {space.mainImageUrl && (
-          <div className="relative w-full h-72 md:h-96 rounded-t-lg overflow-hidden shadow-inner">
-            <Image
-              src={space.mainImageUrl}
-              alt={`${space.name || 'Coliving space'} main view`}
-              fill
-              style={{objectFit: 'cover'}}
-              className="rounded-t-lg"
-              data-ai-hint={space.dataAiHint || "building exterior"}
-              priority
-            />
-          </div>
-        )}
+        {/* Replace single image with ImageSlider */}
+        <ImageSlider images={sliderImages} altText={`${space.name || 'Coliving space'} gallery`} baseDataAiHint={space.dataAiHint || "building interior"} />
 
         <CardHeader className="p-6">
           <div className="flex flex-col sm:flex-row items-start gap-4">
@@ -116,12 +115,13 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
         </CardHeader>
 
         <CardContent className="p-6 pt-0 space-y-6">
-          {space.description && (
+          {/* Description removed from here */}
+          {/* {space.description && (
             <>
               <p className="text-foreground/90 leading-relaxed">{space.description}</p>
               <Separator />
             </>
-          )}
+          )} */}
           
           <h3 className="text-xl font-semibold text-foreground flex items-center">
             <Info className="mr-2 h-5 w-5 text-primary" />
