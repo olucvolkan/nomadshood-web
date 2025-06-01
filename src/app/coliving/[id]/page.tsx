@@ -1,5 +1,5 @@
 
-import type { ColivingSpace } from '@/types';
+import type { ColivingSpace, ColivingReviewData, ReviewItem } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -7,16 +7,37 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Briefcase, Home, ExternalLink,
   Star, Users2, Wifi, Clock, LanguagesIcon, Mountain, Building2, Info,
-  CalendarClock, Thermometer, Globe2, Smile, LocateFixed, Map, Plane, Bus, Bike, Phone, Mail, AlertCircle
+  CalendarClock, Thermometer, Globe2, Smile, LocateFixed, Map, Plane, Bus, Bike, Phone, Mail, AlertCircle, MessageCircle
 } from 'lucide-react';
-import { getColivingSpaceById } from '@/services/colivingService';
+import { getColivingSpaceById, getColivingReviewsByColivingId } from '@/services/colivingService';
+
+const StarRating: React.FC<{ rating: number; maxStars?: number, starSize?: string }> = ({ rating, maxStars = 5, starSize = "h-4 w-4" }) => {
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 !== 0; // Not currently used, but could be for half-star icons
+  const emptyStars = maxStars - Math.ceil(rating);
+
+  return (
+    <div className="flex items-center">
+      {[...Array(fullStars)].map((_, i) => (
+        <Star key={`full-${i}`} className={`${starSize} text-yellow-500 fill-current`} />
+      ))}
+      {/* For simplicity, not rendering half stars currently. Add if specific half-star icon is available/needed */}
+      {[...Array(emptyStars)].map((_, i) => (
+        <Star key={`empty-${i}`} className={`${starSize} text-yellow-300`} /> // Use a slightly different color for empty or just outline
+      ))}
+    </div>
+  );
+};
+
 
 export default async function ColivingDetailPage({ params: paramsProp }: { params: { id: string } }) {
   const params = await paramsProp;
   const space: ColivingSpace | null = await getColivingSpaceById(params.id);
+  const reviewData: ColivingReviewData | null = await getColivingReviewsByColivingId(params.id);
 
   if (!space) {
     notFound();
@@ -126,7 +147,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
               <span>Private Bathroom: {space.hasPrivateBathroom ? 'Option Available' : 'No / Shared'}</span>
             </div>
             {space.rating && (
-              <div className="flex items-center">
+              <div className="flex items-center" title="NomadsHood Rating">
                 <Star className="h-4 w-4 mr-2 text-yellow-500 fill-current" />
                 <span>Rating: {space.rating}/5 ({space.reviews_count || 0} reviews)</span>
               </div>
@@ -204,6 +225,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
                   </Badge>
                 ))}
               </div>
+              <Separator className="my-6" />
             </div>
           )}
 
@@ -218,6 +240,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
                   </Card>
                 ))}
               </div>
+              <Separator className="my-6" />
             </div>
           )}
         
@@ -270,6 +293,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
                   )}
                 </div>
               )}
+              <Separator className="my-6" />
             </div>
           )}
           
@@ -283,8 +307,62 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
                   </Badge>
                 ))}
               </div>
+              <Separator className="my-6" />
             </div>
           )}
+
+          {/* Google Reviews Section */}
+          {reviewData && (
+            <div>
+              <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center">
+                <MessageCircle className="mr-2 h-5 w-5 text-primary" />
+                Google Reviews
+              </h3>
+              {reviewData.google_rating && reviewData.google_total_ratings && (
+                <div className="mb-6 p-4 bg-muted/30 rounded-lg flex items-center gap-4">
+                  <StarRating rating={reviewData.google_rating} starSize="h-6 w-6" />
+                  <span className="text-lg font-semibold">{reviewData.google_rating.toFixed(1)} / 5</span>
+                  <span className="text-sm text-muted-foreground">({reviewData.google_total_ratings} Google ratings)</span>
+                </div>
+              )}
+
+              {reviewData.reviews && reviewData.reviews.length > 0 ? (
+                <div className="space-y-6">
+                  {reviewData.reviews.map((review: ReviewItem) => (
+                    <Card key={review.id} className="shadow-sm">
+                      <CardHeader className="flex flex-row items-start space-x-4 p-4">
+                        <Avatar className="h-12 w-12 border">
+                          <AvatarImage src={review.profile_photo_url} alt={review.author_name} data-ai-hint="profile picture user" />
+                          <AvatarFallback>{review.author_name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between">
+                            <p className="font-semibold text-sm">{review.author_name}</p>
+                            <StarRating rating={review.rating} starSize="h-3.5 w-3.5" />
+                          </div>
+                          <p className="text-xs text-muted-foreground">{review.relative_time_description}</p>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="p-4 pt-0">
+                        {review.text && <p className="text-sm text-foreground/90 leading-relaxed line-clamp-5">{review.text}</p>}
+                        {review.author_url && (
+                           <Button variant="link" size="sm" asChild className="p-0 h-auto mt-2 text-xs">
+                            <Link href={review.author_url} target="_blank" rel="noopener noreferrer">
+                              View on Google Maps <ExternalLink className="ml-1 h-2.5 w-2.5" />
+                            </Link>
+                          </Button>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-muted-foreground">No individual Google reviews available for this location yet.</p>
+              )}
+              <Separator className="my-6" />
+            </div>
+          )}
+
 
           {space.tags && space.tags.length > 0 && (
             <div className="mt-4">

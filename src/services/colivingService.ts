@@ -1,7 +1,7 @@
 
 import { db } from '@/lib/firebase'; // db is Firestore instance
-import { collection, getDocs, doc, getDoc, type DocumentData, type QueryDocumentSnapshot, query, Timestamp } from 'firebase/firestore';
-import type { ColivingSpace, CountryData, CountryWithCommunities, Community } from '@/types';
+import { collection, getDocs, doc, getDoc, type DocumentData, type QueryDocumentSnapshot, query, Timestamp, where, limit as firestoreLimit } from 'firebase/firestore';
+import type { ColivingSpace, CountryData, CountryWithCommunities, Community, ColivingReviewData, ReviewItem } from '@/types';
 
 // Helper function to parse coordinate values to number if they are string representations
 const parseCoordinate = (value: any): number | undefined => {
@@ -310,7 +310,7 @@ const mapDocToCountryWithCommunities = (doc: QueryDocumentSnapshot<DocumentData>
 
 export async function getAllCountriesFromDB(): Promise<CountryWithCommunities[]> {
   try {
-    const countriesCollectionRef = collection(db, 'countries'); // Querying the 'countries' collection
+    const countriesCollectionRef = collection(db, 'countries'); 
     const q = query(countriesCollectionRef);
     const querySnapshot = await getDocs(q);
 
@@ -321,7 +321,7 @@ export async function getAllCountriesFromDB(): Promise<CountryWithCommunities[]>
     
     const countries: CountryWithCommunities[] = [];
     querySnapshot.forEach((document) => {
-      countries.push(mapDocToCountryWithCommunities(document)); // Use the new mapping function
+      countries.push(mapDocToCountryWithCommunities(document)); 
     });
     
     const validCountries = countries.filter(country => country.name !== 'Error: Invalid Country Data');
@@ -337,13 +337,76 @@ export async function getAllCountriesFromDB(): Promise<CountryWithCommunities[]>
   }
 }
 
-// This function is now redundant if getAllCountriesFromDB serves the purpose for communities.
-// Keeping it commented out or to be removed if confirmed.
-/*
-export async function getAllCountriesWithCommunitiesFromDB(): Promise<CountryWithCommunities[]> {
-  // ... logic that previously queried 'countriesWithCommunities' collection
-  // This would now be effectively replaced by the modified getAllCountriesFromDB
-  console.warn("getAllCountriesWithCommunitiesFromDB is deprecated. Use getAllCountriesFromDB which now includes community data from the 'countries' collection.");
-  return getAllCountriesFromDB(); // Or simply remove this function
+
+// --- Coliving Reviews Service ---
+
+const mapDocToColivingReviewData = (doc: QueryDocumentSnapshot<DocumentData>): ColivingReviewData => {
+  const data = doc.data();
+
+  const reviewsArray: ReviewItem[] = (data.reviews && Array.isArray(data.reviews))
+    ? data.reviews.map((reviewItem: any, index: number): ReviewItem => ({
+        id: reviewItem.id || `${doc.id}_review_${index}`,
+        coliving_id: reviewItem.coliving_id || data.coliving_id,
+        coliving_name: reviewItem.coliving_name || data.coliving_name,
+        author_name: reviewItem.author_name || 'Anonymous',
+        author_url: reviewItem.author_url,
+        profile_photo_url: reviewItem.profile_photo_url || 'https://placehold.co/48x48.png',
+        rating: typeof reviewItem.rating === 'number' ? reviewItem.rating : 0,
+        relative_time_description: reviewItem.relative_time_description || 'sometime ago',
+        time: typeof reviewItem.time === 'number' ? reviewItem.time : 0,
+        text: typeof reviewItem.text === 'string' ? reviewItem.text : (reviewItem.text === null ? null : 'No review text provided.'),
+        language: reviewItem.language,
+        translated: reviewItem.translated,
+        original_language: reviewItem.original_language,
+        review_length: reviewItem.review_length,
+        is_recent: reviewItem.is_recent,
+        sentiment_score: reviewItem.sentiment_score,
+      }))
+    : [];
+
+  return {
+    id: doc.id, // Firestore document ID of this review batch
+    coliving_id: data.coliving_id,
+    coliving_name: data.coliving_name,
+    coliving_city: data.coliving_city,
+    coliving_country: data.coliving_country,
+    coliving_website: data.coliving_website,
+    google_place_id: data.google_place_id,
+    google_name: data.google_name,
+    google_address: data.google_address,
+    google_rating: typeof data.google_rating === 'number' ? data.google_rating : undefined,
+    google_total_ratings: typeof data.google_total_ratings === 'number' ? data.google_total_ratings : undefined,
+    google_website: data.google_website,
+    google_phone: data.google_phone,
+    total_reviews: typeof data.total_reviews === 'number' ? data.total_reviews : reviewsArray.length,
+    recent_reviews_count: data.recent_reviews_count,
+    average_sentiment: data.average_sentiment,
+    reviews: reviewsArray,
+    crawled_at: data.crawled_at instanceof Timestamp ? data.crawled_at.toDate().toISOString() : data.crawled_at,
+    api_status: data.api_status,
+  };
+};
+
+export async function getColivingReviewsByColivingId(colivingId: string): Promise<ColivingReviewData | null> {
+  if (!colivingId) {
+    console.error("getColivingReviewsByColivingId: colivingId is required.");
+    return null;
+  }
+  try {
+    const reviewsCollectionRef = collection(db, 'coliving_reviews');
+    const q = query(reviewsCollectionRef, where('coliving_id', '==', colivingId), firestoreLimit(1));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.warn(`No review data found in 'coliving_reviews' for coliving_id: ${colivingId}`);
+      return null;
+    }
+    // Assuming coliving_id is unique for review summary documents, so we take the first.
+    const reviewDoc = querySnapshot.docs[0];
+    return mapDocToColivingReviewData(reviewDoc);
+
+  } catch (error) {
+    console.error(`Error fetching reviews for coliving_id ${colivingId} from Firestore:`, error);
+    return null;
+  }
 }
-*/

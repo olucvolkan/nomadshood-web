@@ -139,35 +139,76 @@ export interface NomadVideo {
 
 // Types for Country Communities data from Firestore 'countries' collection
 export interface Community {
-  id?: string; 
+  id?: string;
   name: string;
-  platform: string; 
-  city?: string; 
+  platform: string;
+  city?: string;
   groupLink: string;
   memberCount?: number;
-  membersText?: string; 
+  membersText?: string;
   tags?: string[];
   requirementToJoin?: string;
   flag?: string; // flag is usually at the CountryWithCommunities level but can be in community specific data
 }
 
 export interface CountryWithCommunities {
-  id: string; 
+  id: string;
   code: string;
   name: string;
   cover_image?: string;
   flag?: string;
-  flagImageUrl?: string; // Added this field
+  flagImageUrl?: string;
   continent?: string;
   currency?: string;
   timezone?: string;
   popular_cities?: string[];
   coliving_count?: number;
-  source?: string; 
+  source?: string;
   community_count?: number;
-  community_members?: number; 
-  community_cities?: string[]; 
-  community_platforms?: string[]; 
-  communities: Community[]; 
+  community_members?: number;
+  community_cities?: string[];
+  community_platforms?: string[];
+  communities: Community[];
 }
 
+// --- Types for Coliving Reviews ---
+export interface ReviewItem {
+  id: string;
+  coliving_id: string;
+  coliving_name: string;
+  author_name: string;
+  author_url?: string;
+  profile_photo_url: string;
+  rating: number;
+  relative_time_description: string;
+  time: number; // Unix timestamp
+  text: string | null; // Text can be null
+  language?: string;
+  translated?: boolean;
+  original_language?: string;
+  review_length?: number;
+  is_recent?: boolean;
+  sentiment_score?: number;
+}
+
+export interface ColivingReviewData {
+  id: string; // Firestore document ID for this review batch
+  coliving_id: string;
+  coliving_name?: string;
+  coliving_city?: string;
+  coliving_country?: string;
+  coliving_website?: string;
+  google_place_id?: string;
+  google_name?: string;
+  google_address?: string;
+  google_rating?: number;
+  google_total_ratings?: number;
+  google_website?: string;
+  google_phone?: string;
+  total_reviews?: number; // Number of reviews in the 'reviews' array below
+  recent_reviews_count?: number;
+  average_sentiment?: number;
+  reviews: ReviewItem[];
+  crawled_at?: string; // ISO date string
+  api_status?: string;
+}
