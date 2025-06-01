@@ -1,23 +1,21 @@
 
-import type { ColivingSpace, CountryData, NomadVideo, CountryWithCommunities } from '@/types';
-import { getAllColivingSpaces, getAllCountriesFromDB, getAllCountriesWithCommunitiesFromDB } from '@/services/colivingService';
+import type { ColivingSpace, CountryWithCommunities, NomadVideo } from '@/types';
+import { getAllColivingSpaces, getAllCountriesFromDB } from '@/services/colivingService';
 import { getNomadsHoodPodcastVideosFromFirestore } from '@/services/videoService';
 import { HomePageClientContent } from '@/components/HomePageClientContent';
 
 export default async function HomePage() {
   const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
-  const allCountries: CountryData[] = await getAllCountriesFromDB();
+  // getAllCountriesFromDB now returns CountryWithCommunities[]
+  const countriesData: CountryWithCommunities[] = await getAllCountriesFromDB();
   const nomadsHoodPodcastVideos: NomadVideo[] = await getNomadsHoodPodcastVideosFromFirestore();
   
-  // Fetch countries with communities from Firestore
-  const countriesForClient: CountryWithCommunities[] = await getAllCountriesWithCommunitiesFromDB();
-
   return (
     <HomePageClientContent
       allSpaces={allSpaces}
-      allCountries={allCountries}
+      allCountries={countriesData} // Used for "Popular Destinations"
       nomadsHoodPodcastVideos={nomadsHoodPodcastVideos}
-      countriesWithCommunities={countriesForClient} 
+      countriesWithCommunities={countriesData} // Used for "Connect with Nomad Communities"
     />
   );
 }

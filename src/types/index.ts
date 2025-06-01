@@ -137,35 +137,37 @@ export interface NomadVideo {
 }
 
 
-// Types for Country Communities data from Firestore
+// Types for Country Communities data from Firestore 'countries' collection
 export interface Community {
-  id?: string; // Optional, could be implicitly managed if not a subcollection
+  id?: string; 
   name: string;
-  platform: string; // e.g., "Facebook", "Reddit", "WhatsApp"
-  city?: string; // Optional, if specific to a city within the country
+  platform: string; 
+  city?: string; 
   groupLink: string;
   memberCount?: number;
-  membersText?: string; // Kept for potential direct use if present in Firestore
+  membersText?: string; 
   tags?: string[];
   requirementToJoin?: string;
-  // flag is usually at the CountryWithCommunities level
+  flag?: string; // flag is usually at the CountryWithCommunities level but can be in community specific data
 }
 
 export interface CountryWithCommunities {
-  id: string; // Firestore document ID for the country
+  id: string; 
   code: string;
   name: string;
   cover_image?: string;
   flag?: string;
+  flagImageUrl?: string; // Added this field
   continent?: string;
   currency?: string;
   timezone?: string;
   popular_cities?: string[];
   coliving_count?: number;
-  source?: string; // e.g., "nomadago"
+  source?: string; 
   community_count?: number;
-  community_members?: number; // Total members in all communities for this country
-  community_cities?: string[]; // List of cities with communities
-  community_platforms?: string[]; // List of platforms used by communities in this country
-  communities: Community[]; // Array of community objects
+  community_members?: number; 
+  community_cities?: string[]; 
+  community_platforms?: string[]; 
+  communities: Community[]; 
 }
+

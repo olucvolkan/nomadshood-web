@@ -121,13 +121,12 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
   }
   
   let processedCoordinates: { latitude?: number; longitude?: number } | undefined = undefined;
-  // Directly use lat and lng from the document root if they exist
   if (data.lat !== undefined || data.lng !== undefined) {
      processedCoordinates = {
       latitude: parseCoordinate(data.lat),
       longitude: parseCoordinate(data.lng),
     };
-  } else if (data.coordinates && (data.coordinates.latitude !== undefined || data.coordinates.longitude !== undefined)) { // Fallback to nested coordinates if lat/lng not found
+  } else if (data.coordinates && (data.coordinates.latitude !== undefined || data.coordinates.longitude !== undefined)) { 
     processedCoordinates = {
       latitude: parseCoordinate(data.coordinates.latitude),
       longitude: parseCoordinate(data.coordinates.longitude),
@@ -143,7 +142,7 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     country: data.country || 'Unknown Country',
     city: data.city || 'Unknown City',
     address: displayAddress,
-    coordinates: processedCoordinates, // This will now use the direct lat/lng if available
+    coordinates: processedCoordinates, 
     description: data.description || 'No description available.',
     amenities: amenitiesArray,
     currency: data.currency || data.budget_range?.currency,
@@ -230,96 +229,42 @@ export async function getColivingSpaceById(id: string): Promise<ColivingSpace | 
   }
 }
 
-
-const mapDocToCountryData = (document: QueryDocumentSnapshot<DocumentData> | DocumentData): CountryData => {
-  const data = document.data() as Partial<CountryData> & { code?: string; name?: string; cover_image?: string; flag?: string; coliving_count?: number; };
-  if (!data) {
-    return {
-      id: document.id,
-      name: 'Error: Missing Data',
-      code: '',
-      cover_image: 'https://placehold.co/600x400/E0E0E0/757575.png',
-      flag: '🏳️',
-      coliving_count: 0,
-      continent: '',
-      currency: '',
-      timezone: '',
-      popular_cities: [],
-    };
-  }
-
-  let flagImageUrl: string | undefined = undefined;
-  const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
-
-  if (data.code && typeof data.code === 'string' && data.code.trim() !== '' && storageBucket) {
-    const flagPath = `flags/${data.code.trim().toLowerCase()}.png`;
-    flagImageUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${encodeURIComponent(flagPath)}?alt=media`;
-  } else if (!storageBucket && data.code) {
-     console.warn("Firebase Storage Bucket (NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) is not set in .env. Cannot construct flag image URLs for countries. Ensure this variable is set and your server is restarted.");
-  }
-
-
-  return {
-    id: document.id,
-    code: data.code || '',
-    name: data.name || 'Unnamed Country',
-    cover_image: data.cover_image || 'https://placehold.co/600x400/E0E0E0/757575.png',
-    flag: data.flag || '🏳️',
-    flagImageUrl: flagImageUrl,
-    continent: data.continent || '',
-    currency: data.currency || '',
-    timezone: data.timezone || '',
-    popular_cities: Array.isArray(data.popular_cities) ? data.popular_cities.filter((pc: any) => typeof pc === 'string') : [],
-    coliving_count: typeof data.coliving_count === 'number' ? data.coliving_count : 0,
-  };
-};
-
-export async function getAllCountriesFromDB(): Promise<CountryData[]> {
-  try {
-    const countriesCollectionRef = collection(db, 'countries');
-    const q = query(countriesCollectionRef);
-    const querySnapshot = await getDocs(q);
-
-    const countries: CountryData[] = [];
-    querySnapshot.forEach((document) => {
-      countries.push(mapDocToCountryData(document));
-    });
-
-    return countries.sort((a, b) => a.name.localeCompare(b.name));
-  } catch (error) {
-    console.error("Error fetching countries from Firestore:", error);
-    return [];
-  }
-}
-
 const mapDocToCountryWithCommunities = (doc: QueryDocumentSnapshot<DocumentData>): CountryWithCommunities => {
   const data = doc.data();
-  // Basic validation for required fields on the country document
   if (!data || typeof data.name !== 'string' || typeof data.code !== 'string') {
-    console.error(`Document ID ${doc.id} in 'countriesWithCommunities' is missing required fields (name, code) or data is undefined.`);
-    // Return a default/error structure or throw an error
+    console.error(`Country document ID ${doc.id} is missing required fields (name, code) or data is undefined.`);
     return {
       id: doc.id,
       name: 'Error: Invalid Country Data',
       code: '',
       communities: [],
-      // Add other default fields for CountryWithCommunities as necessary
+      flagImageUrl: 'https://placehold.co/64x42/E0E0E0/757575.png',
     };
   }
 
+  let flagImageUrl: string | undefined = undefined;
+  const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+  if (data.code && typeof data.code === 'string' && data.code.trim() !== '' && storageBucket) {
+    const flagPath = `flags/${data.code.trim().toLowerCase()}.png`;
+    flagImageUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${encodeURIComponent(flagPath)}?alt=media`;
+  } else if (!storageBucket && data.code) {
+     console.warn(`Firebase Storage Bucket (NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) for country ${data.name} (ID: ${doc.id}) is not set. Cannot construct flag image URL. Ensure env var is set and server restarted.`);
+  }
+
+
   const communitiesArray: Community[] = Array.isArray(data.communities)
     ? data.communities.map((communityData: any, index: number): Community => {
-        // Basic validation for each community object
         if (!communityData || typeof communityData.name !== 'string' || typeof communityData.platform !== 'string' || typeof communityData.groupLink !== 'string') {
           console.warn(`Community object at index ${index} for country ${data.name} (ID: ${doc.id}) is missing required fields (name, platform, groupLink).`);
-          return { // Return a default/error structure for this community
+          return { 
+            id: communityData.id || `community_${doc.id}_${index}_error`,
             name: 'Error: Invalid Community Data',
             platform: 'Unknown',
             groupLink: '#',
           };
         }
         return {
-          id: communityData.id || `community_${doc.id}_${index}`, // Generate an ID if not present
+          id: communityData.id || `community_${doc.id}_${index}`,
           name: communityData.name,
           platform: communityData.platform,
           city: typeof communityData.city === 'string' ? communityData.city : undefined,
@@ -328,16 +273,16 @@ const mapDocToCountryWithCommunities = (doc: QueryDocumentSnapshot<DocumentData>
           membersText: typeof communityData.membersText === 'string' ? communityData.membersText : undefined,
           tags: Array.isArray(communityData.tags) ? communityData.tags.filter((t: any) => typeof t === 'string') : [],
           requirementToJoin: typeof communityData.requirementToJoin === 'string' ? communityData.requirementToJoin : undefined,
-          // flag is usually inherited from country level
+          flag: typeof communityData.flag === 'string' ? communityData.flag : data.flag, // Inherit country flag if community doesn't have one
         };
       })
     : [];
 
   if (Array.isArray(data.communities) && communitiesArray.length !== data.communities.length) {
-      console.warn(`Some communities for country ${data.name} (ID: ${doc.id}) were filtered out due to missing required fields.`);
+      console.warn(`Some communities for country ${data.name} (ID: ${doc.id}) were filtered out or marked as error due to missing required fields.`);
   }
-  if (!Array.isArray(data.communities)) {
-      console.warn(`'communities' field for country ${data.name} (ID: ${doc.id}) is not an array or is missing. Defaulting to empty array.`);
+  if (!Array.isArray(data.communities) && data.communities !== undefined) { // Check if it exists but isn't an array
+      console.warn(`'communities' field for country ${data.name} (ID: ${doc.id}) is not an array. Defaulting to empty array. Received:`, data.communities);
   }
 
 
@@ -346,14 +291,15 @@ const mapDocToCountryWithCommunities = (doc: QueryDocumentSnapshot<DocumentData>
     code: data.code,
     name: data.name,
     cover_image: typeof data.cover_image === 'string' ? data.cover_image : undefined,
-    flag: typeof data.flag === 'string' ? data.flag : undefined,
+    flag: typeof data.flag === 'string' ? data.flag : '🏳️',
+    flagImageUrl: flagImageUrl,
     continent: typeof data.continent === 'string' ? data.continent : undefined,
     currency: typeof data.currency === 'string' ? data.currency : undefined,
     timezone: typeof data.timezone === 'string' ? data.timezone : undefined,
     popular_cities: Array.isArray(data.popular_cities) ? data.popular_cities.filter((pc: any) => typeof pc === 'string') : [],
     coliving_count: typeof data.coliving_count === 'number' ? data.coliving_count : undefined,
     source: typeof data.source === 'string' ? data.source : undefined,
-    community_count: typeof data.community_count === 'number' ? data.community_count : undefined,
+    community_count: typeof data.community_count === 'number' ? data.community_count : (Array.isArray(data.communities) ? data.communities.length : 0),
     community_members: typeof data.community_members === 'number' ? data.community_members : undefined,
     community_cities: Array.isArray(data.community_cities) ? data.community_cities.filter((cc: any) => typeof cc === 'string') : [],
     community_platforms: Array.isArray(data.community_platforms) ? data.community_platforms.filter((cp: any) => typeof cp === 'string') : [],
@@ -361,32 +307,43 @@ const mapDocToCountryWithCommunities = (doc: QueryDocumentSnapshot<DocumentData>
   };
 };
 
-export async function getAllCountriesWithCommunitiesFromDB(): Promise<CountryWithCommunities[]> {
+
+export async function getAllCountriesFromDB(): Promise<CountryWithCommunities[]> {
   try {
-    const countriesCollectionRef = collection(db, 'countriesWithCommunities'); // Changed to new collection name
+    const countriesCollectionRef = collection(db, 'countries'); // Querying the 'countries' collection
     const q = query(countriesCollectionRef);
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      console.warn("getAllCountriesWithCommunitiesFromDB: Firestore query for 'countriesWithCommunities' collection returned an empty snapshot. Collection might be empty or not exist.");
+      console.warn("getAllCountriesFromDB: Firestore query for 'countries' collection returned an empty snapshot. Collection might be empty or not exist.");
       return [];
     }
     
     const countries: CountryWithCommunities[] = [];
     querySnapshot.forEach((document) => {
-      countries.push(mapDocToCountryWithCommunities(document));
+      countries.push(mapDocToCountryWithCommunities(document)); // Use the new mapping function
     });
     
-    // Filter out any countries that might have resulted in an error structure during mapping
     const validCountries = countries.filter(country => country.name !== 'Error: Invalid Country Data');
     
     if (validCountries.length !== countries.length) {
-        console.warn("getAllCountriesWithCommunitiesFromDB: Some country documents were invalid and filtered out.");
+        console.warn("getAllCountriesFromDB: Some country documents were invalid and filtered out.");
     }
 
     return validCountries.sort((a, b) => a.name.localeCompare(b.name));
   } catch (error) {
-    console.error("Error fetching countries with communities from Firestore:", error);
+    console.error("Error fetching countries (with communities) from Firestore 'countries' collection:", error);
     return [];
   }
 }
+
+// This function is now redundant if getAllCountriesFromDB serves the purpose for communities.
+// Keeping it commented out or to be removed if confirmed.
+/*
+export async function getAllCountriesWithCommunitiesFromDB(): Promise<CountryWithCommunities[]> {
+  // ... logic that previously queried 'countriesWithCommunities' collection
+  // This would now be effectively replaced by the modified getAllCountriesFromDB
+  console.warn("getAllCountriesWithCommunitiesFromDB is deprecated. Use getAllCountriesFromDB which now includes community data from the 'countries' collection.");
+  return getAllCountriesFromDB(); // Or simply remove this function
+}
+*/
