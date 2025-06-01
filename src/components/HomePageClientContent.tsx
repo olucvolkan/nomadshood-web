@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, Lightbulb, Users, MapPin, Globe, Star, MessageSquare, Send, Youtube, Compass, Podcast, ExternalLink, Facebook } from 'lucide-react';
+import { List, Lightbulb, Users, MapPin, Globe, Star, MessageSquare, Send, Youtube, Compass, Podcast, ExternalLink, Facebook, Slack } from 'lucide-react';
 import type { ColivingSpace, CountryData, NomadVideo, CountryWithCommunities, Community } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -73,7 +73,7 @@ interface HomePageClientContentProps {
   allSpaces: ColivingSpace[];
   allCountries: CountryData[];
   nomadsHoodPodcastVideos: NomadVideo[];
-  countriesWithCommunities: CountryWithCommunities[];
+  countriesWithCommunities: CountryWithCommunities[]; // This prop will now come from Firestore
 }
 
 // Reddit Icon SVG component
@@ -88,13 +88,13 @@ export function HomePageClientContent({
   allSpaces,
   allCountries,
   nomadsHoodPodcastVideos,
-  countriesWithCommunities
+  countriesWithCommunities // This prop will now be populated from Firestore via page.tsx
 }: HomePageClientContentProps) {
   const [selectedCountryNameForCommunities, setSelectedCountryNameForCommunities] = useState<string | null>(null);
 
   const popularCountriesData: CountryData[] = useMemo(() => {
     return [...allCountries]
-      .filter(country => country.name.toLowerCase() !== 'israel') // Example filter if needed
+      .filter(country => country.name.toLowerCase() !== 'israel') 
       .sort((a, b) => {
         const countDiff = (b.coliving_count || 0) - (a.coliving_count || 0);
         if (countDiff !== 0) return countDiff;
@@ -113,6 +113,7 @@ export function HomePageClientContent({
     return sortedSpaces.length > 0 ? sortedSpaces.slice(0, 3) : [];
   }, [allSpaces]);
 
+  // This useMemo hook now correctly processes `countriesWithCommunities` from Firestore
   const uniqueCountriesForSelector = useMemo(() => {
     const countries = new Set<string>();
     if (countriesWithCommunities && Array.isArray(countriesWithCommunities)) {
@@ -121,6 +122,8 @@ export function HomePageClientContent({
           countries.add(countryData.name);
         }
       });
+    } else {
+      console.warn("HomePageClientContent: countriesWithCommunities prop is not an array or is undefined.");
     }
     return Array.from(countries).sort();
   }, [countriesWithCommunities]);
@@ -138,9 +141,9 @@ export function HomePageClientContent({
       case 'whatsapp':
         return <MessageSquare className="mr-2 h-5 w-5 text-green-500" />;
       case 'slack':
-        return <Users className="mr-2 h-5 w-5 text-purple-600" />; // Example, Slack icon not in lucide
+        return <Slack className="mr-2 h-5 w-5 text-purple-600" />; // Using Slack icon from lucide
       case 'telegram':
-        return <Send className="mr-2 h-5 w-5 text-sky-500" />; // Example, Telegram icon not in lucide
+        return <Send className="mr-2 h-5 w-5 text-sky-500" />; 
       default:
         return <Globe className="mr-2 h-5 w-5" />;
     }
@@ -205,7 +208,7 @@ export function HomePageClientContent({
           </CardHeader>
           <CardContent>
             <CardDescription>
-              Connect with local nomad communities through Slack, WhatsApp, and other group links.
+              Connect with local nomad communities through various platforms.
             </CardDescription>
           </CardContent>
         </Card>
@@ -294,21 +297,28 @@ export function HomePageClientContent({
           Select a country to find local community groups for digital nomads.
         </p>
 
-        <div className="max-w-md mx-auto mb-8">
-          <Select
-            onValueChange={handleCountryChangeForCommunities}
-            value={selectedCountryNameForCommunities || ""} // Use empty string for placeholder
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a country..." />
-            </SelectTrigger>
-            <SelectContent>
-              {uniqueCountriesForSelector.map(countryName => (
-                <SelectItem key={countryName} value={countryName}>{countryName}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {uniqueCountriesForSelector.length > 0 ? (
+            <div className="max-w-md mx-auto mb-8">
+            <Select
+                onValueChange={handleCountryChangeForCommunities}
+                value={selectedCountryNameForCommunities || ""} 
+            >
+                <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a country..." />
+                </SelectTrigger>
+                <SelectContent>
+                {uniqueCountriesForSelector.map(countryName => (
+                    <SelectItem key={countryName} value={countryName}>{countryName}</SelectItem>
+                ))}
+                </SelectContent>
+            </Select>
+            </div>
+        ) : (
+             <p className="text-muted-foreground mt-4">
+                Loading countries or no community data available in Firestore.
+             </p>
+        )}
+
 
         {fullSelectedCountryData && fullSelectedCountryData.communities && fullSelectedCountryData.communities.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
@@ -323,7 +333,7 @@ export function HomePageClientContent({
                   </CardTitle>
                   <CardDescription className="text-sm">
                     {community.platform}
-                    {community.city && community.city !== fullSelectedCountryData.name && community.city.toLowerCase() !== fullSelectedCountryData.name.toLowerCase() ? ` - ${community.city}` : ''}
+                    {community.city && community.city.toLowerCase() !== fullSelectedCountryData.name.toLowerCase() ? ` - ${community.city}` : ''}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
@@ -358,11 +368,11 @@ export function HomePageClientContent({
 
         {selectedCountryNameForCommunities && (!fullSelectedCountryData || !fullSelectedCountryData.communities || fullSelectedCountryData.communities.length === 0) && (
           <p className="text-muted-foreground mt-4">
-            No specific community links found for {selectedCountryNameForCommunities}. Try another country or check back later!
+            No specific community links found for {selectedCountryNameForCommunities}. Ensure this country has a 'communities' array in Firestore, or try another country.
           </p>
         )}
 
-        {!selectedCountryNameForCommunities && (
+        {!selectedCountryNameForCommunities && uniqueCountriesForSelector.length > 0 && (
           <p className="text-muted-foreground mt-4">
             Please select a country above to find relevant community channels.
           </p>
@@ -371,4 +381,3 @@ export function HomePageClientContent({
     </div>
   );
 }
-

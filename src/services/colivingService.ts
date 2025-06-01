@@ -1,7 +1,7 @@
 
 import { db } from '@/lib/firebase'; // db is Firestore instance
 import { collection, getDocs, doc, getDoc, type DocumentData, type QueryDocumentSnapshot, query, Timestamp } from 'firebase/firestore';
-import type { ColivingSpace, CountryData } from '@/types';
+import type { ColivingSpace, CountryData, CountryWithCommunities, Community } from '@/types';
 
 // Helper function to parse coordinate values to number if they are string representations
 const parseCoordinate = (value: any): number | undefined => {
@@ -292,3 +292,101 @@ export async function getAllCountriesFromDB(): Promise<CountryData[]> {
   }
 }
 
+const mapDocToCountryWithCommunities = (doc: QueryDocumentSnapshot<DocumentData>): CountryWithCommunities => {
+  const data = doc.data();
+  // Basic validation for required fields on the country document
+  if (!data || typeof data.name !== 'string' || typeof data.code !== 'string') {
+    console.error(`Document ID ${doc.id} in 'countriesWithCommunities' is missing required fields (name, code) or data is undefined.`);
+    // Return a default/error structure or throw an error
+    return {
+      id: doc.id,
+      name: 'Error: Invalid Country Data',
+      code: '',
+      communities: [],
+      // Add other default fields for CountryWithCommunities as necessary
+    };
+  }
+
+  const communitiesArray: Community[] = Array.isArray(data.communities)
+    ? data.communities.map((communityData: any, index: number): Community => {
+        // Basic validation for each community object
+        if (!communityData || typeof communityData.name !== 'string' || typeof communityData.platform !== 'string' || typeof communityData.groupLink !== 'string') {
+          console.warn(`Community object at index ${index} for country ${data.name} (ID: ${doc.id}) is missing required fields (name, platform, groupLink).`);
+          return { // Return a default/error structure for this community
+            name: 'Error: Invalid Community Data',
+            platform: 'Unknown',
+            groupLink: '#',
+          };
+        }
+        return {
+          id: communityData.id || `community_${doc.id}_${index}`, // Generate an ID if not present
+          name: communityData.name,
+          platform: communityData.platform,
+          city: typeof communityData.city === 'string' ? communityData.city : undefined,
+          groupLink: communityData.groupLink,
+          memberCount: typeof communityData.memberCount === 'number' ? communityData.memberCount : undefined,
+          membersText: typeof communityData.membersText === 'string' ? communityData.membersText : undefined,
+          tags: Array.isArray(communityData.tags) ? communityData.tags.filter((t: any) => typeof t === 'string') : [],
+          requirementToJoin: typeof communityData.requirementToJoin === 'string' ? communityData.requirementToJoin : undefined,
+          // flag is usually inherited from country level
+        };
+      })
+    : [];
+
+  if (Array.isArray(data.communities) && communitiesArray.length !== data.communities.length) {
+      console.warn(`Some communities for country ${data.name} (ID: ${doc.id}) were filtered out due to missing required fields.`);
+  }
+  if (!Array.isArray(data.communities)) {
+      console.warn(`'communities' field for country ${data.name} (ID: ${doc.id}) is not an array or is missing. Defaulting to empty array.`);
+  }
+
+
+  return {
+    id: doc.id,
+    code: data.code,
+    name: data.name,
+    cover_image: typeof data.cover_image === 'string' ? data.cover_image : undefined,
+    flag: typeof data.flag === 'string' ? data.flag : undefined,
+    continent: typeof data.continent === 'string' ? data.continent : undefined,
+    currency: typeof data.currency === 'string' ? data.currency : undefined,
+    timezone: typeof data.timezone === 'string' ? data.timezone : undefined,
+    popular_cities: Array.isArray(data.popular_cities) ? data.popular_cities.filter((pc: any) => typeof pc === 'string') : [],
+    coliving_count: typeof data.coliving_count === 'number' ? data.coliving_count : undefined,
+    source: typeof data.source === 'string' ? data.source : undefined,
+    community_count: typeof data.community_count === 'number' ? data.community_count : undefined,
+    community_members: typeof data.community_members === 'number' ? data.community_members : undefined,
+    community_cities: Array.isArray(data.community_cities) ? data.community_cities.filter((cc: any) => typeof cc === 'string') : [],
+    community_platforms: Array.isArray(data.community_platforms) ? data.community_platforms.filter((cp: any) => typeof cp === 'string') : [],
+    communities: communitiesArray,
+  };
+};
+
+export async function getAllCountriesWithCommunitiesFromDB(): Promise<CountryWithCommunities[]> {
+  try {
+    const countriesCollectionRef = collection(db, 'countriesWithCommunities'); // Changed to new collection name
+    const q = query(countriesCollectionRef);
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.warn("getAllCountriesWithCommunitiesFromDB: Firestore query for 'countriesWithCommunities' collection returned an empty snapshot. Collection might be empty or not exist.");
+      return [];
+    }
+    
+    const countries: CountryWithCommunities[] = [];
+    querySnapshot.forEach((document) => {
+      countries.push(mapDocToCountryWithCommunities(document));
+    });
+    
+    // Filter out any countries that might have resulted in an error structure during mapping
+    const validCountries = countries.filter(country => country.name !== 'Error: Invalid Country Data');
+    
+    if (validCountries.length !== countries.length) {
+        console.warn("getAllCountriesWithCommunitiesFromDB: Some country documents were invalid and filtered out.");
+    }
+
+    return validCountries.sort((a, b) => a.name.localeCompare(b.name));
+  } catch (error) {
+    console.error("Error fetching countries with communities from Firestore:", error);
+    return [];
+  }
+}
