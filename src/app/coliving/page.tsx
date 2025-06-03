@@ -23,7 +23,7 @@ export default async function ColivingDirectoryPage({
     return (
       <div className="space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-primary">Coliving Directory</h1>
+          <h1 className="text-4xl font-bold text-primary">Explore Colivings</h1>
           <p className="text-lg text-muted-foreground mt-2">
             Explore coliving spaces by selecting a country below.
           </p>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Home, List, Lightbulb, Waves, PlaneTakeoff } from 'lucide-react';
+import { Home, List, PlaneTakeoff, Waves } from 'lucide-react';
 
 export function Header() {
   return (
@@ -20,7 +20,7 @@ export function Header() {
             <li>
               <Link href="/coliving" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
                 <List className="h-5 w-5" />
-                Directory
+                Colivings
               </Link>
             </li>
             <li>

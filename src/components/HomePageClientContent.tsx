@@ -166,7 +166,7 @@ export function HomePageClientContent({
         <div className="mt-8 flex justify-center space-x-4">
           <Button size="lg" asChild>
             <Link href="/coliving">
-              <List className="mr-2 h-5 w-5" /> Explore Directory
+              <List className="mr-2 h-5 w-5" /> Explore Colivings
             </Link>
           </Button>
           <Button size="lg" variant="outline" asChild>

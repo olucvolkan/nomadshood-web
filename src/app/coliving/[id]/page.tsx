@@ -110,7 +110,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
       <Button variant="outline" asChild className="mb-8 print:hidden">
         <Link href="/coliving">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Directory
+          Back to Colivings
         </Link>
       </Button>
 
