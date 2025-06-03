@@ -23,12 +23,14 @@ export function Header() {
                 Colivings
               </Link>
             </li>
+            {/* Trip Planner link removed
             <li>
               <Link href="/recommender" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
                 <PlaneTakeoff className="h-5 w-5" />
                 Trip Planner
               </Link>
             </li>
+            */}
           </ul>
         </nav>
       </div>
