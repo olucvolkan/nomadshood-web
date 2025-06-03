@@ -68,7 +68,7 @@ const NearbyPlaceIcon: React.FC<{ type: string; className?: string }> = ({ type,
       return <Hospital className={className} />;
     case 'shopping_mall':
     case 'clothing_store':
-    case 'store': 
+    case 'store':
     case 'shopping':
       return <Store className={className} />;
     case 'bar':
@@ -94,9 +94,7 @@ const NearbyPlaceIcon: React.FC<{ type: string; className?: string }> = ({ type,
 
 export default async function ColivingDetailPage({ params: paramsProp }: { params: { id: string } }) {
   const params = await paramsProp;
-  console.log(`Coliving Detail Page for ID: ${params.id}`);
   const space: ColivingSpace | null = await getColivingSpaceById(params.id);
-  console.log(`Coliving Detail Page for ID: ${params.id}, Coordinates:`, space?.coordinates);
   const reviewData: ColivingReviewData | null = await getColivingReviewsByColivingId(params.id);
   const categorizedNearbyPlaces: CategorizedNearbyPlaceGroup[] = await getNearbyPlaces(params.id);
 
@@ -201,7 +199,6 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
 
 
       <Card className="overflow-hidden shadow-xl">
-        {/* Main image/slider area REMOVED as per request */}
         <CardHeader className="p-6">
           <div className="flex flex-col sm:flex-row items-start gap-4">
             {space.logoUrl && !space.logoUrl.includes('placehold.co') && (
@@ -234,6 +231,22 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
                     <ExternalLink className="ml-1 h-3 w-3" />
                   </Link>
                 </Button>
+              )}
+              {(space.email || space.phone) && (
+                <div className="mt-2 space-y-1">
+                  {space.email && (
+                    <div className="flex items-center text-sm text-muted-foreground">
+                      <Mail className="h-4 w-4 mr-2 text-primary" />
+                      <a href={`mailto:${space.email}`} className="hover:underline">{space.email}</a>
+                    </div>
+                  )}
+                  {space.phone && (
+                     <div className="flex items-center text-sm text-muted-foreground">
+                       <Phone className="h-4 w-4 mr-2 text-primary" />
+                      <span>{space.phone}</span>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
             {space.status && (
@@ -523,22 +536,14 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
                   </Button>
               )}
           </div>
+          {/* Contact info moved to CardHeader, so this div is now empty or can be removed if no other content is planned here */}
           <div className="space-y-1 text-xs text-muted-foreground sm:text-right w-full sm:w-auto">
-              {space.email && (
-                <div className="flex items-center sm:justify-end">
-                  <Mail className="h-3 w-3 mr-1.5" />
-                  <a href={`mailto:${space.email}`} className="hover:underline">{space.email}</a>
-                </div>
-              )}
-              {space.phone && (
-                 <div className="flex items-center sm:justify-end">
-                   <Phone className="h-3 w-3 mr-1.5" />
-                  <span>{space.phone}</span>
-                </div>
-              )}
+             {/* Placeholder if other footer content might be added later, otherwise this div can be removed */}
           </div>
         </CardFooter>
       </Card>
     </div>
   );
 }
+
+    
