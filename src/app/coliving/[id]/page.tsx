@@ -9,12 +9,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { ImageSlider } from '@/components/ImageSlider';
 import {
   ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Briefcase, Home, ExternalLink,
   Star, Users2, Wifi, Clock, LanguagesIcon, Mountain, Building2, Info,
   CalendarClock, Thermometer, Globe2, Smile, LocateFixed, Map, Plane, Bus, Bike, Phone, Mail, AlertCircle, MessageCircle,
   Landmark, Utensils, Coffee, ShoppingCart, Train, Trees, Dumbbell, Ticket, Banknote, Hospital, Building,
-  WavesIcon, Search, Beer, Store, MountainSnow, Sailboat, Clock4, Walking, ChefHat
+  WavesIcon, Search, Beer, Store, MountainSnow, Sailboat, Clock4, Footprints, ChefHat
 } from 'lucide-react';
 import { getColivingSpaceById, getColivingReviewsByColivingId, getNearbyPlaces } from '@/services/colivingService';
 
@@ -33,7 +34,7 @@ const StarRating: React.FC<{ rating?: number; maxStars?: number, starSize?: stri
       ))}
       {halfStar === 1 && <Star key="half" className={`${starSize} text-yellow-500 fill-yellow-200`} />}
       {[...Array(emptyStars)].map((_, i) => (
-        <Star key={`empty-${i}`} className={`${starSize} text-yellow-300/70`} /> 
+        <Star key={`empty-${i}`} className={`${starSize} text-yellow-300/70`} />
       ))}
       {showTextRating && <span className="ml-1 text-xs font-medium">{rating.toFixed(1)}</span>}
       {typeof totalRatings === 'number' && (
@@ -92,14 +93,16 @@ const NearbyPlaceIcon: React.FC<{ type: string; className?: string }> = ({ type,
 
 export default async function ColivingDetailPage({ params: paramsProp }: { params: { id: string } }) {
   const params = await paramsProp;
+  console.log(`Coliving Detail Page for ID: ${params.id}`);
   const space: ColivingSpace | null = await getColivingSpaceById(params.id);
+  console.log(`Coliving Detail Page for ID: ${params.id}, Coordinates:`, space?.coordinates);
   const reviewData: ColivingReviewData | null = await getColivingReviewsByColivingId(params.id);
   const categorizedNearbyPlaces: CategorizedNearbyPlaceGroup[] = await getNearbyPlaces(params.id);
 
   if (!space) {
     notFound();
   }
-  
+
   const displayAddress = space.address || 'Location not specified';
   const hasValidCoordinates = typeof space.coordinates?.latitude === 'number' && typeof space.coordinates?.longitude === 'number';
 
@@ -143,7 +146,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
                           <CardContent className="p-3 pt-0 text-xs space-y-1.5">
                             {place.distance_walking_time !== null && typeof place.distance_walking_time === 'number' ? (
                                 <p className="text-muted-foreground flex items-center">
-                                  <Walking className="h-3.5 w-3.5 mr-1.5 text-primary/80" /> {place.distance_walking_time} min walk
+                                  <Footprints className="h-3.5 w-3.5 mr-1.5 text-primary/80" /> {place.distance_walking_time} min walk
                                 </p>
                               ) : place.distance_meters ? (
                                 <p className="text-muted-foreground flex items-center">
@@ -161,9 +164,9 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
                           {place.locationLink && (
                             <CardFooter className="p-3 pt-1 border-t">
                               <Button variant="link" size="sm" asChild className="p-0 h-auto text-xs w-full justify-start">
-                                <Link 
+                                <Link
                                   href={place.locationLink}
-                                  target="_blank" 
+                                  target="_blank"
                                   rel="noopener noreferrer"
                                 >
                                   View on Map <ExternalLink className="ml-1 h-3 w-3" />
@@ -189,8 +192,8 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
       <Card className="overflow-hidden shadow-xl">
          {(space.gallery && space.gallery.length > 0) || (space.mainImageUrl && !space.mainImageUrl.includes('placehold.co')) ? (
              <div className="relative w-full h-64 md:h-80 print:hidden"> {/* Hide slider on print */}
-                <ImageSlider 
-                    images={space.gallery && space.gallery.length > 0 ? space.gallery : (space.mainImageUrl ? [space.mainImageUrl] : [])} 
+                <ImageSlider
+                    images={space.gallery && space.gallery.length > 0 ? space.gallery : (space.mainImageUrl ? [space.mainImageUrl] : [])}
                     altText={`${space.name || 'Coliving space'} image`}
                     baseDataAiHint={space.dataAiHint || 'coliving interior room'}
                 />
@@ -207,7 +210,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
                 />
             </div>
         )}
-        
+
         <CardHeader className="p-6">
           <div className="flex flex-col sm:flex-row items-start gap-4">
             {space.logoUrl && !space.logoUrl.includes('placehold.co') && (
@@ -251,7 +254,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
         </CardHeader>
 
         <CardContent className="p-6 pt-0 space-y-6">
-          
+
           <h3 className="text-xl font-semibold text-foreground flex items-center">
             <Info className="mr-2 h-5 w-5 text-primary" />
             Key Information
@@ -372,7 +375,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
               <Separator className="my-6" />
             </div>
           )}
-        
+
           {(hasValidCoordinates || space.transportation) && (
             <div className="mt-4">
               <h3 className="text-lg font-semibold mb-4 text-foreground">Location & Transportation:</h3>
@@ -425,7 +428,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
               <Separator className="my-6" />
             </div>
           )}
-          
+
           {space.nearby_attractions && space.nearby_attractions.length > 0 && (
             <div className="mt-4">
               <h3 className="text-lg font-semibold mb-3 text-foreground">Nearby Attractions (Manual):</h3>
@@ -548,3 +551,5 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
     </div>
   );
 }
+
+    
