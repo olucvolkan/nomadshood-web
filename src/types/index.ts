@@ -2,17 +2,16 @@
 export interface ColivingSpace {
   id: string;
   name: string;
-  address: string; // Mapped from Firestore's 'location'
-  logoUrl: string; // Mapped from Firestore's 'cover_image' or 'logo'
-  mainImageUrl?: string; // Mapped from Firestore's 'gallery[0]' or 'cover_image'
-  description: string;
-  videoUrl?: string; // Mapped from 'youtube_video_link'
-  whatsappLink?: string; // Mapped from 'contact.whatsapp'
-  websiteUrl?: string; // Mapped from 'website'
+  address: string; 
+  logoUrl: string; 
+  mainImageUrl?: string; 
+  description?: string; // Description might be removed from display but kept in type
+  videoUrl?: string; 
+  whatsappLink?: string; 
+  websiteUrl?: string; 
   tags?: string[];
   dataAiHint?: string;
 
-  // Fields directly from your new JSON structure / Firestore
   country: string;
   city: string;
   region?: string;
@@ -27,7 +26,7 @@ export interface ColivingSpace {
     currency?: string;
   };
   gallery?: string[];
-  coworking_access?: string; // Will be parsed to hasCoworking
+  coworking_access?: string; 
   amenities?: string[];
   room_types?: Array<{
     type?: string;
@@ -38,14 +37,13 @@ export interface ColivingSpace {
   contact?: {
     email?: string;
     phone?: string;
-    // whatsapp is mapped to whatsappLink
   };
   capacity?: number;
   minimum_stay?: string;
   check_in?: string;
   languages?: string[];
   age_range?: string;
-  rating?: number; // Expecting a number directly
+  rating?: number; 
   reviews_count?: number;
   wifi_speed?: string;
   climate?: string;
@@ -60,15 +58,11 @@ export interface ColivingSpace {
   updated_at?: string;
   status?: string;
   brand?: string;
-
-
-  // Derived/mapped fields for easier component use
-  monthlyPrice: number; // Derived from budget_range.min
-  hasPrivateBathroom?: boolean; // Derived from amenities
-  hasCoworking?: boolean; // Derived from coworking_access
+  monthlyPrice: number; 
+  hasPrivateBathroom?: boolean; 
+  hasCoworking?: boolean; 
 }
 
-// --- Types for Trip Planner ---
 export interface TripPlanInput {
   location: string;
   budget: 'low' | 'medium' | 'high';
@@ -87,12 +81,12 @@ export interface ColivingSuggestion {
 
 export interface ActivitySuggestion {
   name: string;
-  reason?: string; // For cafes/restaurants
-  cuisine?: string; // For restaurants
+  reason?: string; 
+  cuisine?: string; 
 }
 
 export interface DailyItineraryItem {
-  day: string; // e.g., "Day 1", "Monday"
+  day: string; 
   morningActivity: string;
   afternoonActivity: string;
   eveningActivity: string;
@@ -106,14 +100,13 @@ export interface TripPlanOutput {
   restaurantSuggestions: ActivitySuggestion[];
 }
 
-// Type for data from "countries" Firestore collection
 export interface CountryData {
-  id: string; // Firestore document ID
-  code: string; // e.g., "ES", "PT"
+  id: string; 
+  code: string; 
   name: string;
-  cover_image: string; // URL for a general image of the country
-  flag: string; // Emoji flag
-  flagImageUrl?: string; // URL for the flag image from Firebase Storage
+  cover_image: string; 
+  flag: string; 
+  flagImageUrl?: string; 
   continent?: string;
   currency?: string;
   timezone?: string;
@@ -121,38 +114,35 @@ export interface CountryData {
   coliving_count?: number;
 }
 
-// Standardized NomadVideo type used in the application
 export interface NomadVideo {
-  id: string; // Mapped from videoId or Firestore document ID
+  id: string; 
   title: string;
-  thumbnailUrl: string; // Derived from thumbnails.high.url or fallbacks
-  youtubeUrl: string; // Mapped from url or a direct field in Firestore
-  viewCount: number; // Parsed from statistics.viewCount or direct field
-  likeCount: number; // Parsed from statistics.likeCount or direct field
-  commentCount: number; // Parsed from statistics.commentCount or direct field
-  duration: number; // Parsed from statistics.duration (in seconds) or direct field
-  publishedAt: string; // ISO string date (from JSON or converted from Firestore Timestamp)
+  thumbnailUrl: string; 
+  youtubeUrl: string; 
+  viewCount: number; 
+  likeCount: number; 
+  commentCount: number; 
+  duration: number; 
+  publishedAt: string; 
   destination?: string;
   dataAiHint?: string;
 }
 
-
-// Types for Country Communities data from Firestore 'countries' collection
 export interface Community {
-  id?: string; // Firestore document ID for the community if stored as a subcollection, or array index if embedded
+  id?: string; 
   name: string;
-  platform: string; // e.g., "Facebook", "WhatsApp", "Reddit", "Slack", "Telegram"
-  city?: string; // Optional: if the community is city-specific within the country
+  platform: string; 
+  city?: string; 
   groupLink: string;
   memberCount?: number;
-  membersText?: string; // Could be "11.6k members" or similar
+  membersText?: string; 
   tags?: string[];
-  requirementToJoin?: string; // e.g., "None", "Approval Required"
-  flag?: string; // flag is usually at the CountryWithCommunities level but can be in community specific data
+  requirementToJoin?: string; 
+  flag?: string; 
 }
 
 export interface CountryWithCommunities {
-  id: string; // Firestore document ID for the country
+  id: string; 
   code: string;
   name: string;
   cover_image?: string;
@@ -163,15 +153,14 @@ export interface CountryWithCommunities {
   timezone?: string;
   popular_cities?: string[];
   coliving_count?: number;
-  source?: string; // Where the country data was sourced from, if applicable
+  source?: string; 
   community_count?: number;
-  community_members?: number; // Aggregate if available
-  community_cities?: string[]; // List of cities with communities in this country
-  community_platforms?: string[]; // List of platforms used by communities in this country
-  communities: Community[]; // Array of community objects
+  community_members?: number; 
+  community_cities?: string[]; 
+  community_platforms?: string[]; 
+  communities: Community[]; 
 }
 
-// --- Types for Coliving Reviews ---
 export interface ReviewItem {
   id: string;
   coliving_id: string;
@@ -181,8 +170,8 @@ export interface ReviewItem {
   profile_photo_url: string;
   rating: number;
   relative_time_description: string;
-  time: number; // Unix timestamp
-  text: string | null; // Text can be null
+  time: number; 
+  text: string | null; 
   language?: string;
   translated?: boolean;
   original_language?: string;
@@ -192,7 +181,7 @@ export interface ReviewItem {
 }
 
 export interface ColivingReviewData {
-  id: string; // Firestore document ID for this review batch
+  id: string; 
   coliving_id: string;
   coliving_name?: string;
   coliving_city?: string;
@@ -205,23 +194,73 @@ export interface ColivingReviewData {
   google_total_ratings?: number;
   google_website?: string;
   google_phone?: string;
-  total_reviews?: number; // Number of reviews in the 'reviews' array below
+  total_reviews?: number; 
   recent_reviews_count?: number;
   average_sentiment?: number;
   reviews: ReviewItem[];
-  crawled_at?: string; // ISO date string
+  crawled_at?: string; 
   api_status?: string;
 }
 
-// --- Types for Nearby Places ---
+// Updated NearbyPlace type based on the new schema
 export interface NearbyPlace {
-  id: string; // Firestore document ID
-  coliving_id: string; // Foreign key to the coliving space
-  name: string;
-  type: string; // e.g., "Cafe", "Restaurant", "Park", "Gym", "Supermarket", "Metro Station", "Attraction"
-  distance?: string; // e.g., "5 min walk", "200m", "1km"
-  imageUrl?: string; // URL for an image of the place
-  description?: string; // Optional short description
-  locationLink?: string; // Optional URL to Google Maps or similar
+  id: string; // Google Place ID (place_id from schema)
+  coliving_id: string; // The ID of the coliving space this place is near to
+  name: string; // Name of the place
+  type: string; // Category key from schema (e.g., "supermarket", "restaurant")
+  googleTypes?: string[]; // Raw Google Places types
+  distance?: string; // Formatted distance (e.g., "500m", "5 min walk")
+  rating?: number; // Google rating (0-5)
+  user_ratings_total?: number; // Total number of ratings
+  price_level?: number | null; // Price level (0-4)
+  address_vicinity?: string; // Vicinity or short address
+  coordinates?: { lat: number; lng: number };
+  business_status?: string; // e.g., "OPERATIONAL"
+  imageUrl?: string; // URL for an image of the place (will use placeholder)
+  locationLink?: string; // Google Maps link generated from coordinates
   dataAiHint?: string; // For image placeholders
+}
+
+// Structure for the document in 'coliving_nearby_places' collection
+export interface FirestoreNearbyPlacesDoc {
+  coliving_id: string;
+  coliving_name?: string;
+  coliving_city?: string;
+  coliving_country?: string;
+  coliving_website?: string;
+  coliving_location?: {
+    google_place_id?: string;
+    google_name?: string;
+    google_address?: string;
+    coordinates?: { lat: number; lng: number };
+  };
+  nearby_places?: {
+    [categoryKey: string]: Array<{ // e.g., "supermarket": [placeObj, placeObj]
+      place_id: string;
+      name: string;
+      category: string; // Should match the categoryKey
+      types: string[];
+      rating?: number;
+      user_ratings_total?: number;
+      price_level?: number | null;
+      vicinity?: string;
+      distance_meters?: number;
+      distance_walking_time?: number | null;
+      coordinates?: { lat: number; lng: number };
+      business_status?: string;
+      permanently_closed?: boolean;
+    }>;
+  };
+  summary?: {
+    total_places_found?: number;
+    categories_with_places?: number;
+    closest_supermarket?: number | null;
+    // ... other summary fields
+    walkability_score?: number;
+  };
+  metadata?: {
+    crawled_at?: string;
+    uploaded_at?: string;
+    source?: string;
+  };
 }

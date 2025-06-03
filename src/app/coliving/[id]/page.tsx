@@ -12,22 +12,31 @@ import {
   ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Briefcase, Home, ExternalLink,
   Star, Users2, Wifi, Clock, LanguagesIcon, Mountain, Building2, Info,
   CalendarClock, Thermometer, Globe2, Smile, LocateFixed, Map, Plane, Bus, Bike, Phone, Mail, AlertCircle, MessageCircle,
-  Landmark, Utensils, Coffee, ShoppingCart, Train, Trees, Dumbbell, Ticket
+  Landmark, Utensils, Coffee, ShoppingCart, Train, Trees, Dumbbell, Ticket, Banknote, Hospital, Building,
+  WavesIcon, Search, Beer, Store, MountainSnow, Sailboat // Added new icons
 } from 'lucide-react';
 import { getColivingSpaceById, getColivingReviewsByColivingId, getNearbyPlaces } from '@/services/colivingService';
 
-const StarRating: React.FC<{ rating: number; maxStars?: number, starSize?: string }> = ({ rating, maxStars = 5, starSize = "h-4 w-4" }) => {
+const StarRating: React.FC<{ rating?: number; maxStars?: number, starSize?: string, totalRatings?: number }> = ({ rating, maxStars = 5, starSize = "h-4 w-4", totalRatings }) => {
+  if (typeof rating !== 'number' || rating < 0 || rating > 5) {
+    return <span className="text-xs text-muted-foreground">No rating</span>;
+  }
   const fullStars = Math.floor(rating);
-  const emptyStars = maxStars - Math.ceil(rating);
+  const halfStar = rating % 1 >= 0.5 ? 1 : 0;
+  const emptyStars = maxStars - fullStars - halfStar;
 
   return (
     <div className="flex items-center">
       {[...Array(fullStars)].map((_, i) => (
         <Star key={`full-${i}`} className={`${starSize} text-yellow-500 fill-current`} />
       ))}
+      {halfStar === 1 && <Star key="half" className={`${starSize} text-yellow-500 fill-yellow-200`} />} {/* A simple way to show half star */}
       {[...Array(emptyStars)].map((_, i) => (
-        <Star key={`empty-${i}`} className={`${starSize} text-yellow-300`} />
+        <Star key={`empty-${i}`} className={`${starSize} text-yellow-300/70`} /> 
       ))}
+      {typeof totalRatings === 'number' && (
+        <span className="ml-1.5 text-xs text-muted-foreground">({totalRatings})</span>
+      )}
     </div>
   );
 };
@@ -38,12 +47,39 @@ const NearbyPlaceIcon: React.FC<{ type: string; className?: string }> = ({ type,
     case 'restaurant': return <Utensils className={className} />;
     case 'park': return <Trees className={className} />;
     case 'gym': return <Dumbbell className={className} />;
-    case 'supermarket': return <ShoppingCart className={className} />;
-    case 'metro station':
-    case 'train station':
-    case 'bus station':
-       return <Train className={className} />;
-    case 'attraction':
+    case 'supermarket':
+    case 'grocery_or_supermarket':
+      return <ShoppingCart className={className} />;
+    case 'transit_station':
+    case 'bus_station':
+    case 'subway_station':
+    case 'public_transport':
+       return <Bus className={className} />;
+    case 'bank':
+    case 'atm':
+      return <Banknote className={className} />;
+    case 'hospital':
+    case 'doctor':
+    case 'pharmacy':
+      return <Hospital className={className} />;
+    case 'shopping_mall':
+    case 'clothing_store':
+    case 'shopping':
+      return <Store className={className} />;
+    case 'bar':
+    case 'night_club':
+    case 'nightlife':
+      return <Beer className={className} />;
+    case 'beach':
+      return <WavesIcon className={className} />; // Using WavesIcon for beach
+    case 'hiking_trail':
+    case 'mountain':
+    case 'hiking':
+      return <MountainSnow className={className} />; // Using MountainSnow for hiking/nature
+    case 'coworking_space':
+    case 'coworking':
+      return <Briefcase className={className} />; // Reusing Briefcase for coworking
+    case 'tourist_attraction':
     case 'landmark':
        return <Landmark className={className} />;
     default: return <MapPin className={className} />;
@@ -63,7 +99,6 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
   
   console.log(`Coliving Detail Page for ID: ${params.id}, Coordinates:`, space.coordinates);
 
-
   const displayAddress = space.address || 'Location not specified';
   const hasValidCoordinates = typeof space.coordinates?.latitude === 'number' && typeof space.coordinates?.longitude === 'number';
 
@@ -80,36 +115,46 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
         <Card className="mb-8 shadow-xl">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-primary flex items-center">
-              <Landmark className="mr-3 h-6 w-6" />
+              <Search className="mr-3 h-6 w-6" /> {/* Using Search icon */}
               What&apos;s Around?
             </CardTitle>
-            <CardDescription>Discover points of interest near {space.name || 'this coliving space'}.</CardDescription>
+            <CardDescription>Discover points of interest near {space.name || 'this coliving space'}. (Distances are approximate)</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {nearbyPlaces.map((place) => (
-                <Card key={place.id} className="overflow-hidden flex flex-col">
-                  <div className="relative w-full h-40">
+                <Card key={place.id} className="overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                  <div className="relative w-full h-32 sm:h-40"> {/* Adjusted height for better grid fit */}
                     <Image
                       src={place.imageUrl || `https://placehold.co/300x200.png?text=${encodeURIComponent(place.name)}`}
                       alt={place.name}
                       fill
                       style={{ objectFit: 'cover' }}
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       data-ai-hint={place.dataAiHint || `${place.type.toLowerCase()} exterior`}
                     />
                   </div>
                   <CardHeader className="p-3 flex-grow">
-                    <CardTitle className="text-md mb-1 flex items-center">
-                       <NearbyPlaceIcon type={place.type} className="h-4 w-4 text-muted-foreground mr-1.5" />
-                      {place.name}
+                    <CardTitle className="text-md mb-1 flex items-start">
+                       <NearbyPlaceIcon type={place.type} className="h-4 w-4 text-muted-foreground mr-1.5 mt-0.5 flex-shrink-0" />
+                      <span className="line-clamp-2">{place.name}</span>
                     </CardTitle>
-                    <Badge variant="outline" className="text-xs mb-1">{place.type}</Badge>
+                    <Badge variant="outline" className="text-xs mb-1 capitalize">{place.type.replace(/_/g, ' ')}</Badge>
                     {place.distance && <p className="text-xs text-muted-foreground">{place.distance}</p>}
+                    {typeof place.rating === 'number' && (
+                       <div className="mt-1">
+                        <StarRating rating={place.rating} totalRatings={place.user_ratings_total} starSize="h-3 w-3" />
+                       </div>
+                    )}
                   </CardHeader>
-                  {place.locationLink && (
+                  {(place.locationLink || (place.coordinates?.lat && place.coordinates?.lng)) && (
                     <CardFooter className="p-3 pt-0">
                       <Button variant="link" size="sm" asChild className="p-0 h-auto text-xs">
-                        <Link href={place.locationLink} target="_blank" rel="noopener noreferrer">
+                        <Link 
+                          href={place.locationLink || `https://www.google.com/maps?q=${place.coordinates?.lat},${place.coordinates?.lng}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                        >
                           View on Map <ExternalLink className="ml-1 h-3 w-3" />
                         </Link>
                       </Button>
@@ -124,9 +169,19 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
 
 
       <Card className="overflow-hidden shadow-xl">
-        {/* ImageSlider removed from here */}
-        {/* <ImageSlider images={sliderImages} altText={`${space.name || 'Coliving space'} gallery`} baseDataAiHint={space.dataAiHint || "building interior"} /> */}
-
+         {space.mainImageUrl && !space.mainImageUrl.includes('placehold.co') && (
+            <div className="relative w-full h-64 md:h-80">
+                 <Image
+                    src={space.mainImageUrl}
+                    alt={`${space.name || 'Coliving space'} main image`}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    priority
+                    data-ai-hint={space.dataAiHint || 'building exterior'}
+                />
+            </div>
+        )}
+        
         <CardHeader className="p-6">
           <div className="flex flex-col sm:flex-row items-start gap-4">
             {space.logoUrl && !space.logoUrl.includes('placehold.co') && (
@@ -183,7 +238,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
               </div>
             )}
              <div className="flex items-center">
-              <Building2 className="h-4 w-4 mr-2 text-primary" />
+              <Building className="h-4 w-4 mr-2 text-primary" />
               <span>Type: Coliving Space</span>
             </div>
             <div className="flex items-center">
@@ -347,7 +402,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
           
           {space.nearby_attractions && space.nearby_attractions.length > 0 && (
             <div className="mt-4">
-              <h3 className="text-lg font-semibold mb-3 text-foreground">Nearby Attractions:</h3>
+              <h3 className="text-lg font-semibold mb-3 text-foreground">Nearby Attractions (Manual):</h3>
               <div className="flex flex-wrap gap-2">
                 {space.nearby_attractions.map((attraction) => (
                   <Badge key={attraction} variant="secondary" className="text-xs">
@@ -359,19 +414,22 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
             </div>
           )}
 
-          {/* Google Reviews Section */}
           {reviewData && (
             <div>
               <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center">
                 <MessageCircle className="mr-2 h-5 w-5 text-primary" />
                 Google Reviews
               </h3>
-              {reviewData.google_rating && reviewData.google_total_ratings && (
-                <div className="mb-6 p-4 bg-muted/30 rounded-lg flex items-center gap-4">
-                  <StarRating rating={reviewData.google_rating} starSize="h-6 w-6" />
-                  <span className="text-lg font-semibold">{reviewData.google_rating.toFixed(1)} / 5</span>
-                  <span className="text-sm text-muted-foreground">({reviewData.google_total_ratings} Google ratings)</span>
+              {(reviewData.google_rating && reviewData.google_total_ratings) ? (
+                <div className="mb-6 p-4 bg-muted/30 rounded-lg flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                    <div className="flex items-center">
+                        <StarRating rating={reviewData.google_rating} starSize="h-6 w-6" />
+                        <span className="text-lg font-semibold ml-2">{reviewData.google_rating.toFixed(1)} / 5</span>
+                    </div>
+                    <span className="text-sm text-muted-foreground">({reviewData.google_total_ratings} Google ratings)</span>
                 </div>
+              ) : (
+                 <p className="text-muted-foreground mb-4">Overall Google rating not available.</p>
               )}
 
               {reviewData.reviews && reviewData.reviews.length > 0 ? (
@@ -379,12 +437,12 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
                   {reviewData.reviews.map((review: ReviewItem) => (
                     <Card key={review.id} className="shadow-sm">
                       <CardHeader className="flex flex-row items-start space-x-4 p-4">
-                        <Avatar className="h-12 w-12 border">
+                        <Avatar className="h-10 w-10 sm:h-12 sm:w-12 border">
                           <AvatarImage src={review.profile_photo_url} alt={review.author_name} data-ai-hint="profile picture user" />
                           <AvatarFallback>{review.author_name.substring(0, 2).toUpperCase()}</AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
-                          <div className="flex items-center justify-between">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1">
                             <p className="font-semibold text-sm">{review.author_name}</p>
                             <StarRating rating={review.rating} starSize="h-3.5 w-3.5" />
                           </div>
@@ -396,7 +454,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
                         {review.author_url && (
                            <Button variant="link" size="sm" asChild className="p-0 h-auto mt-2 text-xs">
                             <Link href={review.author_url} target="_blank" rel="noopener noreferrer">
-                              View on Google Maps <ExternalLink className="ml-1 h-2.5 w-2.5" />
+                              View original review <ExternalLink className="ml-1 h-2.5 w-2.5" />
                             </Link>
                           </Button>
                         )}

@@ -1,9 +1,8 @@
 
-import { db } from '@/lib/firebase'; // db is Firestore instance
+import { db } from '@/lib/firebase'; 
 import { collection, getDocs, doc, getDoc, type DocumentData, type QueryDocumentSnapshot, query, Timestamp, where, limit as firestoreLimit } from 'firebase/firestore';
-import type { ColivingSpace, CountryWithCommunities, Community, ColivingReviewData, ReviewItem, NearbyPlace } from '@/types';
+import type { ColivingSpace, CountryWithCommunities, Community, ColivingReviewData, ReviewItem, NearbyPlace, FirestoreNearbyPlacesDoc } from '@/types';
 
-// Helper function to parse coordinate values to number if they are string representations
 const parseCoordinate = (value: any): number | undefined => {
   if (typeof value === 'number') {
     return value;
@@ -15,7 +14,6 @@ const parseCoordinate = (value: any): number | undefined => {
   return undefined;
 };
 
-// Helper function to map Firestore document to ColivingSpace
 const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | DocumentData): ColivingSpace => {
   const rawData = document.data();
 
@@ -69,7 +67,6 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
       }
       const path = parsedUrl.pathname.toLowerCase();
       if (!path.endsWith('.jpg') && !path.endsWith('.jpeg') && !path.endsWith('.png') && !path.endsWith('.gif') && !path.endsWith('.webp')) {
-        // Allow if no extension but path is not empty (could be a serving endpoint)
         return path.length > 1; 
       }
       return true;
@@ -229,12 +226,12 @@ export async function getColivingSpaceById(id: string): Promise<ColivingSpace | 
   }
 }
 
-const mapDocToCountryWithCommunities = (doc: QueryDocumentSnapshot<DocumentData>): CountryWithCommunities => {
-  const data = doc.data();
+const mapDocToCountryWithCommunities = (docSnap: QueryDocumentSnapshot<DocumentData>): CountryWithCommunities => {
+  const data = docSnap.data();
   if (!data || typeof data.name !== 'string' || typeof data.code !== 'string') {
-    console.error(`Country document ID ${doc.id} is missing required fields (name, code) or data is undefined.`);
+    console.error(`Country document ID ${docSnap.id} is missing required fields (name, code) or data is undefined.`);
     return {
-      id: doc.id,
+      id: docSnap.id,
       name: 'Error: Invalid Country Data',
       code: '',
       communities: [],
@@ -248,23 +245,23 @@ const mapDocToCountryWithCommunities = (doc: QueryDocumentSnapshot<DocumentData>
     const flagPath = `flags/${data.code.trim().toLowerCase()}.png`;
     flagImageUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${encodeURIComponent(flagPath)}?alt=media`;
   } else if (!storageBucket && data.code) {
-     console.warn(`Firebase Storage Bucket (NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) for country ${data.name} (ID: ${doc.id}) is not set. Cannot construct flag image URL. Ensure env var is set and server restarted.`);
+     console.warn(`Firebase Storage Bucket (NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) for country ${data.name} (ID: ${docSnap.id}) is not set. Cannot construct flag image URL.`);
   }
 
 
   const communitiesArray: Community[] = Array.isArray(data.communities)
     ? data.communities.map((communityData: any, index: number): Community => {
         if (!communityData || typeof communityData.name !== 'string' || typeof communityData.platform !== 'string' || typeof communityData.groupLink !== 'string') {
-          console.warn(`Community object at index ${index} for country ${data.name} (ID: ${doc.id}) is missing required fields (name, platform, groupLink).`);
+          console.warn(`Community object at index ${index} for country ${data.name} (ID: ${docSnap.id}) is missing required fields (name, platform, groupLink).`);
           return { 
-            id: communityData.id || `community_${doc.id}_${index}_error`,
+            id: communityData.id || `community_${docSnap.id}_${index}_error`,
             name: 'Error: Invalid Community Data',
             platform: 'Unknown',
             groupLink: '#',
           };
         }
         return {
-          id: communityData.id || `community_${doc.id}_${index}`,
+          id: communityData.id || `community_${docSnap.id}_${index}`,
           name: communityData.name,
           platform: communityData.platform,
           city: typeof communityData.city === 'string' ? communityData.city : undefined,
@@ -273,21 +270,18 @@ const mapDocToCountryWithCommunities = (doc: QueryDocumentSnapshot<DocumentData>
           membersText: typeof communityData.membersText === 'string' ? communityData.membersText : undefined,
           tags: Array.isArray(communityData.tags) ? communityData.tags.filter((t: any) => typeof t === 'string') : [],
           requirementToJoin: typeof communityData.requirementToJoin === 'string' ? communityData.requirementToJoin : undefined,
-          flag: typeof communityData.flag === 'string' ? communityData.flag : data.flag, // Inherit country flag if community doesn't have one
+          flag: typeof communityData.flag === 'string' ? communityData.flag : data.flag, 
         };
       })
     : [];
 
-  if (Array.isArray(data.communities) && communitiesArray.length !== data.communities.length) {
-      console.warn(`Some communities for country ${data.name} (ID: ${doc.id}) were filtered out or marked as error due to missing required fields.`);
-  }
-  if (!Array.isArray(data.communities) && data.communities !== undefined) { // Check if it exists but isn't an array
-      console.warn(`'communities' field for country ${data.name} (ID: ${doc.id}) is not an array. Defaulting to empty array. Received:`, data.communities);
+  if (data.communities !== undefined && !Array.isArray(data.communities)) {
+      console.warn(`'communities' field for country ${data.name} (ID: ${docSnap.id}) is not an array. Defaulting to empty array. Received:`, data.communities);
   }
 
 
   return {
-    id: doc.id,
+    id: docSnap.id,
     code: data.code,
     name: data.name,
     cover_image: typeof data.cover_image === 'string' ? data.cover_image : undefined,
@@ -337,9 +331,6 @@ export async function getAllCountriesFromDB(): Promise<CountryWithCommunities[]>
   }
 }
 
-
-// --- Coliving Reviews Service ---
-
 const mapDocToColivingReviewData = (doc: QueryDocumentSnapshot<DocumentData>): ColivingReviewData => {
   const data = doc.data();
 
@@ -365,7 +356,7 @@ const mapDocToColivingReviewData = (doc: QueryDocumentSnapshot<DocumentData>): C
     : [];
 
   return {
-    id: doc.id, // Firestore document ID of this review batch
+    id: doc.id, 
     coliving_id: data.coliving_id,
     coliving_name: data.coliving_name,
     coliving_city: data.coliving_city,
@@ -401,7 +392,6 @@ export async function getColivingReviewsByColivingId(colivingId: string): Promis
       console.warn(`No review data found in 'coliving_reviews' for coliving_id: ${colivingId}`);
       return null;
     }
-    // Assuming coliving_id is unique for review summary documents, so we take the first.
     const reviewDoc = querySnapshot.docs[0];
     return mapDocToColivingReviewData(reviewDoc);
 
@@ -412,47 +402,71 @@ export async function getColivingReviewsByColivingId(colivingId: string): Promis
 }
 
 // --- Nearby Places Service ---
-
-const mapDocToNearbyPlace = (doc: QueryDocumentSnapshot<DocumentData>): NearbyPlace => {
-  const data = doc.data();
-  const defaultDataAiHint = `${data.type?.toLowerCase() || 'location'} ${data.name?.toLowerCase() || 'nearby'}`.trim().substring(0, 50);
-
-  return {
-    id: doc.id,
-    coliving_id: data.coliving_id || 'unknown_coliving_id',
-    name: data.name || 'Unnamed Place',
-    type: data.type || 'Unknown',
-    distance: data.distance,
-    imageUrl: data.imageUrl || `https://placehold.co/300x200.png?text=${encodeURIComponent(data.name || 'Nearby Place')}`,
-    description: data.description,
-    locationLink: data.locationLink,
-    dataAiHint: data.dataAiHint || defaultDataAiHint,
-  };
-};
-
+// Fetches a single document from 'coliving_nearby_places' where doc ID is colivingId
+// and processes its categorized places.
 export async function getNearbyPlaces(colivingId: string): Promise<NearbyPlace[]> {
   if (!colivingId) {
     console.error("getNearbyPlaces: colivingId is required.");
     return [];
   }
   try {
-    const nearbyPlacesCollectionRef = collection(db, 'coliving_nearby_places');
-    const q = query(nearbyPlacesCollectionRef, where('coliving_id', '==', colivingId));
-    const querySnapshot = await getDocs(q);
+    const docRef = doc(db, 'coliving_nearby_places', colivingId);
+    const docSnap = await getDoc(docRef);
 
-    if (querySnapshot.empty) {
-      console.warn(`No nearby places found in 'coliving_nearby_places' for coliving_id: ${colivingId}`);
+    if (!docSnap.exists()) {
+      console.warn(`No nearby places document found in 'coliving_nearby_places' for coliving_id: ${colivingId}`);
       return [];
     }
     
+    const docData = docSnap.data() as FirestoreNearbyPlacesDoc;
     const places: NearbyPlace[] = [];
-    querySnapshot.forEach((doc) => {
-      places.push(mapDocToNearbyPlace(doc));
-    });
-    return places;
 
+    if (docData.nearby_places && typeof docData.nearby_places === 'object') {
+      for (const categoryKey in docData.nearby_places) {
+        const categoryPlaces = docData.nearby_places[categoryKey];
+        if (Array.isArray(categoryPlaces)) {
+          categoryPlaces.forEach(place => {
+            let distanceStr = place.distance_meters ? `${place.distance_meters}m` : undefined;
+            if (place.distance_walking_time && place.distance_walking_time > 0) {
+              distanceStr = `${place.distance_walking_time} min walk`;
+            }
+
+            let locationLink;
+            if (place.coordinates?.lat && place.coordinates?.lng) {
+                locationLink = `https://www.google.com/maps?q=${place.coordinates.lat},${place.coordinates.lng}`;
+            }
+            
+            const defaultDataAiHint = `${categoryKey.toLowerCase()} ${place.name?.toLowerCase() || 'place'}`.trim().substring(0, 50);
+
+            places.push({
+              id: place.place_id,
+              coliving_id: colivingId, // The coliving_id context
+              name: place.name || 'Unnamed Place',
+              type: categoryKey, // Use the category key as the type
+              googleTypes: place.types || [],
+              distance: distanceStr,
+              rating: place.rating,
+              user_ratings_total: place.user_ratings_total,
+              price_level: place.price_level,
+              address_vicinity: place.vicinity,
+              coordinates: place.coordinates,
+              business_status: place.business_status,
+              imageUrl: `https://placehold.co/300x200.png?text=${encodeURIComponent(place.name || categoryKey)}`, // Placeholder
+              locationLink: locationLink,
+              dataAiHint: defaultDataAiHint,
+            });
+          });
+        }
+      }
+    }
+    return places.sort((a, b) => (a.distance_meters ?? Infinity) - (b.distance_meters ?? Infinity)); // Sort by distance if available
   } catch (error) {
-    console.error(`Error fetching nearby places for coliving_id ${colivingId} from Firestore:`, error);
+    console.error(`Error fetching or processing nearby places for coliving_id ${colivingId} from Firestore:`, error);
     return [];
   }
 }
+
+// Helper function to add distance_meters to NearbyPlace for sorting, not directly used in the returned NearbyPlace object to UI
+// This is just to make the sorting logic cleaner inside getNearbyPlaces.
+type NearbyPlaceWithDistance = NearbyPlace & { distance_meters?: number };
+
