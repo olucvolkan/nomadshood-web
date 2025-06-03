@@ -9,7 +9,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { ImageSlider } from '@/components/ImageSlider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Briefcase, Home, ExternalLink,
@@ -69,7 +68,7 @@ const NearbyPlaceIcon: React.FC<{ type: string; className?: string }> = ({ type,
       return <Hospital className={className} />;
     case 'shopping_mall':
     case 'clothing_store':
-    case 'store': // Added for consistency if 'store' is used as key
+    case 'store': 
     case 'shopping':
       return <Store className={className} />;
     case 'bar':
@@ -130,8 +129,8 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
             <Tabs defaultValue={categorizedNearbyPlaces[0]?.categoryKey} className="w-full">
               <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 mb-6 h-auto flex-wrap">
                 {categorizedNearbyPlaces.map((categoryGroup) => (
-                  <TabsTrigger 
-                    key={categoryGroup.categoryKey} 
+                  <TabsTrigger
+                    key={categoryGroup.categoryKey}
                     value={categoryGroup.categoryKey}
                     className="text-xs sm:text-sm px-2 py-1.5 h-full flex items-center justify-center leading-tight"
                   >
@@ -202,27 +201,7 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
 
 
       <Card className="overflow-hidden shadow-xl">
-         {(space.gallery && space.gallery.length > 0) || (space.mainImageUrl && !space.mainImageUrl.includes('placehold.co')) ? (
-             <div className="relative w-full h-64 md:h-80 print:hidden">
-                <ImageSlider
-                    images={space.gallery && space.gallery.length > 0 ? space.gallery : (space.mainImageUrl ? [space.mainImageUrl] : [])}
-                    altText={`${space.name || 'Coliving space'} image`}
-                    baseDataAiHint={space.dataAiHint || 'coliving interior room'}
-                />
-            </div>
-        ) : space.mainImageUrl && space.mainImageUrl.includes('placehold.co') && ( 
-             <div className="relative w-full h-64 md:h-80 bg-muted flex items-center justify-center print:hidden">
-                 <Image
-                    src={space.mainImageUrl} 
-                    alt={`${space.name || 'Coliving space'} placeholder`}
-                    width={600}
-                    height={400}
-                    style={{ objectFit: 'contain', maxHeight: '100%', maxWidth: '100%' }}
-                    data-ai-hint={space.dataAiHint || 'building exterior placeholder'}
-                />
-            </div>
-        )}
-
+        {/* Main image/slider area REMOVED as per request */}
         <CardHeader className="p-6">
           <div className="flex flex-col sm:flex-row items-start gap-4">
             {space.logoUrl && !space.logoUrl.includes('placehold.co') && (
@@ -563,5 +542,3 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
     </div>
   );
 }
-
-    
