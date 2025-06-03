@@ -57,7 +57,7 @@ export default function RecommenderPage() {
       <div className="text-center">
         <h1 className="text-4xl font-bold text-primary flex items-center justify-center">
           <PlaneTakeoff className="mr-3 h-10 w-10" />
-          AI Trip Planner
+          Trip Planner
         </h1>
         <p className="text-lg text-muted-foreground mt-2">
           Let our AI craft the perfect digital nomad adventure for you!

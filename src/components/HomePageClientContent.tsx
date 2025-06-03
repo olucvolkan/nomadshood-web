@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, Lightbulb, Users, MapPin, Globe, Star, MessageSquare, Send, Youtube, Compass, Podcast, ExternalLink, Facebook, Slack } from 'lucide-react';
+import { List, PlaneTakeoff, Users, MapPin, Globe, Star, MessageSquare, Send, Youtube, Compass, Podcast, ExternalLink, Facebook, Slack } from 'lucide-react';
 import type { ColivingSpace, CountryData, NomadVideo, CountryWithCommunities, Community } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -71,9 +71,9 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: R
 
 interface HomePageClientContentProps {
   allSpaces: ColivingSpace[];
-  allCountries: CountryData[];
+  allCountries: CountryWithCommunities[]; // Changed from CountryData[]
   nomadsHoodPodcastVideos: NomadVideo[];
-  countriesWithCommunities: CountryWithCommunities[]; // This prop will now come from Firestore
+  countriesWithCommunities: CountryWithCommunities[]; 
 }
 
 // Reddit Icon SVG component
@@ -86,14 +86,14 @@ const RedditIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export function HomePageClientContent({
   allSpaces,
-  allCountries,
+  allCountries, // This will now be CountryWithCommunities[]
   nomadsHoodPodcastVideos,
-  countriesWithCommunities // This prop will now be populated from Firestore via page.tsx
+  countriesWithCommunities 
 }: HomePageClientContentProps) {
   const [selectedCountryNameForCommunities, setSelectedCountryNameForCommunities] = useState<string | null>(null);
 
-  const popularCountriesData: CountryData[] = useMemo(() => {
-    return [...allCountries]
+  const popularCountriesData: CountryWithCommunities[] = useMemo(() => {
+    return [...allCountries] // allCountries is already CountryWithCommunities[]
       .filter(country => country.name.toLowerCase() !== 'israel') 
       .sort((a, b) => {
         const countDiff = (b.coliving_count || 0) - (a.coliving_count || 0);
@@ -113,7 +113,6 @@ export function HomePageClientContent({
     return sortedSpaces.length > 0 ? sortedSpaces.slice(0, 3) : [];
   }, [allSpaces]);
 
-  // This useMemo hook now correctly processes `countriesWithCommunities` from Firestore
   const uniqueCountriesForSelector = useMemo(() => {
     const countries = new Set<string>();
     if (countriesWithCommunities && Array.isArray(countriesWithCommunities)) {
@@ -141,7 +140,7 @@ export function HomePageClientContent({
       case 'whatsapp':
         return <MessageSquare className="mr-2 h-5 w-5 text-green-500" />;
       case 'slack':
-        return <Slack className="mr-2 h-5 w-5 text-purple-600" />; // Using Slack icon from lucide
+        return <Slack className="mr-2 h-5 w-5 text-purple-600" />; 
       case 'telegram':
         return <Send className="mr-2 h-5 w-5 text-sky-500" />; 
       default:
@@ -172,7 +171,7 @@ export function HomePageClientContent({
           </Button>
           <Button size="lg" variant="outline" asChild>
             <Link href="/recommender">
-              <Lightbulb className="mr-2 h-5 w-5" /> AI Recommender
+              <PlaneTakeoff className="mr-2 h-5 w-5" /> Trip Planner
             </Link>
           </Button>
         </div>

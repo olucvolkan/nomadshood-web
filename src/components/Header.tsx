@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Home, List, Lightbulb, Waves } from 'lucide-react';
+import { Home, List, Lightbulb, Waves, PlaneTakeoff } from 'lucide-react';
 
 export function Header() {
   return (
@@ -25,8 +25,8 @@ export function Header() {
             </li>
             <li>
               <Link href="/recommender" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
-                <Lightbulb className="h-5 w-5" />
-                AI Recommender
+                <PlaneTakeoff className="h-5 w-5" />
+                Trip Planner
               </Link>
             </li>
           </ul>
