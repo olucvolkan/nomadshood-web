@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { ImageSlider } from '@/components/ImageSlider';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Briefcase, Home, ExternalLink,
   Star, Users2, Wifi, Clock, LanguagesIcon, Mountain, Building2, Info,
@@ -68,6 +69,7 @@ const NearbyPlaceIcon: React.FC<{ type: string; className?: string }> = ({ type,
       return <Hospital className={className} />;
     case 'shopping_mall':
     case 'clothing_store':
+    case 'store': // Added for consistency if 'store' is used as key
     case 'shopping':
       return <Store className={className} />;
     case 'bar':
@@ -124,66 +126,76 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
             </CardTitle>
             <CardDescription>Discover points of interest near this coliving space. Distances are approximate.</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            {categorizedNearbyPlaces.map((categoryGroup) => (
-              <div key={categoryGroup.categoryKey}>
-                <h3 className="text-xl font-semibold mb-3 text-foreground flex items-center">
-                  <NearbyPlaceIcon type={categoryGroup.categoryKey} className="h-5 w-5 text-primary mr-2" />
-                  {categoryGroup.categoryDisplayName}
-                </h3>
-                {categoryGroup.places.length > 0 ? (
-                  <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-muted/20">
-                    <div className="flex w-max space-x-4 p-4">
-                      {categoryGroup.places.map((place) => (
-                        <Card key={place.id} className="w-[280px] sm:w-[300px] flex-shrink-0 shadow-md hover:shadow-lg transition-shadow">
-                          <CardHeader className="p-3 pb-2">
-                            <CardTitle className="text-md mb-0.5 flex items-start">
-                              <NearbyPlaceIcon type={place.type} className="h-4 w-4 text-muted-foreground mr-1.5 mt-0.5 flex-shrink-0" />
-                              <span className="line-clamp-2 font-semibold">{place.name}</span>
-                            </CardTitle>
-                             <Badge variant="outline" className="text-xs capitalize py-0.5 px-1.5 h-auto w-fit">{place.type.replace(/_/g, ' ')}</Badge>
-                          </CardHeader>
-                          <CardContent className="p-3 pt-0 text-xs space-y-1.5">
-                            {place.distance_walking_time !== null && typeof place.distance_walking_time === 'number' ? (
-                                <p className="text-muted-foreground flex items-center">
-                                  <Footprints className="h-3.5 w-3.5 mr-1.5 text-primary/80" /> {place.distance_walking_time} min walk
-                                </p>
-                              ) : place.distance_meters ? (
-                                <p className="text-muted-foreground flex items-center">
-                                  <MapPin className="h-3.5 w-3.5 mr-1.5 text-primary/80" /> {place.distance_meters}m
-                                </p>
-                              ) : null
-                            }
-                            {typeof place.rating === 'number' && (
-                              <div className="pt-0.5">
-                                <StarRating rating={place.rating} totalRatings={place.user_ratings_total} starSize="h-3.5 w-3.5" showTextRating />
-                              </div>
+          <CardContent>
+            <Tabs defaultValue={categorizedNearbyPlaces[0]?.categoryKey} className="w-full">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 mb-6 h-auto flex-wrap">
+                {categorizedNearbyPlaces.map((categoryGroup) => (
+                  <TabsTrigger 
+                    key={categoryGroup.categoryKey} 
+                    value={categoryGroup.categoryKey}
+                    className="text-xs sm:text-sm px-2 py-1.5 h-full flex items-center justify-center leading-tight"
+                  >
+                    <NearbyPlaceIcon type={categoryGroup.categoryKey} className="h-4 w-4 mr-1.5 hidden xs:inline-block flex-shrink-0" />
+                    <span className="truncate">{categoryGroup.categoryDisplayName}</span>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              {categorizedNearbyPlaces.map((categoryGroup) => (
+                <TabsContent key={categoryGroup.categoryKey} value={categoryGroup.categoryKey} className="mt-0">
+                  {categoryGroup.places.length > 0 ? (
+                    <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-muted/20">
+                      <div className="flex w-max space-x-4 p-4">
+                        {categoryGroup.places.map((place) => (
+                          <Card key={place.id} className="w-[260px] sm:w-[280px] flex-shrink-0 shadow-sm hover:shadow-md transition-shadow">
+                            <CardHeader className="p-3 pb-2">
+                              <CardTitle className="text-sm mb-0.5 flex items-start">
+                                <NearbyPlaceIcon type={place.type} className="h-3.5 w-3.5 text-muted-foreground mr-1.5 mt-0.5 flex-shrink-0" />
+                                <span className="line-clamp-2 font-medium">{place.name}</span>
+                              </CardTitle>
+                               <Badge variant="outline" className="text-xs capitalize py-0.5 px-1.5 h-auto w-fit">{place.type.replace(/_/g, ' ')}</Badge>
+                            </CardHeader>
+                            <CardContent className="p-3 pt-0 text-xs space-y-1.5">
+                              {place.distance_walking_time !== null && typeof place.distance_walking_time === 'number' ? (
+                                  <p className="text-muted-foreground flex items-center">
+                                    <Footprints className="h-3.5 w-3.5 mr-1.5 text-primary/80" /> {place.distance_walking_time} min walk
+                                  </p>
+                                ) : place.distance_meters ? (
+                                  <p className="text-muted-foreground flex items-center">
+                                    <MapPin className="h-3.5 w-3.5 mr-1.5 text-primary/80" /> {place.distance_meters}m
+                                  </p>
+                                ) : null
+                              }
+                              {typeof place.rating === 'number' && (
+                                <div className="pt-0.5">
+                                  <StarRating rating={place.rating} totalRatings={place.user_ratings_total} starSize="h-3.5 w-3.5" showTextRating />
+                                </div>
+                              )}
+                              {place.address_vicinity && <p className="text-muted-foreground line-clamp-1"><span className="sr-only">Address: </span>{place.address_vicinity}</p>}
+                            </CardContent>
+                            {place.locationLink && (
+                              <CardFooter className="p-3 pt-1 border-t">
+                                <Button variant="link" size="sm" asChild className="p-0 h-auto text-xs w-full justify-start">
+                                  <Link
+                                    href={place.locationLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    View on Map <ExternalLink className="ml-1 h-3 w-3" />
+                                  </Link>
+                                </Button>
+                              </CardFooter>
                             )}
-                            {place.address_vicinity && <p className="text-muted-foreground line-clamp-1"><span className="sr-only">Address: </span>{place.address_vicinity}</p>}
-                          </CardContent>
-                          {place.locationLink && (
-                            <CardFooter className="p-3 pt-1 border-t">
-                              <Button variant="link" size="sm" asChild className="p-0 h-auto text-xs w-full justify-start">
-                                <Link
-                                  href={place.locationLink}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  View on Map <ExternalLink className="ml-1 h-3 w-3" />
-                                </Link>
-                              </Button>
-                            </CardFooter>
-                          )}
-                        </Card>
-                      ))}
-                    </div>
-                    <ScrollBar orientation="horizontal" />
-                  </ScrollArea>
-                ) : (
-                  <p className="text-sm text-muted-foreground">No {categoryGroup.categoryDisplayName.toLowerCase()} found nearby.</p>
-                )}
-              </div>
-            ))}
+                          </Card>
+                        ))}
+                      </div>
+                      <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
+                  ) : (
+                    <p className="text-sm text-muted-foreground py-4 text-center">No {categoryGroup.categoryDisplayName.toLowerCase()} found nearby for this category.</p>
+                  )}
+                </TabsContent>
+              ))}
+            </Tabs>
           </CardContent>
         </Card>
       )}
@@ -191,17 +203,17 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
 
       <Card className="overflow-hidden shadow-xl">
          {(space.gallery && space.gallery.length > 0) || (space.mainImageUrl && !space.mainImageUrl.includes('placehold.co')) ? (
-             <div className="relative w-full h-64 md:h-80 print:hidden"> {/* Hide slider on print */}
+             <div className="relative w-full h-64 md:h-80 print:hidden">
                 <ImageSlider
                     images={space.gallery && space.gallery.length > 0 ? space.gallery : (space.mainImageUrl ? [space.mainImageUrl] : [])}
                     altText={`${space.name || 'Coliving space'} image`}
                     baseDataAiHint={space.dataAiHint || 'coliving interior room'}
                 />
             </div>
-        ) : space.mainImageUrl && space.mainImageUrl.includes('placehold.co') && ( // Show placeholder if no gallery and mainImageUrl is placeholder
+        ) : space.mainImageUrl && space.mainImageUrl.includes('placehold.co') && ( 
              <div className="relative w-full h-64 md:h-80 bg-muted flex items-center justify-center print:hidden">
                  <Image
-                    src={space.mainImageUrl} // This will be the placeholder
+                    src={space.mainImageUrl} 
                     alt={`${space.name || 'Coliving space'} placeholder`}
                     width={600}
                     height={400}
