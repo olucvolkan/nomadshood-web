@@ -139,20 +139,20 @@ export interface NomadVideo {
 
 // Types for Country Communities data from Firestore 'countries' collection
 export interface Community {
-  id?: string;
+  id?: string; // Firestore document ID for the community if stored as a subcollection, or array index if embedded
   name: string;
-  platform: string;
-  city?: string;
+  platform: string; // e.g., "Facebook", "WhatsApp", "Reddit", "Slack", "Telegram"
+  city?: string; // Optional: if the community is city-specific within the country
   groupLink: string;
   memberCount?: number;
-  membersText?: string;
+  membersText?: string; // Could be "11.6k members" or similar
   tags?: string[];
-  requirementToJoin?: string;
+  requirementToJoin?: string; // e.g., "None", "Approval Required"
   flag?: string; // flag is usually at the CountryWithCommunities level but can be in community specific data
 }
 
 export interface CountryWithCommunities {
-  id: string;
+  id: string; // Firestore document ID for the country
   code: string;
   name: string;
   cover_image?: string;
@@ -163,12 +163,12 @@ export interface CountryWithCommunities {
   timezone?: string;
   popular_cities?: string[];
   coliving_count?: number;
-  source?: string;
+  source?: string; // Where the country data was sourced from, if applicable
   community_count?: number;
-  community_members?: number;
-  community_cities?: string[];
-  community_platforms?: string[];
-  communities: Community[];
+  community_members?: number; // Aggregate if available
+  community_cities?: string[]; // List of cities with communities in this country
+  community_platforms?: string[]; // List of platforms used by communities in this country
+  communities: Community[]; // Array of community objects
 }
 
 // --- Types for Coliving Reviews ---
@@ -211,4 +211,17 @@ export interface ColivingReviewData {
   reviews: ReviewItem[];
   crawled_at?: string; // ISO date string
   api_status?: string;
+}
+
+// --- Types for Nearby Places ---
+export interface NearbyPlace {
+  id: string; // Firestore document ID
+  coliving_id: string; // Foreign key to the coliving space
+  name: string;
+  type: string; // e.g., "Cafe", "Restaurant", "Park", "Gym", "Supermarket", "Metro Station", "Attraction"
+  distance?: string; // e.g., "5 min walk", "200m", "1km"
+  imageUrl?: string; // URL for an image of the place
+  description?: string; // Optional short description
+  locationLink?: string; // Optional URL to Google Maps or similar
+  dataAiHint?: string; // For image placeholders
 }

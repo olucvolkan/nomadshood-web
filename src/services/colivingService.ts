@@ -1,7 +1,7 @@
 
 import { db } from '@/lib/firebase'; // db is Firestore instance
 import { collection, getDocs, doc, getDoc, type DocumentData, type QueryDocumentSnapshot, query, Timestamp, where, limit as firestoreLimit } from 'firebase/firestore';
-import type { ColivingSpace, CountryData, CountryWithCommunities, Community, ColivingReviewData, ReviewItem } from '@/types';
+import type { ColivingSpace, CountryWithCommunities, Community, ColivingReviewData, ReviewItem, NearbyPlace } from '@/types';
 
 // Helper function to parse coordinate values to number if they are string representations
 const parseCoordinate = (value: any): number | undefined => {
@@ -408,5 +408,51 @@ export async function getColivingReviewsByColivingId(colivingId: string): Promis
   } catch (error) {
     console.error(`Error fetching reviews for coliving_id ${colivingId} from Firestore:`, error);
     return null;
+  }
+}
+
+// --- Nearby Places Service ---
+
+const mapDocToNearbyPlace = (doc: QueryDocumentSnapshot<DocumentData>): NearbyPlace => {
+  const data = doc.data();
+  const defaultDataAiHint = `${data.type?.toLowerCase() || 'location'} ${data.name?.toLowerCase() || 'nearby'}`.trim().substring(0, 50);
+
+  return {
+    id: doc.id,
+    coliving_id: data.coliving_id || 'unknown_coliving_id',
+    name: data.name || 'Unnamed Place',
+    type: data.type || 'Unknown',
+    distance: data.distance,
+    imageUrl: data.imageUrl || `https://placehold.co/300x200.png?text=${encodeURIComponent(data.name || 'Nearby Place')}`,
+    description: data.description,
+    locationLink: data.locationLink,
+    dataAiHint: data.dataAiHint || defaultDataAiHint,
+  };
+};
+
+export async function getNearbyPlaces(colivingId: string): Promise<NearbyPlace[]> {
+  if (!colivingId) {
+    console.error("getNearbyPlaces: colivingId is required.");
+    return [];
+  }
+  try {
+    const nearbyPlacesCollectionRef = collection(db, 'coliving_nearby_places');
+    const q = query(nearbyPlacesCollectionRef, where('coliving_id', '==', colivingId));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.warn(`No nearby places found in 'coliving_nearby_places' for coliving_id: ${colivingId}`);
+      return [];
+    }
+    
+    const places: NearbyPlace[] = [];
+    querySnapshot.forEach((doc) => {
+      places.push(mapDocToNearbyPlace(doc));
+    });
+    return places;
+
+  } catch (error) {
+    console.error(`Error fetching nearby places for coliving_id ${colivingId} from Firestore:`, error);
+    return [];
   }
 }

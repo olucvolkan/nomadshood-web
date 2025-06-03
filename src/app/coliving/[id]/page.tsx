@@ -1,5 +1,5 @@
 
-import type { ColivingSpace, ColivingReviewData, ReviewItem } from '@/types';
+import type { ColivingSpace, ColivingReviewData, ReviewItem, NearbyPlace } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -11,10 +11,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Briefcase, Home, ExternalLink,
   Star, Users2, Wifi, Clock, LanguagesIcon, Mountain, Building2, Info,
-  CalendarClock, Thermometer, Globe2, Smile, LocateFixed, Map, Plane, Bus, Bike, Phone, Mail, AlertCircle, MessageCircle
+  CalendarClock, Thermometer, Globe2, Smile, LocateFixed, Map, Plane, Bus, Bike, Phone, Mail, AlertCircle, MessageCircle,
+  Landmark, Utensils, Coffee, ShoppingCart, Train, Trees, Dumbbell, Ticket
 } from 'lucide-react';
-import { getColivingSpaceById, getColivingReviewsByColivingId } from '@/services/colivingService';
-import { ImageSlider } from '@/components/ImageSlider'; // Import the new ImageSlider component
+import { getColivingSpaceById, getColivingReviewsByColivingId, getNearbyPlaces } from '@/services/colivingService';
 
 const StarRating: React.FC<{ rating: number; maxStars?: number, starSize?: string }> = ({ rating, maxStars = 5, starSize = "h-4 w-4" }) => {
   const fullStars = Math.floor(rating);
@@ -32,11 +32,30 @@ const StarRating: React.FC<{ rating: number; maxStars?: number, starSize?: strin
   );
 };
 
+const NearbyPlaceIcon: React.FC<{ type: string; className?: string }> = ({ type, className = "h-5 w-5 text-primary mr-2" }) => {
+  switch (type?.toLowerCase()) {
+    case 'cafe': return <Coffee className={className} />;
+    case 'restaurant': return <Utensils className={className} />;
+    case 'park': return <Trees className={className} />;
+    case 'gym': return <Dumbbell className={className} />;
+    case 'supermarket': return <ShoppingCart className={className} />;
+    case 'metro station':
+    case 'train station':
+    case 'bus station':
+       return <Train className={className} />;
+    case 'attraction':
+    case 'landmark':
+       return <Landmark className={className} />;
+    default: return <MapPin className={className} />;
+  }
+};
+
 
 export default async function ColivingDetailPage({ params: paramsProp }: { params: { id: string } }) {
   const params = await paramsProp;
   const space: ColivingSpace | null = await getColivingSpaceById(params.id);
   const reviewData: ColivingReviewData | null = await getColivingReviewsByColivingId(params.id);
+  const nearbyPlaces: NearbyPlace[] = await getNearbyPlaces(params.id);
 
   if (!space) {
     notFound();
@@ -48,17 +67,6 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
   const displayAddress = space.address || 'Location not specified';
   const hasValidCoordinates = typeof space.coordinates?.latitude === 'number' && typeof space.coordinates?.longitude === 'number';
 
-  // Prepare images for the slider
-  let sliderImages: string[] = [];
-  if (space.gallery && space.gallery.length > 0) {
-    sliderImages = space.gallery.filter(img => typeof img === 'string' && img.trim() !== '');
-  }
-  // If gallery is empty but mainImageUrl exists and is valid, use it as a single-item gallery
-  if (sliderImages.length === 0 && space.mainImageUrl && !space.mainImageUrl.includes('placehold.co')) {
-    sliderImages = [space.mainImageUrl];
-  }
-  // If still no images, ImageSlider component will use its own placeholder
-
   return (
     <div className="container mx-auto px-4 py-8">
       <Button variant="outline" asChild className="mb-8">
@@ -68,9 +76,56 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
         </Link>
       </Button>
 
+      {nearbyPlaces.length > 0 && (
+        <Card className="mb-8 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold text-primary flex items-center">
+              <Landmark className="mr-3 h-6 w-6" />
+              What&apos;s Around?
+            </CardTitle>
+            <CardDescription>Discover points of interest near {space.name || 'this coliving space'}.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {nearbyPlaces.map((place) => (
+                <Card key={place.id} className="overflow-hidden flex flex-col">
+                  <div className="relative w-full h-40">
+                    <Image
+                      src={place.imageUrl || `https://placehold.co/300x200.png?text=${encodeURIComponent(place.name)}`}
+                      alt={place.name}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      data-ai-hint={place.dataAiHint || `${place.type.toLowerCase()} exterior`}
+                    />
+                  </div>
+                  <CardHeader className="p-3 flex-grow">
+                    <CardTitle className="text-md mb-1 flex items-center">
+                       <NearbyPlaceIcon type={place.type} className="h-4 w-4 text-muted-foreground mr-1.5" />
+                      {place.name}
+                    </CardTitle>
+                    <Badge variant="outline" className="text-xs mb-1">{place.type}</Badge>
+                    {place.distance && <p className="text-xs text-muted-foreground">{place.distance}</p>}
+                  </CardHeader>
+                  {place.locationLink && (
+                    <CardFooter className="p-3 pt-0">
+                      <Button variant="link" size="sm" asChild className="p-0 h-auto text-xs">
+                        <Link href={place.locationLink} target="_blank" rel="noopener noreferrer">
+                          View on Map <ExternalLink className="ml-1 h-3 w-3" />
+                        </Link>
+                      </Button>
+                    </CardFooter>
+                  )}
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+
       <Card className="overflow-hidden shadow-xl">
-        {/* Replace single image with ImageSlider */}
-        <ImageSlider images={sliderImages} altText={`${space.name || 'Coliving space'} gallery`} baseDataAiHint={space.dataAiHint || "building interior"} />
+        {/* ImageSlider removed from here */}
+        {/* <ImageSlider images={sliderImages} altText={`${space.name || 'Coliving space'} gallery`} baseDataAiHint={space.dataAiHint || "building interior"} /> */}
 
         <CardHeader className="p-6">
           <div className="flex flex-col sm:flex-row items-start gap-4">
@@ -115,13 +170,6 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
         </CardHeader>
 
         <CardContent className="p-6 pt-0 space-y-6">
-          {/* Description removed from here */}
-          {/* {space.description && (
-            <>
-              <p className="text-foreground/90 leading-relaxed">{space.description}</p>
-              <Separator />
-            </>
-          )} */}
           
           <h3 className="text-xl font-semibold text-foreground flex items-center">
             <Info className="mr-2 h-5 w-5 text-primary" />
