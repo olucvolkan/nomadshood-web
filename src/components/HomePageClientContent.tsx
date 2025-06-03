@@ -169,11 +169,13 @@ export function HomePageClientContent({
               <List className="mr-2 h-5 w-5" /> Explore Colivings
             </Link>
           </Button>
+          {/* Trip Planner button removed as per user request
           <Button size="lg" variant="outline" asChild>
             <Link href="/recommender">
               <PlaneTakeoff className="mr-2 h-5 w-5" /> Trip Planner
             </Link>
           </Button>
+          */}
         </div>
       </section>
 
@@ -380,3 +382,4 @@ export function HomePageClientContent({
     </div>
   );
 }
+
