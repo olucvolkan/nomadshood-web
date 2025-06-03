@@ -1,5 +1,5 @@
 
-import type { ColivingSpace, ColivingReviewData, ReviewItem, NearbyPlace } from '@/types';
+import type { ColivingSpace, ColivingReviewData, ReviewItem, CategorizedNearbyPlaceGroup } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -8,16 +8,17 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import {
   ArrowLeft, MapPin, Video, MessageSquare, Users, Globe, DollarSign, Briefcase, Home, ExternalLink,
   Star, Users2, Wifi, Clock, LanguagesIcon, Mountain, Building2, Info,
   CalendarClock, Thermometer, Globe2, Smile, LocateFixed, Map, Plane, Bus, Bike, Phone, Mail, AlertCircle, MessageCircle,
   Landmark, Utensils, Coffee, ShoppingCart, Train, Trees, Dumbbell, Ticket, Banknote, Hospital, Building,
-  WavesIcon, Search, Beer, Store, MountainSnow, Sailboat // Added new icons
+  WavesIcon, Search, Beer, Store, MountainSnow, Sailboat, Clock4, Walking, ChefHat
 } from 'lucide-react';
 import { getColivingSpaceById, getColivingReviewsByColivingId, getNearbyPlaces } from '@/services/colivingService';
 
-const StarRating: React.FC<{ rating?: number; maxStars?: number, starSize?: string, totalRatings?: number }> = ({ rating, maxStars = 5, starSize = "h-4 w-4", totalRatings }) => {
+const StarRating: React.FC<{ rating?: number; maxStars?: number, starSize?: string, totalRatings?: number, showTextRating?: boolean }> = ({ rating, maxStars = 5, starSize = "h-4 w-4", totalRatings, showTextRating = false }) => {
   if (typeof rating !== 'number' || rating < 0 || rating > 5) {
     return <span className="text-xs text-muted-foreground">No rating</span>;
   }
@@ -26,14 +27,15 @@ const StarRating: React.FC<{ rating?: number; maxStars?: number, starSize?: stri
   const emptyStars = maxStars - fullStars - halfStar;
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center gap-0.5">
       {[...Array(fullStars)].map((_, i) => (
         <Star key={`full-${i}`} className={`${starSize} text-yellow-500 fill-current`} />
       ))}
-      {halfStar === 1 && <Star key="half" className={`${starSize} text-yellow-500 fill-yellow-200`} />} {/* A simple way to show half star */}
+      {halfStar === 1 && <Star key="half" className={`${starSize} text-yellow-500 fill-yellow-200`} />}
       {[...Array(emptyStars)].map((_, i) => (
         <Star key={`empty-${i}`} className={`${starSize} text-yellow-300/70`} /> 
       ))}
+      {showTextRating && <span className="ml-1 text-xs font-medium">{rating.toFixed(1)}</span>}
       {typeof totalRatings === 'number' && (
         <span className="ml-1.5 text-xs text-muted-foreground">({totalRatings})</span>
       )}
@@ -45,6 +47,7 @@ const NearbyPlaceIcon: React.FC<{ type: string; className?: string }> = ({ type,
   switch (type?.toLowerCase()) {
     case 'cafe': return <Coffee className={className} />;
     case 'restaurant': return <Utensils className={className} />;
+    case 'food': return <ChefHat className={className} />;
     case 'park': return <Trees className={className} />;
     case 'gym': return <Dumbbell className={className} />;
     case 'supermarket':
@@ -71,14 +74,14 @@ const NearbyPlaceIcon: React.FC<{ type: string; className?: string }> = ({ type,
     case 'nightlife':
       return <Beer className={className} />;
     case 'beach':
-      return <WavesIcon className={className} />; // Using WavesIcon for beach
+      return <WavesIcon className={className} />;
     case 'hiking_trail':
     case 'mountain':
     case 'hiking':
-      return <MountainSnow className={className} />; // Using MountainSnow for hiking/nature
+      return <MountainSnow className={className} />;
     case 'coworking_space':
     case 'coworking':
-      return <Briefcase className={className} />; // Reusing Briefcase for coworking
+      return <Briefcase className={className} />;
     case 'tourist_attraction':
     case 'landmark':
        return <Landmark className={className} />;
@@ -91,93 +94,116 @@ export default async function ColivingDetailPage({ params: paramsProp }: { param
   const params = await paramsProp;
   const space: ColivingSpace | null = await getColivingSpaceById(params.id);
   const reviewData: ColivingReviewData | null = await getColivingReviewsByColivingId(params.id);
-  const nearbyPlaces: NearbyPlace[] = await getNearbyPlaces(params.id);
+  const categorizedNearbyPlaces: CategorizedNearbyPlaceGroup[] = await getNearbyPlaces(params.id);
 
   if (!space) {
     notFound();
   }
   
-  console.log(`Coliving Detail Page for ID: ${params.id}, Coordinates:`, space.coordinates);
-
   const displayAddress = space.address || 'Location not specified';
   const hasValidCoordinates = typeof space.coordinates?.latitude === 'number' && typeof space.coordinates?.longitude === 'number';
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Button variant="outline" asChild className="mb-8">
+      <Button variant="outline" asChild className="mb-8 print:hidden">
         <Link href="/coliving">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Directory
         </Link>
       </Button>
 
-      {nearbyPlaces.length > 0 && (
-        <Card className="mb-8 shadow-xl">
-          <CardHeader>
+      {categorizedNearbyPlaces.length > 0 && (
+        <Card className="mb-8 shadow-xl border-primary/30">
+          <CardHeader className="pb-4">
             <CardTitle className="text-2xl font-bold text-primary flex items-center">
-              <Search className="mr-3 h-6 w-6" /> {/* Using Search icon */}
-              What&apos;s Around?
+              <Map className="mr-3 h-6 w-6" />
+              What&apos;s Around {space.name}?
             </CardTitle>
-            <CardDescription>Discover points of interest near {space.name || 'this coliving space'}. (Distances are approximate)</CardDescription>
+            <CardDescription>Discover points of interest near this coliving space. Distances are approximate.</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {nearbyPlaces.map((place) => (
-                <Card key={place.id} className="overflow-hidden flex flex-col hover:shadow-md transition-shadow">
-                  <div className="relative w-full h-32 sm:h-40"> {/* Adjusted height for better grid fit */}
-                    <Image
-                      src={place.imageUrl || `https://placehold.co/300x200.png?text=${encodeURIComponent(place.name)}`}
-                      alt={place.name}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      data-ai-hint={place.dataAiHint || `${place.type.toLowerCase()} exterior`}
-                    />
-                  </div>
-                  <CardHeader className="p-3 flex-grow">
-                    <CardTitle className="text-md mb-1 flex items-start">
-                       <NearbyPlaceIcon type={place.type} className="h-4 w-4 text-muted-foreground mr-1.5 mt-0.5 flex-shrink-0" />
-                      <span className="line-clamp-2">{place.name}</span>
-                    </CardTitle>
-                    <Badge variant="outline" className="text-xs mb-1 capitalize">{place.type.replace(/_/g, ' ')}</Badge>
-                    {place.distance && <p className="text-xs text-muted-foreground">{place.distance}</p>}
-                    {typeof place.rating === 'number' && (
-                       <div className="mt-1">
-                        <StarRating rating={place.rating} totalRatings={place.user_ratings_total} starSize="h-3 w-3" />
-                       </div>
-                    )}
-                  </CardHeader>
-                  {(place.locationLink || (place.coordinates?.lat && place.coordinates?.lng)) && (
-                    <CardFooter className="p-3 pt-0">
-                      <Button variant="link" size="sm" asChild className="p-0 h-auto text-xs">
-                        <Link 
-                          href={place.locationLink || `https://www.google.com/maps?q=${place.coordinates?.lat},${place.coordinates?.lng}`} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                        >
-                          View on Map <ExternalLink className="ml-1 h-3 w-3" />
-                        </Link>
-                      </Button>
-                    </CardFooter>
-                  )}
-                </Card>
-              ))}
-            </div>
+          <CardContent className="space-y-6">
+            {categorizedNearbyPlaces.map((categoryGroup) => (
+              <div key={categoryGroup.categoryKey}>
+                <h3 className="text-xl font-semibold mb-3 text-foreground flex items-center">
+                  <NearbyPlaceIcon type={categoryGroup.categoryKey} className="h-5 w-5 text-primary mr-2" />
+                  {categoryGroup.categoryDisplayName}
+                </h3>
+                {categoryGroup.places.length > 0 ? (
+                  <ScrollArea className="w-full whitespace-nowrap rounded-md border bg-muted/20">
+                    <div className="flex w-max space-x-4 p-4">
+                      {categoryGroup.places.map((place) => (
+                        <Card key={place.id} className="w-[280px] sm:w-[300px] flex-shrink-0 shadow-md hover:shadow-lg transition-shadow">
+                          <CardHeader className="p-3 pb-2">
+                            <CardTitle className="text-md mb-0.5 flex items-start">
+                              <NearbyPlaceIcon type={place.type} className="h-4 w-4 text-muted-foreground mr-1.5 mt-0.5 flex-shrink-0" />
+                              <span className="line-clamp-2 font-semibold">{place.name}</span>
+                            </CardTitle>
+                             <Badge variant="outline" className="text-xs capitalize py-0.5 px-1.5 h-auto w-fit">{place.type.replace(/_/g, ' ')}</Badge>
+                          </CardHeader>
+                          <CardContent className="p-3 pt-0 text-xs space-y-1.5">
+                            {place.distance_walking_time !== null && typeof place.distance_walking_time === 'number' ? (
+                                <p className="text-muted-foreground flex items-center">
+                                  <Walking className="h-3.5 w-3.5 mr-1.5 text-primary/80" /> {place.distance_walking_time} min walk
+                                </p>
+                              ) : place.distance_meters ? (
+                                <p className="text-muted-foreground flex items-center">
+                                  <MapPin className="h-3.5 w-3.5 mr-1.5 text-primary/80" /> {place.distance_meters}m
+                                </p>
+                              ) : null
+                            }
+                            {typeof place.rating === 'number' && (
+                              <div className="pt-0.5">
+                                <StarRating rating={place.rating} totalRatings={place.user_ratings_total} starSize="h-3.5 w-3.5" showTextRating />
+                              </div>
+                            )}
+                            {place.address_vicinity && <p className="text-muted-foreground line-clamp-1"><span className="sr-only">Address: </span>{place.address_vicinity}</p>}
+                          </CardContent>
+                          {place.locationLink && (
+                            <CardFooter className="p-3 pt-1 border-t">
+                              <Button variant="link" size="sm" asChild className="p-0 h-auto text-xs w-full justify-start">
+                                <Link 
+                                  href={place.locationLink}
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                >
+                                  View on Map <ExternalLink className="ml-1 h-3 w-3" />
+                                </Link>
+                              </Button>
+                            </CardFooter>
+                          )}
+                        </Card>
+                      ))}
+                    </div>
+                    <ScrollBar orientation="horizontal" />
+                  </ScrollArea>
+                ) : (
+                  <p className="text-sm text-muted-foreground">No {categoryGroup.categoryDisplayName.toLowerCase()} found nearby.</p>
+                )}
+              </div>
+            ))}
           </CardContent>
         </Card>
       )}
 
 
       <Card className="overflow-hidden shadow-xl">
-         {space.mainImageUrl && !space.mainImageUrl.includes('placehold.co') && (
-            <div className="relative w-full h-64 md:h-80">
+         {(space.gallery && space.gallery.length > 0) || (space.mainImageUrl && !space.mainImageUrl.includes('placehold.co')) ? (
+             <div className="relative w-full h-64 md:h-80 print:hidden"> {/* Hide slider on print */}
+                <ImageSlider 
+                    images={space.gallery && space.gallery.length > 0 ? space.gallery : (space.mainImageUrl ? [space.mainImageUrl] : [])} 
+                    altText={`${space.name || 'Coliving space'} image`}
+                    baseDataAiHint={space.dataAiHint || 'coliving interior room'}
+                />
+            </div>
+        ) : space.mainImageUrl && space.mainImageUrl.includes('placehold.co') && ( // Show placeholder if no gallery and mainImageUrl is placeholder
+             <div className="relative w-full h-64 md:h-80 bg-muted flex items-center justify-center print:hidden">
                  <Image
-                    src={space.mainImageUrl}
-                    alt={`${space.name || 'Coliving space'} main image`}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    priority
-                    data-ai-hint={space.dataAiHint || 'building exterior'}
+                    src={space.mainImageUrl} // This will be the placeholder
+                    alt={`${space.name || 'Coliving space'} placeholder`}
+                    width={600}
+                    height={400}
+                    style={{ objectFit: 'contain', maxHeight: '100%', maxWidth: '100%' }}
+                    data-ai-hint={space.dataAiHint || 'building exterior placeholder'}
                 />
             </div>
         )}

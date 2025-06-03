@@ -1,7 +1,7 @@
 
 import { db } from '@/lib/firebase'; 
 import { collection, getDocs, doc, getDoc, type DocumentData, type QueryDocumentSnapshot, query, Timestamp, where, limit as firestoreLimit } from 'firebase/firestore';
-import type { ColivingSpace, CountryWithCommunities, Community, ColivingReviewData, ReviewItem, NearbyPlace, FirestoreNearbyPlacesDoc } from '@/types';
+import type { ColivingSpace, CountryWithCommunities, Community, ColivingReviewData, ReviewItem, NearbyPlace, FirestoreNearbyPlacesDoc, CategorizedNearbyPlaceGroup } from '@/types';
 
 const parseCoordinate = (value: any): number | undefined => {
   if (typeof value === 'number') {
@@ -25,7 +25,7 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
       address: 'Data Unavailable',
       logoUrl: 'https://placehold.co/80x80/E0E0E0/757575.png',
       mainImageUrl: 'https://placehold.co/600x400/E0E0E0/757575.png',
-      description: 'Data for this coliving space could not be loaded.',
+      // description: 'Data for this coliving space could not be loaded.', // Removed
       country: 'Unknown',
       city: 'Unknown',
       monthlyPrice: 0,
@@ -140,7 +140,7 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     city: data.city || 'Unknown City',
     address: displayAddress,
     coordinates: processedCoordinates, 
-    description: data.description || 'No description available.',
+    // description: data.description || 'No description available.', // Removed
     amenities: amenitiesArray,
     currency: data.currency || data.budget_range?.currency,
     min_price: typeof data.min_price === 'number' ? data.min_price : undefined,
@@ -153,7 +153,7 @@ const mapDocToColivingSpace = (document: QueryDocumentSnapshot<DocumentData> | D
     logo: data.logo, 
     logoUrl: data.logo ?? `https://placehold.co/80x80/E0E0E0/757575.png`,
     cover_image: data.cover_image, 
-    mainImageUrl: finalMainImageUrl,
+    mainImageUrl: finalMainImageUrl, // Still needed for ImageSlider fallback if gallery is empty
     gallery: Array.isArray(data.gallery) ? data.gallery.filter((g: any) => typeof g === 'string' && g.trim() !== '') : [],
     rating: typeof data.rating === 'number' ? data.rating : undefined,
     reviews_count: typeof data.reviews_count === 'number' ? data.reviews_count : undefined,
@@ -235,7 +235,7 @@ const mapDocToCountryWithCommunities = (docSnap: QueryDocumentSnapshot<DocumentD
       name: 'Error: Invalid Country Data',
       code: '',
       communities: [],
-      flagImageUrl: 'https://placehold.co/64x42/E0E0E0/757575.png',
+      flagImageUrl: 'https://placehold.co/64x42/E0E0E0/757575.png', // Added for consistency
     };
   }
 
@@ -404,7 +404,8 @@ export async function getColivingReviewsByColivingId(colivingId: string): Promis
 // --- Nearby Places Service ---
 // Fetches a single document from 'coliving_nearby_places' where doc ID is colivingId
 // and processes its categorized places.
-export async function getNearbyPlaces(colivingId: string): Promise<NearbyPlace[]> {
+// Returns an array of objects, each representing a category with its places.
+export async function getNearbyPlaces(colivingId: string): Promise<CategorizedNearbyPlaceGroup[]> {
   if (!colivingId) {
     console.error("getNearbyPlaces: colivingId is required.");
     return [];
@@ -419,18 +420,13 @@ export async function getNearbyPlaces(colivingId: string): Promise<NearbyPlace[]
     }
     
     const docData = docSnap.data() as FirestoreNearbyPlacesDoc;
-    const places: NearbyPlace[] = [];
+    const categorizedPlaces: CategorizedNearbyPlaceGroup[] = [];
 
     if (docData.nearby_places && typeof docData.nearby_places === 'object') {
       for (const categoryKey in docData.nearby_places) {
-        const categoryPlaces = docData.nearby_places[categoryKey];
-        if (Array.isArray(categoryPlaces)) {
-          categoryPlaces.forEach(place => {
-            let distanceStr = place.distance_meters ? `${place.distance_meters}m` : undefined;
-            if (place.distance_walking_time && place.distance_walking_time > 0) {
-              distanceStr = `${place.distance_walking_time} min walk`;
-            }
-
+        const categoryPlacesData = docData.nearby_places[categoryKey];
+        if (Array.isArray(categoryPlacesData) && categoryPlacesData.length > 0) {
+          const places: NearbyPlace[] = categoryPlacesData.map(place => {
             let locationLink;
             if (place.coordinates?.lat && place.coordinates?.lng) {
                 locationLink = `https://www.google.com/maps?q=${place.coordinates.lat},${place.coordinates.lng}`;
@@ -438,35 +434,46 @@ export async function getNearbyPlaces(colivingId: string): Promise<NearbyPlace[]
             
             const defaultDataAiHint = `${categoryKey.toLowerCase()} ${place.name?.toLowerCase() || 'place'}`.trim().substring(0, 50);
 
-            places.push({
+            return {
               id: place.place_id,
-              coliving_id: colivingId, // The coliving_id context
+              coliving_id: colivingId,
               name: place.name || 'Unnamed Place',
-              type: categoryKey, // Use the category key as the type
+              type: categoryKey, 
               googleTypes: place.types || [],
-              distance: distanceStr,
+              distance_meters: typeof place.distance_meters === 'number' ? place.distance_meters : undefined,
+              distance_walking_time: typeof place.distance_walking_time === 'number' ? place.distance_walking_time : null,
               rating: place.rating,
               user_ratings_total: place.user_ratings_total,
               price_level: place.price_level,
               address_vicinity: place.vicinity,
               coordinates: place.coordinates,
               business_status: place.business_status,
-              imageUrl: `https://placehold.co/300x200.png?text=${encodeURIComponent(place.name || categoryKey)}`, // Placeholder
               locationLink: locationLink,
               dataAiHint: defaultDataAiHint,
-            });
+            };
+          }).sort((a, b) => (a.distance_meters ?? Infinity) - (b.distance_meters ?? Infinity)); // Sort places within category
+
+          // Create a user-friendly display name for the category
+          let categoryDisplayName = categoryKey.replace(/_/g, ' ');
+          categoryDisplayName = categoryDisplayName.charAt(0).toUpperCase() + categoryDisplayName.slice(1);
+          if (!categoryDisplayName.toLowerCase().endsWith('s') && categoryDisplayName.toLowerCase() !== 'food' && categoryDisplayName.toLowerCase() !== 'nightlife' && categoryDisplayName.toLowerCase() !== 'shopping') {
+             categoryDisplayName += 's';
+          }
+
+
+          categorizedPlaces.push({
+            categoryKey: categoryKey,
+            categoryDisplayName: categoryDisplayName,
+            places: places,
           });
         }
       }
     }
-    return places.sort((a, b) => (a.distance_meters ?? Infinity) - (b.distance_meters ?? Infinity)); // Sort by distance if available
+    // Sort categories by a predefined order or alphabetically if needed
+    // For now, using the order they appear in the Firestore document
+    return categorizedPlaces;
   } catch (error) {
     console.error(`Error fetching or processing nearby places for coliving_id ${colivingId} from Firestore:`, error);
     return [];
   }
 }
-
-// Helper function to add distance_meters to NearbyPlace for sorting, not directly used in the returned NearbyPlace object to UI
-// This is just to make the sorting logic cleaner inside getNearbyPlaces.
-type NearbyPlaceWithDistance = NearbyPlace & { distance_meters?: number };
-

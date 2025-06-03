@@ -5,7 +5,7 @@ export interface ColivingSpace {
   address: string; 
   logoUrl: string; 
   mainImageUrl?: string; 
-  description?: string; // Description might be removed from display but kept in type
+  // description?: string; // Removed as per user request
   videoUrl?: string; 
   whatsappLink?: string; 
   websiteUrl?: string; 
@@ -209,16 +209,17 @@ export interface NearbyPlace {
   name: string; // Name of the place
   type: string; // Category key from schema (e.g., "supermarket", "restaurant")
   googleTypes?: string[]; // Raw Google Places types
-  distance?: string; // Formatted distance (e.g., "500m", "5 min walk")
+  distance_meters?: number; // Raw distance in meters
+  distance_walking_time?: number | null; // Walking time in minutes
   rating?: number; // Google rating (0-5)
   user_ratings_total?: number; // Total number of ratings
   price_level?: number | null; // Price level (0-4)
   address_vicinity?: string; // Vicinity or short address
   coordinates?: { lat: number; lng: number };
   business_status?: string; // e.g., "OPERATIONAL"
-  imageUrl?: string; // URL for an image of the place (will use placeholder)
+  // imageUrl removed as per user request
   locationLink?: string; // Google Maps link generated from coordinates
-  dataAiHint?: string; // For image placeholders
+  dataAiHint?: string; // For potential future use or if image placeholders return
 }
 
 // Structure for the document in 'coliving_nearby_places' collection
@@ -255,7 +256,6 @@ export interface FirestoreNearbyPlacesDoc {
     total_places_found?: number;
     categories_with_places?: number;
     closest_supermarket?: number | null;
-    // ... other summary fields
     walkability_score?: number;
   };
   metadata?: {
@@ -263,4 +263,10 @@ export interface FirestoreNearbyPlacesDoc {
     uploaded_at?: string;
     source?: string;
   };
+}
+
+export interface CategorizedNearbyPlaceGroup {
+  categoryKey: string;
+  categoryDisplayName: string;
+  places: NearbyPlace[];
 }
