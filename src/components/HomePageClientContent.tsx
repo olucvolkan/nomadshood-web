@@ -83,23 +83,6 @@ const RedditIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// The destinationImageMap is now primarily used on the server-side (page.tsx)
-// to determine which file to fetch from Firebase Storage.
-// It's kept here for reference or if a client-side fallback is ever re-introduced.
-/*
-const destinationImageMap: { [key: string]: string } = {
-  'colombia': 'colombia.jpg',
-  'costa rica': 'costa_rica.jpg',
-  'indonesia': 'indonesia.jpg',
-  'spain': 'madrid.jpg', 
-  'mexico': 'mexico.jpg',
-  'portugal': 'porto.jpg', 
-  'usa': 'usa.jpg'
-};
-*/
-
-// const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET; // No longer used here for primary image URL construction
-
 
 export function HomePageClientContent({
   allSpaces,
@@ -244,62 +227,33 @@ export function HomePageClientContent({
         </div>
         {popularCountriesData.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {popularCountriesData.map((country) => {
-              let imageUrl: string;
-              
-              // Priority 1: Use SDK-fetched firebaseCoverImageUrl if available
-              if (country.firebaseCoverImageUrl) {
-                imageUrl = country.firebaseCoverImageUrl;
-              } 
-     
-              // Priority 3: Fallback to placeholder
-              else {
-                imageUrl = `https://placehold.co/400x300.png?text=${encodeURIComponent(country.name)}`;
-              }
-              
-              return (
+            {popularCountriesData.map((country) => (
                 <Link
                   key={country.id}
                   href={`/coliving?country=${encodeURIComponent(country.name)}`}
                   className="block group"
                 >
-                  <Card className="relative h-64 sm:h-72 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 rounded-lg">
-                    <Image
-                      src={imageUrl}
-                      alt={`Image of ${country.name}`}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      data-ai-hint={`landscape ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
-                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      priority={popularCountriesData.indexOf(country) < 4} 
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent transition-opacity duration-300 group-hover:from-black/80"></div>
-                    
-                    {country.flagImageUrl && (
-                      <div className="absolute top-3 right-3 w-10 h-6 z-10 p-0.5 bg-white/80 rounded-sm shadow-md">
+                  <Card className="h-40 flex flex-col items-center justify-center p-4 shadow-md hover:shadow-lg transition-shadow duration-300">
+                    {country.flagImageUrl ? (
+                      <div className="relative w-24 h-16"> {/* Adjusted size for better flag visibility */}
                         <Image
                           src={country.flagImageUrl}
                           alt={`${country.name} flag`}
                           fill
-                          className="object-contain"
+                          className="object-contain rounded-sm"
                           data-ai-hint={`flag ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
-                          sizes="40px"
+                          sizes="96px" 
+                          priority={popularCountriesData.indexOf(country) < 4}
                         />
                       </div>
+                    ) : (
+                      <div className="text-5xl mb-2">{country.flag || '🏳️'}</div>
                     )}
-
-                    <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
-                      <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300">
-                        {country.name}
-                      </h3>
-                      <p className="text-sm text-gray-200 mt-1">
-                        {country.coliving_count || 0} coliving space{country.coliving_count !== 1 ? 's' : ''}
-                      </p>
-                    </div>
+                    {/* Country name and coliving count have been removed as per user's explicit request */}
                   </Card>
                 </Link>
-              );
-            })}
+              )
+            )}
           </div>
         ) : (
           <p className="text-center text-muted-foreground">No country data available yet. Once coliving spaces and countries are added to Firebase, they will appear here.</p>
