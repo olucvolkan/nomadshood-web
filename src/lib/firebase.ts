@@ -1,6 +1,7 @@
 
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import { getFirestore, type Firestore } from 'firebase/firestore'; // Updated import for Firestore
+import { getStorage, type FirebaseStorage } from 'firebase/storage'; // Added for Firebase Storage
 
 // Define the expected structure of the config for clarity
 interface FirebaseConfig {
@@ -55,6 +56,7 @@ const firebaseConfig = firebaseConfigValues as Required<FirebaseConfig>;
 
 let app: FirebaseApp;
 let db: Firestore; // Changed db to be Firestore type
+let storage: FirebaseStorage; // Added for Firebase Storage
 
 // Initialize Firebase App
 if (!getApps().length) {
@@ -80,6 +82,14 @@ try {
   throw new Error(`Failed to get Firebase Firestore instance. Original error: ${error.message}. Ensure Firestore is enabled in your Firebase project and that your project configuration is correct.`);
 }
 
-export { app, db }; // db now exports the Firestore instance
+// Get Storage instance
+try {
+  storage = getStorage(app);
+} catch (error: any) {
+  console.error("Firebase getStorage error:", error.message);
+  throw new Error(`Failed to get Firebase Storage instance. Original error: ${error.message}. Ensure Firebase Storage is enabled in your Firebase project and that your project configuration is correct.`);
+}
+
+export { app, db, storage }; // db now exports the Firestore instance, storage exports Storage instance
 
     

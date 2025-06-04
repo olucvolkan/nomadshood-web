@@ -145,7 +145,8 @@ export interface CountryWithCommunities {
   id: string; 
   code: string;
   name: string;
-  cover_image?: string;
+  cover_image?: string; // This is for manually set URLs in Firestore
+  firebaseCoverImageUrl?: string; // This will store the SDK-fetched URL
   flag?: string;
   flagImageUrl?: string;
   continent?: string;

@@ -83,17 +83,22 @@ const RedditIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+// The destinationImageMap is now primarily used on the server-side (page.tsx)
+// to determine which file to fetch from Firebase Storage.
+// It's kept here for reference or if a client-side fallback is ever re-introduced.
+/*
 const destinationImageMap: { [key: string]: string } = {
   'colombia': 'colombia.jpg',
   'costa rica': 'costa_rica.jpg',
   'indonesia': 'indonesia.jpg',
-  'spain': 'madrid.jpg', // Assuming madrid.jpg is for Spain
+  'spain': 'madrid.jpg', 
   'mexico': 'mexico.jpg',
-  'portugal': 'porto.jpg', // Assuming porto.jpg is for Portugal
+  'portugal': 'porto.jpg', 
   'usa': 'usa.jpg'
 };
+*/
 
-const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+// const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET; // No longer used here for primary image URL construction
 
 
 export function HomePageClientContent({
@@ -240,20 +245,19 @@ export function HomePageClientContent({
         {popularCountriesData.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {popularCountriesData.map((country) => {
-              let imageUrl;
-              const countryNameLower = country.name.toLowerCase();
-              const mappedImageFile = destinationImageMap[countryNameLower];
-
-              if (mappedImageFile && storageBucket) {
-                const imagePath = `explore-top-destinations/${mappedImageFile}`;
-                imageUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${encodeURIComponent(imagePath)}?alt=media`;
-              } else if (country.cover_image) {
+              let imageUrl: string;
+              
+              // Priority 1: Use SDK-fetched firebaseCoverImageUrl if available
+              if (country.firebaseCoverImageUrl) {
+                imageUrl = country.firebaseCoverImageUrl;
+              } 
+              // Priority 2: Fallback to cover_image from Firestore (manually set, possibly tokenized)
+              else if (country.cover_image) {
                 imageUrl = country.cover_image;
-              } else {
+              } 
+              // Priority 3: Fallback to placeholder
+              else {
                 imageUrl = `https://placehold.co/400x300.png?text=${encodeURIComponent(country.name)}`;
-                if (mappedImageFile && !storageBucket) {
-                    console.warn(`Firebase Storage bucket (NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) is not configured. Using placeholder for ${country.name}.`);
-                }
               }
               
               return (
@@ -270,7 +274,7 @@ export function HomePageClientContent({
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
                       data-ai-hint={`landscape ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
                       sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      priority={popularCountriesData.indexOf(country) < 4} // Prioritize loading images for the first few items
+                      priority={popularCountriesData.indexOf(country) < 4} 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent transition-opacity duration-300 group-hover:from-black/80"></div>
                     
@@ -416,4 +420,3 @@ export function HomePageClientContent({
     </div>
   );
 }
-
