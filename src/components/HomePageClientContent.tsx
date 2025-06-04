@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import { List, PlaneTakeoff, Users, MapPin, Globe, Star, MessageSquare, Send, Youtube, Compass, Podcast, ExternalLink, Facebook, Slack } from 'lucide-react';
-import type { ColivingSpace, CountryData, NomadVideo, CountryWithCommunities, Community } from '@/types';
+import { List, Users, MapPin, Globe, Star, MessageSquare, Send, Youtube, Compass, Podcast, ExternalLink, Facebook, Slack } from 'lucide-react';
+import type { ColivingSpace, CountryWithCommunities, Community, NomadVideo } from '@/types';
 import { ColivingCard } from '@/components/ColivingCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from '@/components/ui/badge';
@@ -71,7 +71,7 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: R
 
 interface HomePageClientContentProps {
   allSpaces: ColivingSpace[];
-  allCountries: CountryWithCommunities[]; // Changed from CountryData[]
+  allCountries: CountryWithCommunities[]; 
   nomadsHoodPodcastVideos: NomadVideo[];
   countriesWithCommunities: CountryWithCommunities[]; 
 }
@@ -86,14 +86,14 @@ const RedditIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export function HomePageClientContent({
   allSpaces,
-  allCountries, // This will now be CountryWithCommunities[]
+  allCountries, 
   nomadsHoodPodcastVideos,
   countriesWithCommunities 
 }: HomePageClientContentProps) {
   const [selectedCountryNameForCommunities, setSelectedCountryNameForCommunities] = useState<string | null>(null);
 
   const popularCountriesData: CountryWithCommunities[] = useMemo(() => {
-    return [...allCountries] // allCountries is already CountryWithCommunities[]
+    return [...allCountries] 
       .filter(country => country.name.toLowerCase() !== 'israel') 
       .sort((a, b) => {
         const countDiff = (b.coliving_count || 0) - (a.coliving_count || 0);
@@ -169,13 +169,6 @@ export function HomePageClientContent({
               <List className="mr-2 h-5 w-5" /> Explore Colivings
             </Link>
           </Button>
-          {/* Trip Planner button removed as per user request
-          <Button size="lg" variant="outline" asChild>
-            <Link href="/recommender">
-              <PlaneTakeoff className="mr-2 h-5 w-5" /> Trip Planner
-            </Link>
-          </Button>
-          */}
         </div>
       </section>
 
@@ -233,35 +226,45 @@ export function HomePageClientContent({
           <p className="text-lg text-foreground/70 mt-2">Discover top countries for digital nomads.</p>
         </div>
         {popularCountriesData.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {popularCountriesData.map((country) => (
               <Link
                 key={country.id}
                 href={`/coliving?country=${encodeURIComponent(country.name)}`}
                 className="block group"
               >
-                <Card className="h-full overflow-hidden shadow-md hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col items-center justify-center text-center p-4">
+                <Card className="relative h-64 sm:h-72 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 rounded-lg">
+                  <Image
+                    src={country.cover_image || `https://placehold.co/400x300.png?text=${encodeURIComponent(country.name)}`}
+                    alt={`Image of ${country.name}`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    data-ai-hint={`landscape ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent transition-opacity duration-300 group-hover:from-black/80"></div>
+                  
+                  {country.flagImageUrl && (
+                    <div className="absolute top-3 right-3 w-10 h-6 z-10 p-0.5 bg-white/80 rounded-sm shadow-md">
+                      <Image
+                        src={country.flagImageUrl}
+                        alt={`${country.name} flag`}
+                        fill
+                        className="object-contain"
+                        data-ai-hint={`flag ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
+                        sizes="40px"
+                      />
+                    </div>
+                  )}
 
-                    {country.flagImageUrl ? (
-                      <div className="relative w-16 h-10 mb-3">
-                        <Image
-                          src={country.flagImageUrl}
-                          alt={`${country.name} flag`}
-                          fill
-                          className="object-contain rounded-sm"
-                          data-ai-hint={`flag ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
-                          sizes="64px"
-                        />
-                      </div>
-                    ) : (
-                      <div className="text-4xl mb-3">{country.flag || '🏳️'}</div>
-                    )}
-                    <h3 className="text-md font-semibold text-foreground group-hover:text-primary transition-colors">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
+                    <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300">
                       {country.name}
                     </h3>
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-sm text-gray-200 mt-1">
                       {country.coliving_count || 0} coliving space{country.coliving_count !== 1 ? 's' : ''}
                     </p>
+                  </div>
                 </Card>
               </Link>
             ))}
