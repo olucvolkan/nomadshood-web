@@ -83,6 +83,18 @@ const RedditIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+const destinationImageMap: { [key: string]: string } = {
+  'colombia': 'colombia.jpg',
+  'costa rica': 'costa_rica.jpg',
+  'indonesia': 'indonesia.jpg',
+  'spain': 'madrid.jpg', // Assuming madrid.jpg is for Spain
+  'mexico': 'mexico.jpg',
+  'portugal': 'porto.jpg', // Assuming porto.jpg is for Portugal
+  'usa': 'usa.jpg'
+};
+
+const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+
 
 export function HomePageClientContent({
   allSpaces,
@@ -227,47 +239,66 @@ export function HomePageClientContent({
         </div>
         {popularCountriesData.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {popularCountriesData.map((country) => (
-              <Link
-                key={country.id}
-                href={`/coliving?country=${encodeURIComponent(country.name)}`}
-                className="block group"
-              >
-                <Card className="relative h-64 sm:h-72 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 rounded-lg">
-                  <Image
-                    src={country.cover_image || `https://placehold.co/400x300.png?text=${encodeURIComponent(country.name)}`}
-                    alt={`Image of ${country.name}`}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    data-ai-hint={`landscape ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent transition-opacity duration-300 group-hover:from-black/80"></div>
-                  
-                  {country.flagImageUrl && (
-                    <div className="absolute top-3 right-3 w-10 h-6 z-10 p-0.5 bg-white/80 rounded-sm shadow-md">
-                      <Image
-                        src={country.flagImageUrl}
-                        alt={`${country.name} flag`}
-                        fill
-                        className="object-contain"
-                        data-ai-hint={`flag ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
-                        sizes="40px"
-                      />
-                    </div>
-                  )}
+            {popularCountriesData.map((country) => {
+              let imageUrl;
+              const countryNameLower = country.name.toLowerCase();
+              const mappedImageFile = destinationImageMap[countryNameLower];
 
-                  <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
-                    <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300">
-                      {country.name}
-                    </h3>
-                    <p className="text-sm text-gray-200 mt-1">
-                      {country.coliving_count || 0} coliving space{country.coliving_count !== 1 ? 's' : ''}
-                    </p>
-                  </div>
-                </Card>
-              </Link>
-            ))}
+              if (mappedImageFile && storageBucket) {
+                const imagePath = `explore-top-destinations/${mappedImageFile}`;
+                imageUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${encodeURIComponent(imagePath)}?alt=media`;
+              } else if (country.cover_image) {
+                imageUrl = country.cover_image;
+              } else {
+                imageUrl = `https://placehold.co/400x300.png?text=${encodeURIComponent(country.name)}`;
+                if (mappedImageFile && !storageBucket) {
+                    console.warn(`Firebase Storage bucket (NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) is not configured. Using placeholder for ${country.name}.`);
+                }
+              }
+              
+              return (
+                <Link
+                  key={country.id}
+                  href={`/coliving?country=${encodeURIComponent(country.name)}`}
+                  className="block group"
+                >
+                  <Card className="relative h-64 sm:h-72 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 rounded-lg">
+                    <Image
+                      src={imageUrl}
+                      alt={`Image of ${country.name}`}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      data-ai-hint={`landscape ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      priority={popularCountriesData.indexOf(country) < 4} // Prioritize loading images for the first few items
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent transition-opacity duration-300 group-hover:from-black/80"></div>
+                    
+                    {country.flagImageUrl && (
+                      <div className="absolute top-3 right-3 w-10 h-6 z-10 p-0.5 bg-white/80 rounded-sm shadow-md">
+                        <Image
+                          src={country.flagImageUrl}
+                          alt={`${country.name} flag`}
+                          fill
+                          className="object-contain"
+                          data-ai-hint={`flag ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
+                          sizes="40px"
+                        />
+                      </div>
+                    )}
+
+                    <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
+                      <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300">
+                        {country.name}
+                      </h3>
+                      <p className="text-sm text-gray-200 mt-1">
+                        {country.coliving_count || 0} coliving space{country.coliving_count !== 1 ? 's' : ''}
+                      </p>
+                    </div>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         ) : (
           <p className="text-center text-muted-foreground">No country data available yet. Once coliving spaces and countries are added to Firebase, they will appear here.</p>
