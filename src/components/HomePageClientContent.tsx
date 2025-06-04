@@ -251,10 +251,7 @@ export function HomePageClientContent({
               if (country.firebaseCoverImageUrl) {
                 imageUrl = country.firebaseCoverImageUrl;
               } 
-              // Priority 2: Fallback to cover_image from Firestore (manually set, possibly tokenized)
-              else if (country.cover_image) {
-                imageUrl = country.cover_image;
-              } 
+     
               // Priority 3: Fallback to placeholder
               else {
                 imageUrl = `https://placehold.co/400x300.png?text=${encodeURIComponent(country.name)}`;
