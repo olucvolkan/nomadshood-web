@@ -1,6 +1,7 @@
 
 'use client';
 
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from '@/components/ui/badge';
 
 // Helper component for rendering a list of videos
+import { db } from '@/lib/firebase'; // Import your Firebase db instance
 const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: React.ElementType; isSlider?: boolean }> = ({ title, videos, icon: IconComponent, isSlider = false }) => {
   if (!videos || videos.length === 0) {
     return (
@@ -71,9 +73,9 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: R
 
 interface HomePageClientContentProps {
   allSpaces: ColivingSpace[];
-  allCountries: CountryWithCommunities[];
+  allCountries: CountryWithCommunities[]; // This prop will be used to derive popularCountriesData
   nomadsHoodPodcastVideos: NomadVideo[];
-  countriesWithCommunities: CountryWithCommunities[];
+  countriesWithCommunities: CountryWithCommunities[]; // Used for "Connect with Nomad Communities"
 }
 
 // Reddit Icon SVG component
@@ -86,27 +88,26 @@ const RedditIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export function HomePageClientContent({
   allSpaces,
-  allCountries,
+  allCountries, // This prop is now the source for popularCountriesData
   nomadsHoodPodcastVideos,
   countriesWithCommunities
 }: HomePageClientContentProps) {
   const [selectedCountryNameForCommunities, setSelectedCountryNameForCommunities] = useState<string | null>(null);
 
-  const popularCountriesData: CountryWithCommunities[] = useMemo(() => {
-    const sortedCountries = [...allCountries]
-      .filter(country => country.name.toLowerCase() !== 'israel') 
-      .sort((a, b) => {
-        const aHasImage = !!(a.firebaseCoverImageUrl || a.cover_image || a.flagImageUrl);
-        const bHasImage = !!(b.firebaseCoverImageUrl || b.cover_image || b.flagImageUrl);
-
-        if (aHasImage && !bHasImage) return -1;
-        if (!aHasImage && bHasImage) return 1;
-
-        const countDiff = (b.coliving_count || 0) - (a.coliving_count || 0);
-        if (countDiff !== 0) return countDiff;
-        return a.name.localeCompare(b.name);
-      });
-    return sortedCountries.slice(0, 8);
+  // Derive popularCountriesData from the allCountries prop
+  const popularCountriesData = useMemo(() => {
+    if (!allCountries || !Array.isArray(allCountries) || allCountries.length === 0) {
+      return [];
+    }
+    // Sort by coliving_count descending (if available), then by name ascending
+    const sortedCountries = [...allCountries].sort((a, b) => {
+      const countA = typeof a.coliving_count === 'number' ? a.coliving_count : 0;
+      const countB = typeof b.coliving_count === 'number' ? b.coliving_count : 0;
+      const countDiff = countB - countA;
+      if (countDiff !== 0) return countDiff;
+      return a.name.localeCompare(b.name);
+    });
+    return sortedCountries.slice(0, 8); // Show top 8 popular destinations
   }, [allCountries]);
 
   const featuredSpaces = useMemo(() => {
@@ -392,4 +393,3 @@ export function HomePageClientContent({
     </div>
   );
 }
-
