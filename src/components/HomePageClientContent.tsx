@@ -71,9 +71,9 @@ const VideoListSection: React.FC<{ title: string; videos: NomadVideo[]; icon?: R
 
 interface HomePageClientContentProps {
   allSpaces: ColivingSpace[];
-  allCountries: CountryWithCommunities[]; 
+  allCountries: CountryWithCommunities[];
   nomadsHoodPodcastVideos: NomadVideo[];
-  countriesWithCommunities: CountryWithCommunities[]; 
+  countriesWithCommunities: CountryWithCommunities[];
 }
 
 // Reddit Icon SVG component
@@ -86,21 +86,28 @@ const RedditIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export function HomePageClientContent({
   allSpaces,
-  allCountries, 
+  allCountries,
   nomadsHoodPodcastVideos,
-  countriesWithCommunities 
+  countriesWithCommunities
 }: HomePageClientContentProps) {
   const [selectedCountryNameForCommunities, setSelectedCountryNameForCommunities] = useState<string | null>(null);
 
   const popularCountriesData: CountryWithCommunities[] = useMemo(() => {
-    return [...allCountries] 
-      .filter(country => country.name.toLowerCase() !== 'israel') 
+    // Prioritize countries with firebaseCoverImageUrl or cover_image
+    const sortedCountries = [...allCountries]
+      .filter(country => country.name.toLowerCase() !== 'israel') // Filter out Israel
       .sort((a, b) => {
+        const aHasImage = !!(a.firebaseCoverImageUrl || a.cover_image);
+        const bHasImage = !!(b.firebaseCoverImageUrl || b.cover_image);
+
+        if (aHasImage && !bHasImage) return -1;
+        if (!aHasImage && bHasImage) return 1;
+
         const countDiff = (b.coliving_count || 0) - (a.coliving_count || 0);
         if (countDiff !== 0) return countDiff;
         return a.name.localeCompare(b.name);
-      })
-      .slice(0, 8);
+      });
+    return sortedCountries.slice(0, 8); // Take top 8
   }, [allCountries]);
 
   const featuredSpaces = useMemo(() => {
@@ -140,9 +147,9 @@ export function HomePageClientContent({
       case 'whatsapp':
         return <MessageSquare className="mr-2 h-5 w-5 text-green-500" />;
       case 'slack':
-        return <Slack className="mr-2 h-5 w-5 text-purple-600" />; 
+        return <Slack className="mr-2 h-5 w-5 text-purple-600" />;
       case 'telegram':
-        return <Send className="mr-2 h-5 w-5 text-sky-500" />; 
+        return <Send className="mr-2 h-5 w-5 text-sky-500" />;
       default:
         return <Globe className="mr-2 h-5 w-5" />;
     }
@@ -235,21 +242,20 @@ export function HomePageClientContent({
                 >
                   <Card className="h-40 flex flex-col items-center justify-center p-4 shadow-md hover:shadow-lg transition-shadow duration-300">
                     {country.flagImageUrl ? (
-                      <div className="relative w-24 h-16"> {/* Adjusted size for better flag visibility */}
+                      <div className="relative w-24 h-16">
                         <Image
                           src={country.flagImageUrl}
                           alt={`${country.name} flag`}
                           fill
                           className="object-contain rounded-sm"
                           data-ai-hint={`flag ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
-                          sizes="96px" 
+                          sizes="96px"
                           priority={popularCountriesData.indexOf(country) < 4}
                         />
                       </div>
                     ) : (
-                      <div className="text-5xl mb-2">{country.flag || '🏳️'}</div>
+                      <div className="text-5xl">{country.flag || '🏳️'}</div>
                     )}
-                    {/* Country name and coliving count have been removed as per user's explicit request */}
                   </Card>
                 </Link>
               )
@@ -291,7 +297,7 @@ export function HomePageClientContent({
             <div className="max-w-md mx-auto mb-8">
             <Select
                 onValueChange={handleCountryChangeForCommunities}
-                value={selectedCountryNameForCommunities || ""} 
+                value={selectedCountryNameForCommunities || ""}
             >
                 <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select a country..." />
