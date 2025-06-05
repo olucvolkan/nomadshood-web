@@ -97,8 +97,8 @@ export function HomePageClientContent({
     const sortedCountries = [...allCountries]
       .filter(country => country.name.toLowerCase() !== 'israel') // Filter out Israel
       .sort((a, b) => {
-        const aHasImage = !!(a.firebaseCoverImageUrl || a.cover_image);
-        const bHasImage = !!(b.firebaseCoverImageUrl || b.cover_image);
+        const aHasImage = !!(a.firebaseCoverImageUrl || a.cover_image || a.flagImageUrl); // Also consider flagImageUrl
+        const bHasImage = !!(b.firebaseCoverImageUrl || b.cover_image || b.flagImageUrl);
 
         if (aHasImage && !bHasImage) return -1;
         if (!aHasImage && bHasImage) return 1;
@@ -240,21 +240,21 @@ export function HomePageClientContent({
                   href={`/coliving?country=${encodeURIComponent(country.name)}`}
                   className="block group"
                 >
-                  <Card className="h-40 flex flex-col items-center justify-center p-4 shadow-md hover:shadow-lg transition-shadow duration-300">
+                  <Card className="h-28 flex flex-col items-center justify-center p-3 shadow-md hover:shadow-lg transition-shadow duration-300 aspect-video overflow-hidden">
                     {country.flagImageUrl ? (
-                      <div className="relative w-24 h-16">
+                       <div className="relative w-full h-full"> {/* Make flag container fill card */}
                         <Image
                           src={country.flagImageUrl}
                           alt={`${country.name} flag`}
                           fill
-                          className="object-contain rounded-sm"
+                          className="object-contain" // Use object-contain for flags
                           data-ai-hint={`flag ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
-                          sizes="96px"
+                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                           priority={popularCountriesData.indexOf(country) < 4}
                         />
                       </div>
                     ) : (
-                      <div className="text-5xl">{country.flag || '🏳️'}</div>
+                      <div className="text-5xl select-none">{country.flag || '🏳️'}</div>
                     )}
                   </Card>
                 </Link>
