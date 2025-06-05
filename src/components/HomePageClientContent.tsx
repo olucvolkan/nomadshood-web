@@ -93,11 +93,10 @@ export function HomePageClientContent({
   const [selectedCountryNameForCommunities, setSelectedCountryNameForCommunities] = useState<string | null>(null);
 
   const popularCountriesData: CountryWithCommunities[] = useMemo(() => {
-    // Prioritize countries with firebaseCoverImageUrl or cover_image
     const sortedCountries = [...allCountries]
-      .filter(country => country.name.toLowerCase() !== 'israel') // Filter out Israel
+      .filter(country => country.name.toLowerCase() !== 'israel') 
       .sort((a, b) => {
-        const aHasImage = !!(a.firebaseCoverImageUrl || a.cover_image || a.flagImageUrl); // Also consider flagImageUrl
+        const aHasImage = !!(a.firebaseCoverImageUrl || a.cover_image || a.flagImageUrl);
         const bHasImage = !!(b.firebaseCoverImageUrl || b.cover_image || b.flagImageUrl);
 
         if (aHasImage && !bHasImage) return -1;
@@ -107,7 +106,7 @@ export function HomePageClientContent({
         if (countDiff !== 0) return countDiff;
         return a.name.localeCompare(b.name);
       });
-    return sortedCountries.slice(0, 8); // Take top 8
+    return sortedCountries.slice(0, 8);
   }, [allCountries]);
 
   const featuredSpaces = useMemo(() => {
@@ -235,31 +234,47 @@ export function HomePageClientContent({
         {popularCountriesData.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {popularCountriesData.map((country) => (
-                <Link
-                  key={country.id}
-                  href={`/coliving?country=${encodeURIComponent(country.name)}`}
-                  className="block group"
-                >
-                  <Card className="h-28 flex flex-col items-center justify-center p-3 shadow-md hover:shadow-lg transition-shadow duration-300 aspect-video overflow-hidden">
-                    {country.flagImageUrl ? (
-                       <div className="relative w-full h-full"> {/* Make flag container fill card */}
-                        <Image
-                          src={country.flagImageUrl}
-                          alt={`${country.name} flag`}
-                          fill
-                          className="object-contain" // Use object-contain for flags
-                          data-ai-hint={`flag ${country.name.toLowerCase().replace(/\s+/g, '-')}`}
-                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                          priority={popularCountriesData.indexOf(country) < 4}
-                        />
-                      </div>
-                    ) : (
-                      <div className="text-5xl select-none">{country.flag || '🏳️'}</div>
+              <Link
+                key={country.id}
+                href={`/coliving?country=${encodeURIComponent(country.name)}`}
+                className="block group"
+              >
+                <Card className="relative overflow-hidden rounded-lg shadow-lg h-64">
+                  <Image
+                    src={country.firebaseCoverImageUrl || country.cover_image || 'https://placehold.co/600x400.png'}
+                    alt={`Explore ${country.name}`}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    data-ai-hint={country.dataAiHint || `landscape ${country.name.toLowerCase()}`}
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    priority={popularCountriesData.indexOf(country) < 4} // Prioritize loading for first few images
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 h-2/5 bg-gradient-to-t from-black/70 to-transparent pointer-events-none"></div>
+                  
+                  {country.flagImageUrl ? (
+                    <Image
+                      src={country.flagImageUrl}
+                      alt={`${country.name} flag`}
+                      width={32}
+                      height={20}
+                      className="absolute top-3 left-3 rounded-sm object-contain"
+                       data-ai-hint={`flag ${country.name.toLowerCase()}`}
+                    />
+                  ) : country.flag ? (
+                    <span className="absolute top-3 left-3 text-2xl bg-black/20 p-1 rounded-sm">{country.flag}</span>
+                  ) : null}
+                  
+                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                    <h3 className="text-xl font-bold tracking-tight">{country.name}</h3>
+                    {typeof country.coliving_count === 'number' && (
+                      <p className="text-sm mt-1">
+                        {country.coliving_count} coliving space{country.coliving_count !== 1 ? 's' : ''}
+                      </p>
                     )}
-                  </Card>
-                </Link>
-              )
-            )}
+                  </div>
+                </Card>
+              </Link>
+            ))}
           </div>
         ) : (
           <p className="text-center text-muted-foreground">No country data available yet. Once coliving spaces and countries are added to Firebase, they will appear here.</p>
@@ -377,3 +392,4 @@ export function HomePageClientContent({
     </div>
   );
 }
+
