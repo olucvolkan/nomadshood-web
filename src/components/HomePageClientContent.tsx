@@ -397,31 +397,55 @@ export function HomePageClientContent({
               </div>
             </div>
 
-            {/* More Episodes Section */}
-            {nomadsHoodPodcastVideos.length > 2 && (
-              <div className="text-center">
-                <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-gray-200/50">
-                  <h4 className="text-lg font-semibold text-gray-800 mb-3">More Episodes Coming Soon</h4>
+            {/* More Episodes Section - Always show */}
+            <div className="text-center">
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-gray-200/50">
+                {nomadsHoodPodcastVideos.length > 2 ? (
+                  <>
+                    <h4 className="text-lg font-semibold text-gray-800 mb-3">More Episodes Coming Soon</h4>
+                    <p className="text-gray-600 mb-6">
+                      We're constantly creating new content. Subscribe to our YouTube channel to never miss an episode!
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h4 className="text-lg font-semibold text-gray-800 mb-3">Stay Tuned for More Episodes</h4>
+                    <p className="text-gray-600 mb-6">
+                      More amazing coliving stories are coming soon! Subscribe to our YouTube channel to be the first to know.
+                    </p>
+                  </>
+                )}
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button variant="outline" size="lg" className="border-red-300 text-red-600 hover:bg-red-50" asChild>
+                    <Link href="https://www.youtube.com/@nomadshood" target="_blank" rel="noopener noreferrer">
+                      <Youtube className="mr-2 h-4 w-4" />
+                      Subscribe on YouTube
+                    </Link>
+                  </Button>
+                  <Button variant="outline" size="lg" className="border-orange-300 text-orange-600 hover:bg-orange-50" asChild>
+                    <Link href="#video-hub">
+                      <Podcast className="mr-2 h-4 w-4" />
+                      All Episodes
+                    </Link>
+                  </Button>
+                </div>
+                
+                {/* Invitation message for coliving owners */}
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <h4 className="text-lg font-semibold text-gray-700 mb-3">Want to Be Featured?</h4>
                   <p className="text-gray-600 mb-6">
-                    We're constantly creating new content. Subscribe to our YouTube channel to never miss an episode!
+                    If you want to promote your coliving space and create a video showcase, feel free to reach out to us. 
+                    We'd love to showcase your coliving space with a professional video tour and feature your story.
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <Button variant="outline" size="lg" className="border-red-300 text-red-600 hover:bg-red-50" asChild>
-                      <Link href="https://www.youtube.com/@nomadshood" target="_blank" rel="noopener noreferrer">
-                        <Youtube className="mr-2 h-4 w-4" />
-                        Subscribe on YouTube
-                      </Link>
-                    </Button>
-                    <Button variant="outline" size="lg" className="border-orange-300 text-orange-600 hover:bg-orange-50" asChild>
-                      <Link href="#video-hub">
-                        <Podcast className="mr-2 h-4 w-4" />
-                        All Episodes
-                      </Link>
-                    </Button>
-                  </div>
+                  <Button size="lg" variant="outline" className="border-green-300 text-green-600 hover:bg-green-50" asChild>
+                    <Link href="mailto:volkanoluc@gmail.com?subject=Coliving Video Feature Request&body=Hi, I would like to promote my coliving space and create a video tour. Please let me know more about this opportunity.">
+                      <Send className="mr-2 h-5 w-5" />
+                      Contact Us
+                    </Link>
+                  </Button>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         ) : (
           <div className="text-center py-16">
@@ -438,6 +462,21 @@ export function HomePageClientContent({
                   Subscribe for Updates
                 </Link>
               </Button>
+              
+              {/* Invitation message for coliving owners */}
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <h4 className="text-lg font-semibold text-gray-700 mb-3">Want to Be Featured?</h4>
+                <p className="text-gray-600 mb-6">
+                  If you want to promote your coliving space and create a video showcase, feel free to reach out to us. 
+                  We'd love to showcase your coliving space with a professional video tour and feature your story.
+                </p>
+                <Button size="lg" variant="outline" className="border-green-300 text-green-600 hover:bg-green-50" asChild>
+                  <Link href="mailto:volkanoluc@gmail.com?subject=Coliving Video Feature Request&body=Hi, I would like to promote my coliving space and create a video tour. Please let me know more about this opportunity.">
+                    <Send className="mr-2 h-5 w-5" />
+                    Contact Us
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         )}
