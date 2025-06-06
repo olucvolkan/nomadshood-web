@@ -1,43 +1,63 @@
-
-import type { ColivingSpace, CountryWithCommunities, NomadVideo } from '@/types';
-import { getAllColivingSpaces } from '@/services/colivingService'; // getAllCountriesFromDB removed
+import { getAllColivingSpaces, getAllCountriesFromDB } from '@/services/colivingService'; // Add getAllCountriesFromDB
 import { getNomadsHoodPodcastVideosFromFirestore } from '@/services/videoService';
+import type { ColivingSpace, CountryWithCommunities, NomadVideo } from '@/types';
 // getFirebaseStorageDownloadUrl might still be used if other image logic exists elsewhere, 
 // but its direct use here for popular destinations is removed.
 // import { getFirebaseStorageDownloadUrl } from '@/services/storageService'; 
 import { HomePageClientContent } from '@/components/HomePageClientContent';
 import popularDestinationsData from '@/data/popular_destinations.json'; // Import the new JSON data
 
+// Country name to country code mapping
+const countryNameToCode: Record<string, string> = {
+  'Spain': 'es',
+  'Portugal': 'pt',
+  'Mexico': 'mx',
+  'Costa Rica': 'cr',
+  'United States': 'us',
+  'Indonesia': 'id',
+  'Colombia': 'co',
+  'Thailand': 'th',
+  'Brazil': 'br',
+};
+
 export default async function HomePage() {
   const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
   const nomadsHoodPodcastVideos: NomadVideo[] = await getNomadsHoodPodcastVideosFromFirestore();
+  
+  // Fetch countries with communities from Firestore
+  const countriesWithCommunities: CountryWithCommunities[] = await getAllCountriesFromDB();
 
-  // Prepare countries data from popular_destinations.json
-  // This data will be used for both "Popular Destinations" and "Connect with Nomad Communities" sections as per original structure
-  const processedPopularDestinations: CountryWithCommunities[] = popularDestinationsData.destinations.map(dest => ({
-    // Ensure the structure matches the CountryWithCommunities type definition.
-    id: dest.country.toLowerCase().replace(/\s+/g, '-'), // Example: 'costa-rica'
-    name: dest.country,
-    coliving_count: dest.coliving_count, // Assumed to be part of CountryWithCommunities or handled by component
-    country_flag: dest.country_flag,     // Assumed to be part of CountryWithCommunities or handled by component
+  // Prepare countries data from popular_destinations.json (only for Popular Destinations section)
+  const processedPopularDestinations: CountryWithCommunities[] = popularDestinationsData.destinations.map(dest => {
+    const countryCode = countryNameToCode[dest.country] || 'xx'; // fallback to 'xx' if not found
     
-    // country_image_link from JSON is a full URL.
-    // Assign to firebaseCoverImageUrl, assuming it's for any remote URLs.
-    firebaseCoverImageUrl: dest.country_image_link, 
-    cover_image: undefined, // Explicitly set to undefined as firebaseCoverImageUrl is used for the remote URL
+    return {
+      // Ensure the structure matches the CountryWithCommunities type definition.
+      id: dest.country.toLowerCase().replace(/\s+/g, '-'), // Example: 'costa-rica'
+      code: countryCode, // Add the country code
+      name: dest.country,
+      coliving_count: dest.coliving_count, // Assumed to be part of CountryWithCommunities or handled by component
+      flag: dest.country_flag,     // Keep emoji flag as fallback
+      flagImageUrl: `/flags/${countryCode}.png`, // Use local flag image
+      
+      // country_image_link from JSON is a full URL.
+      // Assign to firebaseCoverImageUrl, assuming it's for any remote URLs.
+      firebaseCoverImageUrl: dest.country_image_link, 
+      cover_image: undefined, // Explicitly set to undefined as firebaseCoverImageUrl is used for the remote URL
 
-    // Default or placeholder values for other potential fields in CountryWithCommunities:
-    communities: [], // Assuming an empty array or that this field is optional
-    dataAiHint: `Beautiful view of ${dest.country}`, // Generic AI hint
-    // Add any other fields required by CountryWithCommunities with default/derived values as necessary
-  }));
+      // Default or placeholder values for other potential fields in CountryWithCommunities:
+      communities: [], // Assuming an empty array or that this field is optional
+      dataAiHint: `Beautiful view of ${dest.country}`, // Generic AI hint
+      // Add any other fields required by CountryWithCommunities with default/derived values as necessary
+    };
+  });
   
   return (
     <HomePageClientContent
       allSpaces={allSpaces}
-      allCountries={processedPopularDestinations} // Used for "Popular Destinations"
+      allCountries={processedPopularDestinations} // Used for "Popular Destinations" (from JSON)
       nomadsHoodPodcastVideos={nomadsHoodPodcastVideos}
-      countriesWithCommunities={processedPopularDestinations} // Also updated for "Connect with Nomad Communities"
+      countriesWithCommunities={countriesWithCommunities} // Now uses Firestore data with actual communities
     />
   );
 }

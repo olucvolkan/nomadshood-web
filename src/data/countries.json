@@ -1,0 +1,6480 @@
+[
+  {
+    "code": "AL",
+    "name": "Albania",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Albania",
+    "flag": "🇦🇱",
+    "continent": "Europe",
+    "currency": "ALL",
+    "timezone": "Local",
+    "popular_cities": [
+      "Albania"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 3,
+    "community_members": 18186,
+    "community_cities": [
+      "Albania"
+    ],
+    "community_platforms": [
+      "Reddit",
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "AL_expats_in_albania___the_not_for_profit_one",
+        "name": "Expats in Albania - The NOT for profit one",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Albania",
+        "groupLink": "https://www.facebook.com/groups/expatsinalbaniafreegroup",
+        "memberCount": 11600,
+        "membersText": "11600",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇱"
+      },
+      {
+        "id": "AL_albania_workcations___digital_nomads",
+        "name": "Albania Workcations - Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Albania",
+        "groupLink": "https://www.facebook.com/groups/albaniaworkcation",
+        "memberCount": 5900,
+        "membersText": "5900",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇱"
+      },
+      {
+        "id": "AL_expats_in_albania",
+        "name": "Expats in Albania",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Albania",
+        "groupLink": "https://www.reddit.com/r/AlbaniaExpats/",
+        "memberCount": 686,
+        "membersText": "686",
+        "tags": [
+          "Expats",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇱"
+      }
+    ]
+  },
+  {
+    "code": "AR",
+    "name": "Argentina",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Argentina",
+    "flag": "🇦🇷",
+    "continent": "South America",
+    "currency": "ARS",
+    "timezone": "Local",
+    "popular_cities": [
+      "Argentina"
+    ],
+    "coliving_count": 7,
+    "source": "nomadago",
+    "community_count": 10,
+    "community_members": 2048,
+    "community_cities": [
+      "Buenos Aires",
+      "Argentina"
+    ],
+    "community_platforms": [
+      "WhatsApp",
+      "Meetup",
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "AR_nomads_food_adventures",
+        "name": "Nomads Food Adventures",
+        "type": "Whatsapp",
+        "platform": "WhatsApp",
+        "city": "Buenos Aires",
+        "groupLink": "https://chat.whatsapp.com/GIkZn1wDasRJCupUADWp6R",
+        "memberCount": 823,
+        "membersText": "823",
+        "tags": [
+          "Food",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇷"
+      },
+      {
+        "id": "AR_ba_digital_nomads_iv",
+        "name": "BA Digital Nomads IV",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Argentina",
+        "groupLink": "https://chat.whatsapp.com/Ep0E21943MkFqNq2koeKm7",
+        "memberCount": 607,
+        "membersText": "607",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇷"
+      },
+      {
+        "id": "AR_buenos_aires___ba_digital_nomads_iii",
+        "name": "Buenos Aires - BA Digital Nomads III",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Buenos Aires",
+        "groupLink": "https://chat.whatsapp.com/Jk611BXD0MJ1By0nc95LPU",
+        "memberCount": 468,
+        "membersText": "468",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇷"
+      },
+      {
+        "id": "AR_argentina_expat_lounge",
+        "name": "Argentina Expat Lounge",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Buenos Aires",
+        "groupLink": "https://chat.whatsapp.com/FFvmMr8xBJp1PSeEVNgHM6",
+        "memberCount": 130,
+        "membersText": "130",
+        "tags": [
+          "Digital Nomads",
+          "Expat"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇷"
+      },
+      {
+        "id": "AR_digital_nomads_buenos_aires",
+        "name": "Digital Nomads Buenos Aires",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Buenos Aires",
+        "groupLink": "https://www.facebook.com/groups/buenosairesdigitalnomads/?locale=es_LA",
+        "memberCount": 9,
+        "membersText": "\"9",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇷"
+      },
+      {
+        "id": "AR_ndba___n_mades_digitales",
+        "name": "NDBA - Nómades Digitales",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Buenos Aires",
+        "groupLink": "https://www.meetup.com/nomades-digitales/",
+        "memberCount": 5,
+        "membersText": "\"5",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇷"
+      },
+      {
+        "id": "AR_ba_digital_nomads",
+        "name": "BA Digital Nomads",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Buenos Aires",
+        "groupLink": "https://www.meetup.com/es-ES/ba-digital-nomads/",
+        "memberCount": 4,
+        "membersText": "\"4",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇷"
+      },
+      {
+        "id": "AR_ba_digital_nomads_housing",
+        "name": "BA Digital Nomads Housing",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Buenos Aires",
+        "groupLink": "https://chat.whatsapp.com/DZvh0gBEmKKAeL84lD7ZzY",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇷"
+      },
+      {
+        "id": "AR_trabajar_remoto_para_empresas_de_afuera",
+        "name": "Trabajar Remoto Para Empresas de Afuera",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Buenos Aires",
+        "groupLink": "https://www.meetup.com/trabajar-remoto-para-empresas-de-afuera/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇷"
+      },
+      {
+        "id": "AR_ba_digital_nomads_rentals",
+        "name": "BA Digital Nomads Rentals",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Buenos Aires",
+        "groupLink": "https://chat.whatsapp.com/CQzD6S9JojQ4YsbhzIVuD4",
+        "memberCount": 0,
+        "membersText": "0",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇷"
+      }
+    ]
+  },
+  {
+    "code": "AM",
+    "name": "Armenia",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Armenia",
+    "flag": "🇦🇲",
+    "continent": "Asia",
+    "currency": "AMD",
+    "timezone": "Local",
+    "popular_cities": [
+      "Armenia"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "AU",
+    "name": "Australia",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Australia",
+    "flag": "🇦🇺",
+    "continent": "Oceania",
+    "currency": "AUD",
+    "timezone": "Local",
+    "popular_cities": [
+      "Australia"
+    ],
+    "coliving_count": 5,
+    "source": "nomadago",
+    "community_count": 5,
+    "community_members": 211,
+    "community_cities": [
+      "Sydney",
+      "Melbourne"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "Other",
+      "Meetup"
+    ],
+    "communities": [
+      {
+        "id": "AU_sydney_digital_nomads",
+        "name": "Sydney Digital Nomads",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Sydney",
+        "groupLink": "https://www.meetup.com/sydney-digital-nomads/",
+        "memberCount": 137,
+        "membersText": "137",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇺"
+      },
+      {
+        "id": "AU_freelancers_and_founders_meetup",
+        "name": "Freelancers and Founders Meetup",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Melbourne",
+        "groupLink": "https://www.meetup.com/freelancers-and-founders/",
+        "memberCount": 72,
+        "membersText": "72",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇦🇺"
+      },
+      {
+        "id": "AU_digital_nomads_australia",
+        "name": "Digital Nomads Australia",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Sydney",
+        "groupLink": "https://www.facebook.com/groups/725799070863819/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇦🇺"
+      },
+      {
+        "id": "AU__sydney_apartment_rentals",
+        "name": "\"Sydney Apartment Rentals",
+        "type": "Houses",
+        "platform": "Other",
+        "city": "Sydney",
+        "groupLink": "Sublets and Rooms\"",
+        "memberCount": 0,
+        "membersText": "Social",
+        "tags": [
+          "Facebook",
+          "https://www.facebook.com/groups/1163907447020818/"
+        ],
+        "requirementToJoin": "Digital Nomads",
+        "flag": "🇦🇺"
+      },
+      {
+        "id": "AU________melbourne_freelancers",
+        "name": "\"👩‍💻 Melbourne Freelancers",
+        "type": "Creators & Digital Nomads\"",
+        "platform": "Other",
+        "city": "Melbourne",
+        "groupLink": "Meetup",
+        "memberCount": 0,
+        "membersText": "None",
+        "tags": [
+          "https://www.meetup.com/melbourne-freelancers/",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Social",
+        "flag": "🇦🇺"
+      }
+    ]
+  },
+
+  {
+    "code": "BB",
+    "name": "Barbados",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Barbados",
+    "flag": "🇧🇧",
+    "continent": "Caribbean",
+    "currency": "BBD",
+    "timezone": "Local",
+    "popular_cities": [
+      "Barbados"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 1,
+    "community_members": 1,
+    "community_cities": [
+      "Barbados"
+    ],
+    "community_platforms": [
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "BB_barbados_digital_nomads",
+        "name": "Barbados Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Barbados",
+        "groupLink": "https://www.facebook.com/groups/barbadosnomads",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇧"
+      }
+    ]
+  },
+  {
+    "code": "BO",
+    "name": "Bolivia",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Bolivia",
+    "flag": "🇧🇴",
+    "continent": "South America",
+    "currency": "BOB",
+    "timezone": "Local",
+    "popular_cities": [
+      "Bolivia"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "BR",
+    "name": "Brazil",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Brazil",
+    "flag": "🇧🇷",
+    "continent": "South America",
+    "currency": "BRL",
+    "timezone": "Local",
+    "popular_cities": [
+      "Brazil"
+    ],
+    "coliving_count": 13,
+    "source": "nomadago",
+    "community_count": 33,
+    "community_members": 10773,
+    "community_cities": [
+      "Sao Paulo",
+      "Rio de Janiero",
+      "Rio de Janeiro",
+      "Belo Horizonte",
+      "Ilha Grande",
+      "Recife",
+      "Arraial de Cabo",
+      "Florianopolis",
+      "Brazil"
+    ],
+    "community_platforms": [
+      "WhatsApp",
+      "Meetup",
+      "Facebook",
+      "Other",
+      "Reddit"
+    ],
+    "communities": [
+      {
+        "id": "BR_rio_digital_nomads_2_0",
+        "name": "Rio Digital Nomads 2.0",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/DmLUcTjfnNI5OrWanYuMbd",
+        "memberCount": 951,
+        "membersText": "951",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_volleyball_rio",
+        "name": "Volleyball Rio",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/CsH226HQsvQ9qLYzkYrSJ7",
+        "memberCount": 677,
+        "membersText": "677",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_rio_foodies",
+        "name": "Rio Foodies",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/L42xttFzPVF1LDCq5ViqDc",
+        "memberCount": 643,
+        "membersText": "643",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_beach_group",
+        "name": "Beach Group",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/H8Qh46kDNli2LBkorwyl1a",
+        "memberCount": 607,
+        "membersText": "607",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_rio_foodies",
+        "name": "Rio Foodies",
+        "type": "Whatsapp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/L42xttFzPVF1LDCq5ViqDc",
+        "memberCount": 600,
+        "membersText": "600",
+        "tags": [
+          "Food",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_rentals__long_term_",
+        "name": "Rentals (Long Term)",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/Exk0ZuWAqFiJPz2bZ4lv2a",
+        "memberCount": 553,
+        "membersText": "553",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_hike_a_holics_rj____3_0",
+        "name": "Hike-a-holics RJ 🥾 3.0",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/IpBlhKpfaEf00d85stp4wK",
+        "memberCount": 500,
+        "membersText": "500",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_ilha_grande_explorers",
+        "name": "Ilha Grande Explorers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Ilha Grande",
+        "groupLink": "https://chat.whatsapp.com/CaOFy9WQFsBJpSAIy6pPBk",
+        "memberCount": 456,
+        "membersText": "456",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR____dancing_in_rio",
+        "name": "💃 Dancing in Rio",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/CehGfMVTKrb0QUGJi6YOLK",
+        "memberCount": 435,
+        "membersText": "435",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_rentals__short_term_",
+        "name": "Rentals (Short Term)",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/IK459KBZqODJcAM3T0JY3v",
+        "memberCount": 432,
+        "membersText": "432",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_basketball____rio____",
+        "name": "Basketball 🏀 Rio 🏖️",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/E1kZsflMYpW7Pi2s7fgngi",
+        "memberCount": 432,
+        "membersText": "432",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_digital_nomads_recife",
+        "name": "Digital Nomads Recife",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Recife",
+        "groupLink": "https://chat.whatsapp.com/Hh9V4pCU0NOEiocXZm0t8Z",
+        "memberCount": 425,
+        "membersText": "425",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_rio_short_term_rental",
+        "name": "Rio Short-Term Rental",
+        "type": "WhatsApp",
+        "platform": "Other",
+        "city": "Rio de Janiero",
+        "groupLink": "https://bit.ly/3vW9e5D",
+        "memberCount": 345,
+        "membersText": "345",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_rio_awareness_group______",
+        "name": "Rio Awareness Group 🧘‍♂️",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/CHTUVpCiV78Ad9zyal45BA",
+        "memberCount": 334,
+        "membersText": "334",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_coworking___laptop_guardians",
+        "name": "Coworking / Laptop Guardians",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/DfX6lzEnvsh3TbaXxDy34X",
+        "memberCount": 333,
+        "membersText": "333",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_digital_nomads_belo_horizonte",
+        "name": "Digital Nomads Belo Horizonte",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Belo Horizonte",
+        "groupLink": "https://chat.whatsapp.com/IVA6rj2M4do1wY5sLyb8TF",
+        "memberCount": 333,
+        "membersText": "333",
+        "tags": [
+          "Social",
+          "Meetups"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_s_o_paulo_first_digital_nomad_meetup",
+        "name": "São Paulo First Digital Nomad Meetup",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Sao Paulo",
+        "groupLink": "https://www.meetup.com/sao-paulo-first-digital-nomad-meetup/",
+        "memberCount": 323,
+        "membersText": "323",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_digital_nomads_sao_paulo",
+        "name": "Digital Nomads Sao Paulo",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Sao Paulo",
+        "groupLink": "https://chat.whatsapp.com/Ijwh8BQxgu4BJKQUwDBU36",
+        "memberCount": 312,
+        "membersText": "312",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR___rio_football__",
+        "name": "⚽ Rio Football ⚽",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/J6BapV4G08o8CjR4Era9Z5",
+        "memberCount": 256,
+        "membersText": "256",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_visa_in_brazil",
+        "name": "Visa in Brazil",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/ELk4BNkkuNXDFCDPonITcR",
+        "memberCount": 251,
+        "membersText": "251",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_buzios_arraial_de_cabo",
+        "name": "Buzios/Arraial de Cabo",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Arraial de Cabo",
+        "groupLink": "https://chat.whatsapp.com/EcbzAXz2i9n8keWHtrqeLs",
+        "memberCount": 245,
+        "membersText": "245",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_boardgamers_in_rj",
+        "name": "Boardgamers in RJ",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/JiVb6LzS7rF9jlzgvAEvga",
+        "memberCount": 244,
+        "membersText": "244",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_running______",
+        "name": "Running 🏃‍♂️",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/EWe9IdZxfz9IDXnzsJBFwi",
+        "memberCount": 242,
+        "membersText": "242",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_tennis_group_rio___",
+        "name": "Tennis Group Rio 🎾",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/IIXb7fGz4BpDNRumY5y8VR",
+        "memberCount": 232,
+        "membersText": "232",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_rio_buy_sell_trade",
+        "name": "Rio Buy Sell Trade",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Rio de Janeiro",
+        "groupLink": "https://chat.whatsapp.com/FhsycEZEQIZEUIgzE47ARp",
+        "memberCount": 231,
+        "membersText": "231",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_digital_nomads_s_o_paulo",
+        "name": "Digital Nomads São Paulo",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Sao Paulo",
+        "groupLink": "https://chat.whatsapp.com/LpPg9UPvnSC1NsX8AI6UKz",
+        "memberCount": 122,
+        "membersText": "122",
+        "tags": [
+          "Sports",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_digital_nomads_united",
+        "name": "Digital Nomads United",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Rio de Janiero",
+        "groupLink": "https://www.meetup.com/digital-nomads-united/",
+        "memberCount": 94,
+        "membersText": "94",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_digital_nomads___remote_workers",
+        "name": "Digital Nomads & Remote Workers",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Florianopolis",
+        "groupLink": "https://www.meetup.com/digital-nomads-remote-workers/",
+        "memberCount": 79,
+        "membersText": "79",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR__my_brazilian_brazil_",
+        "name": "♫My Brazilian Brazil♫",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Brazil",
+        "groupLink": "https://www.reddit.com/r/Brazil/",
+        "memberCount": 69,
+        "membersText": "\"69",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_foreigners_in_rio_de_janeiro",
+        "name": "Foreigners in Rio de Janeiro",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Rio de Janiero",
+        "groupLink": "https://www.facebook.com/groups/161911287321714/?locale=en_GB",
+        "memberCount": 11,
+        "membersText": "\"11",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_digital_nomads___rio_de_janeiro",
+        "name": "Digital Nomads - Rio de Janeiro",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Rio de Janiero",
+        "groupLink": "https://www.facebook.com/groups/221330464988478/",
+        "memberCount": 3,
+        "membersText": "\"3",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_digital_nomads_florian_polis___brazil",
+        "name": "Digital Nomads Florianópolis - Brazil",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Florianopolis",
+        "groupLink": "https://www.facebook.com/groups/1550146811977827/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇧🇷"
+      },
+      {
+        "id": "BR_floripa_dnomad_hub__",
+        "name": "Floripa DNomad Hub🏝",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Florianopolis",
+        "groupLink": "https://chat.whatsapp.com/CoJyK243dWeIFEivDgzAkJ",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇧🇷"
+      }
+    ]
+  },
+  {
+    "code": "BG",
+    "name": "Bulgaria",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Bulgaria",
+    "flag": "🇧🇬",
+    "continent": "Europe",
+    "currency": "BGN",
+    "timezone": "Local",
+    "popular_cities": [
+      "Bulgaria"
+    ],
+    "coliving_count": 6,
+    "source": "nomadago",
+    "community_count": 2,
+    "community_members": 161,
+    "community_cities": [
+      "Sofia"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "Meetup"
+    ],
+    "communities": [
+      {
+        "id": "BG_sofia_nomads",
+        "name": "Sofia Nomads",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Sofia",
+        "groupLink": "https://www.meetup.com/sofia-nomads/",
+        "memberCount": 159,
+        "membersText": "159",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇧🇬"
+      },
+      {
+        "id": "BG_sofia_digital_nomads_and_remote_workers",
+        "name": "Sofia Digital Nomads and Remote Workers",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Sofia",
+        "groupLink": "https://www.facebook.com/groups/1386394721376365/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇧🇬"
+      }
+    ]
+  },
+  {
+    "code": "CA",
+    "name": "Canada",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Canada",
+    "flag": "🇨🇦",
+    "continent": "North America",
+    "currency": "CAD",
+    "timezone": "Local",
+    "popular_cities": [
+      "Canada"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 9,
+    "community_members": 604,
+    "community_cities": [
+      "Vancouver",
+      "Toronto",
+      "Montreal"
+    ],
+    "community_platforms": [
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "CA_expats_world_in_vancouver",
+        "name": "Expats World in Vancouver",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Vancouver",
+        "groupLink": "https://www.facebook.com/groups/ExpatsWorldVancouver/",
+        "memberCount": 458,
+        "membersText": "458",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇦"
+      },
+      {
+        "id": "CA_vancouver_digital_nomads",
+        "name": "Vancouver Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Vancouver",
+        "groupLink": "https://www.facebook.com/groups/3482625188444545/",
+        "memberCount": 68,
+        "membersText": "68",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇦"
+      },
+      {
+        "id": "CA_international_travelers_in_vancouver",
+        "name": "International travelers in Vancouver",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Vancouver",
+        "groupLink": "https://www.facebook.com/groups/travelers.Vancouver",
+        "memberCount": 26,
+        "membersText": "\"26",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇨🇦"
+      },
+      {
+        "id": "CA_new_in_toronto",
+        "name": "New in Toronto",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Toronto",
+        "groupLink": "https://www.facebook.com/groups/585441388195757/",
+        "memberCount": 26,
+        "membersText": "\"26",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇨🇦"
+      },
+      {
+        "id": "CA_toronto_travel_buddies",
+        "name": "Toronto Travel Buddies",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Toronto",
+        "groupLink": "https://www.facebook.com/groups/2088301861401828",
+        "memberCount": 16,
+        "membersText": "\"16",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇨🇦"
+      },
+      {
+        "id": "CA_montreal_locals___expats",
+        "name": "Montreal Locals & Expats",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Montreal",
+        "groupLink": "https://www.facebook.com/groups/montreallocalsandexpats",
+        "memberCount": 4,
+        "membersText": "\"4",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇨🇦"
+      },
+      {
+        "id": "CA_expats_in_toronto",
+        "name": "Expats in Toronto",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Toronto",
+        "groupLink": "https://www.facebook.com/groups/2246192859015027/",
+        "memberCount": 3,
+        "membersText": "\"3",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇦"
+      },
+      {
+        "id": "CA_montreal_digital_nomads",
+        "name": "Montreal Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Montreal",
+        "groupLink": "https://www.facebook.com/groups/montrealdigitalnomads/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇦"
+      },
+      {
+        "id": "CA_american_expats_in_vancouver",
+        "name": "American ExPats in Vancouver",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Vancouver",
+        "groupLink": "https://www.facebook.com/groups/AmericanExPatsInVancouver/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇨🇦"
+      }
+    ]
+  },
+  {
+    "code": "CL",
+    "name": "Chile",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Chile",
+    "flag": "🇨🇱",
+    "continent": "South America",
+    "currency": "CLP",
+    "timezone": "Local",
+    "popular_cities": [
+      "Chile"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "CO",
+    "name": "Colombia",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Colombia",
+    "flag": "🇨🇴",
+    "continent": "South America",
+    "currency": "COP",
+    "timezone": "Local",
+    "popular_cities": [
+      "Colombia"
+    ],
+    "coliving_count": 18,
+    "source": "nomadago",
+    "community_count": 8,
+    "community_members": 79,
+    "community_cities": [
+      "Medellin",
+      "Cartagena",
+      "Bogota"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "WhatsApp",
+      "Other"
+    ],
+    "communities": [
+      {
+        "id": "CO_cartagena_nomads",
+        "name": "Cartagena Nomads",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Cartagena",
+        "groupLink": "https://chat.whatsapp.com/D01qyhpRdme4VSAjhtJsXo",
+        "memberCount": 45,
+        "membersText": "45",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇴"
+      },
+      {
+        "id": "CO_medell_n_expats___digital_nomads",
+        "name": "Medellín Expats | Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Medellin",
+        "groupLink": "https://www.facebook.com/groups/Compraventamde247/",
+        "memberCount": 17,
+        "membersText": "\"17",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇴"
+      },
+      {
+        "id": "CO_digital_nomads_medellin",
+        "name": "Digital Nomads Medellin",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Medellin",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadsmedellin/",
+        "memberCount": 13,
+        "membersText": "\"13",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇨🇴"
+      },
+      {
+        "id": "CO_properties_panoramico",
+        "name": "Properties Panoramico",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bogota",
+        "groupLink": "https://chat.whatsapp.com/HPkj17iBrwKE1Xfogsmkvy",
+        "memberCount": 4,
+        "membersText": "4",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇴"
+      },
+      {
+        "id": "CO_mde_apartment_hunting",
+        "name": "MDE Apartment Hunting",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Medellin",
+        "groupLink": "https://chat.whatsapp.com/Cl1wpaCwwU1I8cYZtPcAdn",
+        "memberCount": 0,
+        "membersText": "0",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇨🇴"
+      },
+      {
+        "id": "CO__medellin_rooms",
+        "name": "\"Medellin Rooms",
+        "type": "Apartments and Expat Info\"",
+        "platform": "Other",
+        "city": "Medellin",
+        "groupLink": "Facebook",
+        "memberCount": 0,
+        "membersText": "None",
+        "tags": [
+          "https://www.facebook.com/groups/510044409058180/",
+          "Accommodation"
+        ],
+        "requirementToJoin": "Digital Nomads",
+        "flag": "🇨🇴"
+      },
+      {
+        "id": "CO_nomads____visitor_of_mde",
+        "name": "Nomads // visitor of MDE",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Medellin",
+        "groupLink": "https://chat.whatsapp.com/D218VvL7GO3C6jgEvXsmgG",
+        "memberCount": 0,
+        "membersText": "0",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇨🇴"
+      },
+      {
+        "id": "CO_bogot__expats",
+        "name": "Bogotá Expats",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bogota",
+        "groupLink": "https://chat.whatsapp.com/K4ZmeuXfUQcJ46E4DKa6z1",
+        "memberCount": 0,
+        "membersText": "0",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇨🇴"
+      }
+    ]
+  },
+  {
+    "code": "CR",
+    "name": "Costa Rica",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Costa Rica",
+    "flag": "🇨🇷",
+    "continent": "Central America",
+    "currency": "CRC",
+    "timezone": "Local",
+    "popular_cities": [
+      "Costa Rica"
+    ],
+    "coliving_count": 15,
+    "source": "nomadago",
+    "community_count": 5,
+    "community_members": 1141,
+    "community_cities": [
+      "Santa Teresa",
+      "Costa Rica"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "Reddit"
+    ],
+    "communities": [
+      {
+        "id": "CR_santa_teresa_beach_digital_nomads",
+        "name": "Santa Teresa Beach Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Santa Teresa",
+        "groupLink": "https://www.facebook.com/groups/551545332474420/",
+        "memberCount": 838,
+        "membersText": "838",
+        "tags": [
+          "Digital Nomads",
+          "Accommodation"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇨🇷"
+      },
+      {
+        "id": "CR_costa_rica_digital_nomads",
+        "name": "Costa Rica Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Costa Rica",
+        "groupLink": "https://www.facebook.com/groups/costaricadigitalnomads/",
+        "memberCount": 110,
+        "membersText": "110",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇷"
+      },
+      {
+        "id": "CR_costa_rica_travel_and_tourism",
+        "name": "Costa Rica Travel and Tourism",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Costa Rica",
+        "groupLink": "https://www.reddit.com/r/CostaRicaTravel/",
+        "memberCount": 70,
+        "membersText": "\"70",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇷"
+      },
+      {
+        "id": "CR_digital_nomad_costa_rica",
+        "name": "Digital Nomad Costa Rica",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Costa Rica",
+        "groupLink": "https://www.facebook.com/groups/790213928319989/",
+        "memberCount": 62,
+        "membersText": "62",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇷"
+      },
+      {
+        "id": "CR_costa_rica___pura_vida_",
+        "name": "Costa Rica - Pura Vida!",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Costa Rica",
+        "groupLink": "https://www.reddit.com/r/costarica/",
+        "memberCount": 61,
+        "membersText": "\"61",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇷"
+      }
+    ]
+  },
+  {
+    "code": "CY",
+    "name": "Cyprus",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Cyprus",
+    "flag": "🇨🇾",
+    "continent": "Europe",
+    "currency": "EUR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Cyprus"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 3,
+    "community_members": 407,
+    "community_cities": [
+      "Paphos",
+      "Nicosia",
+      "Limassol"
+    ],
+    "community_platforms": [
+      "WhatsApp"
+    ],
+    "communities": [
+      {
+        "id": "CY_limassol_chill_group_______________",
+        "name": "Limassol Chill Group ☀🏄🏼‍♂👨‍💻🍜",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Limassol",
+        "groupLink": "https://chat.whatsapp.com/Hcg6avaSjXuI1yYPBd7C6O",
+        "memberCount": 210,
+        "membersText": "210",
+        "tags": [
+          "General",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇾"
+      },
+      {
+        "id": "CY_nicosia_chill_group_____________",
+        "name": "Nicosia Chill Group ☀🎊👨‍💻🍜🍸",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Nicosia",
+        "groupLink": "https://chat.whatsapp.com/DpwkDERUR109njI7SsLQXJ",
+        "memberCount": 197,
+        "membersText": "197",
+        "tags": [
+          "General",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇨🇾"
+      },
+      {
+        "id": "CY_paphos_chill___activity",
+        "name": "Paphos Chill & Activity",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Paphos",
+        "groupLink": "https://chat.whatsapp.com/LLZOOsrmlDV0TFdIvC4oBm",
+        "memberCount": 0,
+        "membersText": "0",
+        "tags": [
+          "General",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇨🇾"
+      }
+    ]
+  },
+  {
+    "code": "EC",
+    "name": "Ecuador",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Ecuador",
+    "flag": "🇪🇨",
+    "continent": "South America",
+    "currency": "USD",
+    "timezone": "Local",
+    "popular_cities": [
+      "Ecuador"
+    ],
+    "coliving_count": 8,
+    "source": "nomadago",
+    "community_count": 1,
+    "community_members": 1,
+    "community_cities": [
+      "Ecuador"
+    ],
+    "community_platforms": [
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "EC_ecuador_digital_nomads",
+        "name": "Ecuador Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Ecuador",
+        "groupLink": "https://www.facebook.com/groups/dnecuador/?locale=es_LA",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇪🇨"
+      }
+    ]
+  },
+  {
+    "code": "EG",
+    "name": "Egypt",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Egypt",
+    "flag": "🇪🇬",
+    "continent": "Africa",
+    "currency": "EGP",
+    "timezone": "Local",
+    "popular_cities": [
+      "Egypt"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 2,
+    "community_members": 331,
+    "community_cities": [
+      "Dahab"
+    ],
+    "community_platforms": [
+      "WhatsApp"
+    ],
+    "communities": [
+      {
+        "id": "EG_dahab_digital_nomads",
+        "name": "Dahab Digital Nomads",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Dahab",
+        "groupLink": "https://chat.whatsapp.com/DD6GNpu2i4bF8Z0HqozfB4",
+        "memberCount": 321,
+        "membersText": "321",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇬"
+      },
+      {
+        "id": "EG_mojo_coworkcafe___friends",
+        "name": "Mojo Coworkcafe & Friends",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Dahab",
+        "groupLink": "https://chat.whatsapp.com/D3NxKQVgG2QEm7kYh8BAGt",
+        "memberCount": 10,
+        "membersText": "10",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇬"
+      }
+    ]
+  },
+  {
+    "code": "EE",
+    "name": "Estonia",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Estonia",
+    "flag": "🇪🇪",
+    "continent": "Europe",
+    "currency": "EUR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Estonia"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "FR",
+    "name": "France",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=France",
+    "flag": "🇫🇷",
+    "continent": "Europe",
+    "currency": "EUR",
+    "timezone": "Local",
+    "popular_cities": [
+      "France"
+    ],
+    "coliving_count": 12,
+    "source": "nomadago",
+    "community_count": 2,
+    "community_members": 512,
+    "community_cities": [
+      "Paris",
+      "Nice"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "Meetup"
+    ],
+    "communities": [
+      {
+        "id": "FR_digital_nomads_paris",
+        "name": "Digital Nomads Paris",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Paris",
+        "groupLink": "https://www.facebook.com/groups/1009574772477915/",
+        "memberCount": 510,
+        "membersText": "510",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇫🇷"
+      },
+      {
+        "id": "FR_nice_nomads",
+        "name": "Nice Nomads",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Nice",
+        "groupLink": "https://www.meetup.com/nice-nomads/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇫🇷"
+      }
+    ]
+  },
+  {
+    "code": "GE",
+    "name": "Georgia",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Georgia",
+    "flag": "🇬🇪",
+    "continent": "Asia",
+    "currency": "GEL",
+    "timezone": "Local",
+    "popular_cities": [
+      "Georgia"
+    ],
+    "coliving_count": 3,
+    "source": "nomadago",
+    "community_count": 4,
+    "community_members": 251,
+    "community_cities": [
+      "Tbilisi"
+    ],
+    "community_platforms": [
+      "WhatsApp",
+      "Meetup",
+      "Other",
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "GE______social_meet_up_2___",
+        "name": "🇬🇪 Social Meet-up 2 💚",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Tbilisi",
+        "groupLink": "https://chat.whatsapp.com/DJC3ns2jnV4I8EbIK69eyg",
+        "memberCount": 238,
+        "membersText": "238",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇬🇪"
+      },
+      {
+        "id": "GE_tbilisi_digital_nomads",
+        "name": "Tbilisi Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Tbilisi",
+        "groupLink": "https://www.facebook.com/groups/tbilisidigitalnomad/",
+        "memberCount": 12,
+        "membersText": "\"12",
+        "tags": [
+          "Digital Nomads",
+          "Accommodation"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇬🇪"
+      },
+      {
+        "id": "GE_digital_people_tbilisi",
+        "name": "Digital People Tbilisi",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Tbilisi",
+        "groupLink": "https://www.meetup.com/digital-people-tbilisi/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇬🇪"
+      },
+      {
+        "id": "GE__remote_workers_georgia__digital_nomads_of_tbilisi",
+        "name": "\"Remote Workers Georgia (Digital Nomads of Tbilisi",
+        "type": "Kutaisi & Batumi)\"",
+        "platform": "Other",
+        "city": "Tbilisi",
+        "groupLink": "Facebook",
+        "memberCount": 0,
+        "membersText": "None",
+        "tags": [
+          "https://www.facebook.com/groups/277695252922835/",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Accommodation",
+        "flag": "🇬🇪"
+      }
+    ]
+  },
+  {
+    "code": "DE",
+    "name": "Germany",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Germany",
+    "flag": "🇩🇪",
+    "continent": "Europe",
+    "currency": "EUR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Germany"
+    ],
+    "coliving_count": 4,
+    "source": "nomadago",
+    "community_count": 9,
+    "community_members": 2743,
+    "community_cities": [
+      "Munich",
+      "Hamburg",
+      "Frankfurt",
+      "Dusseldorf",
+      "Dresden",
+      "Berlin"
+    ],
+    "community_platforms": [
+      "Meetup",
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "DE_digital_nomads_frankfurt",
+        "name": "Digital Nomads Frankfurt",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Frankfurt",
+        "groupLink": "https://www.meetup.com/digital-nomads-frankfurt/",
+        "memberCount": 822,
+        "membersText": "822",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇩🇪"
+      },
+      {
+        "id": "DE_hamburg_digital",
+        "name": "Hamburg Digital",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Hamburg",
+        "groupLink": "https://www.meetup.com/hamburg-digital/",
+        "memberCount": 796,
+        "membersText": "796",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇩🇪"
+      },
+      {
+        "id": "DE_m_nchen_digital",
+        "name": "München Digital",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Munich",
+        "groupLink": "https://www.meetup.com/muenchen-digital/",
+        "memberCount": 741,
+        "membersText": "741",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇩🇪"
+      },
+      {
+        "id": "DE_digitale_nomaden___freelancer_dresden",
+        "name": "Digitale Nomaden & Freelancer Dresden",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Dresden",
+        "groupLink": "https://www.meetup.com/dnd-digitale-nomaden-dresden/",
+        "memberCount": 377,
+        "membersText": "377",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇩🇪"
+      },
+      {
+        "id": "DE_berlin_digital",
+        "name": "Berlin Digital",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Berlin",
+        "groupLink": "https://www.meetup.com/berlin-digital/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇩🇪"
+      },
+      {
+        "id": "DE_digital_nomads_berlin",
+        "name": "Digital Nomads Berlin",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Berlin",
+        "groupLink": "https://www.meetup.com/digital-nomads-berlin/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇩🇪"
+      },
+      {
+        "id": "DE_digital_nomads_hamburg",
+        "name": "Digital Nomads Hamburg",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Hamburg",
+        "groupLink": "https://www.meetup.com/digital-nomads-hamburg/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇩🇪"
+      },
+      {
+        "id": "DE_d_sseldorf_digital",
+        "name": "Düsseldorf Digital",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Dusseldorf",
+        "groupLink": "https://www.meetup.com/duesseldorf-digital/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇩🇪"
+      },
+      {
+        "id": "DE_digital_nomads_berlin",
+        "name": "Digital Nomads Berlin",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Berlin",
+        "groupLink": "https://www.facebook.com/groups/DNBerlin/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇩🇪"
+      }
+    ]
+  },
+  {
+    "code": "GR",
+    "name": "Greece",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Greece",
+    "flag": "🇬🇷",
+    "continent": "Europe",
+    "currency": "EUR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Greece"
+    ],
+    "coliving_count": 6,
+    "source": "nomadago",
+    "community_count": 8,
+    "community_members": 610,
+    "community_cities": [
+      "Greece",
+      "Athens"
+    ],
+    "community_platforms": [
+      "Other",
+      "Meetup",
+      "Facebook",
+      "Reddit",
+      "WhatsApp"
+    ],
+    "communities": [
+      {
+        "id": "GR_the_greek_side_of_reddit",
+        "name": "The Greek side of reddit",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Greece",
+        "groupLink": "https://www.reddit.com/r/greece/",
+        "memberCount": 237,
+        "membersText": "\"237",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇬🇷"
+      },
+      {
+        "id": "GR_athens_weekly_digital_nomads_meetup",
+        "name": "Athens Weekly Digital Nomads Meetup",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Athens",
+        "groupLink": "https://www.meetup.com/athens-weekly-digital-nomads-meetup/",
+        "memberCount": 176,
+        "membersText": "176",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇬🇷"
+      },
+      {
+        "id": "GR_dn______________remote_workers_athens",
+        "name": "DN👩🏽‍💻👨🏽‍💻Remote workers Athens",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Athens",
+        "groupLink": "https://chat.whatsapp.com/KR6KpUsat9uK5kyR6ixxjQ",
+        "memberCount": 149,
+        "membersText": "149",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇬🇷"
+      },
+      {
+        "id": "GR_digital_nomads_in_greece",
+        "name": "Digital nomads in Greece",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Greece",
+        "groupLink": "https://www.facebook.com/groups/1643040199240574/",
+        "memberCount": 35,
+        "membersText": "\"35",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇬🇷"
+      },
+      {
+        "id": "GR_digital_nomads_athens",
+        "name": "Digital Nomads Athens",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Athens",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadsathens/",
+        "memberCount": 9,
+        "membersText": "\"9",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇬🇷"
+      },
+      {
+        "id": "GR_greece_digital_nomads",
+        "name": "Greece Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Greece",
+        "groupLink": "https://www.facebook.com/groups/DNGreece/",
+        "memberCount": 3,
+        "membersText": "\"3",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇬🇷"
+      },
+      {
+        "id": "GR_digital_nomads_athens",
+        "name": "Digital Nomads Athens",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Greece",
+        "groupLink": "https://www.meetup.com/digital-nomads-athens/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇬🇷"
+      },
+      {
+        "id": "GR__athens_and_all_over_greece_digital_nomands_accommodation",
+        "name": "\"Athens and all over Greece Digital Nomands accommodation",
+        "type": "co-living places\"",
+        "platform": "Other",
+        "city": "Greece",
+        "groupLink": "Facebook",
+        "memberCount": 0,
+        "membersText": "Request to join",
+        "tags": [
+          "https://www.facebook.com/groups/280269995847257/",
+          "Accommodation"
+        ],
+        "requirementToJoin": "Digital Nomads",
+        "flag": "🇬🇷"
+      }
+    ]
+  },
+  {
+    "code": "GT",
+    "name": "Guatemala",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Guatemala",
+    "flag": "🇬🇹",
+    "continent": "Central America",
+    "currency": "GTQ",
+    "timezone": "Local",
+    "popular_cities": [
+      "Guatemala"
+    ],
+    "coliving_count": 3,
+    "source": "nomadago",
+    "community_count": 1,
+    "community_members": 97,
+    "community_cities": [
+      "Tikal"
+    ],
+    "community_platforms": [
+      "WhatsApp"
+    ],
+    "communities": [
+      {
+        "id": "GT_nomad_tikal___",
+        "name": "Nomad Tikal ⭐️",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Tikal",
+        "groupLink": "https://chat.whatsapp.com/Bv0HYObVDsL7ow9OWopTj1",
+        "memberCount": 97,
+        "membersText": "97",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇬🇹"
+      }
+    ]
+  },
+  {
+    "code": "HN",
+    "name": "Honduras",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Honduras",
+    "flag": "🇭🇳",
+    "continent": "Central America",
+    "currency": "HNL",
+    "timezone": "Local",
+    "popular_cities": [
+      "Honduras"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "IN",
+    "name": "India",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=India",
+    "flag": "🇮🇳",
+    "continent": "Asia",
+    "currency": "INR",
+    "timezone": "Local",
+    "popular_cities": [
+      "India"
+    ],
+    "coliving_count": 4,
+    "source": "nomadago",
+    "community_count": 3,
+    "community_members": 264,
+    "community_cities": [
+      "Pune",
+      "India",
+      "Delhi"
+    ],
+    "community_platforms": [
+      "Meetup",
+      "WhatsApp"
+    ],
+    "communities": [
+      {
+        "id": "IN_travel_work",
+        "name": "Travel Work",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Pune",
+        "groupLink": "https://www.meetup.com/meetup-group-dbpgaypl/",
+        "memberCount": 237,
+        "membersText": "237",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇳"
+      },
+      {
+        "id": "IN_digital_nomads_india",
+        "name": "Digital Nomads India",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "India",
+        "groupLink": "https://chat.whatsapp.com/CKoMJgwo2QHBmUBssdZp8A",
+        "memberCount": 19,
+        "membersText": "19",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇳"
+      },
+      {
+        "id": "IN_nomads_in_delhi_ncr",
+        "name": "nOmAdS in DELHI NCR",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Delhi",
+        "groupLink": "https://chat.whatsapp.com/Ge7gYQKRdd5GZGjzUI721b",
+        "memberCount": 8,
+        "membersText": "8",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇳"
+      }
+    ]
+  },
+  {
+    "code": "ID",
+    "name": "Indonesia",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Indonesia",
+    "flag": "🇮🇩",
+    "continent": "Asia",
+    "currency": "IDR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Indonesia"
+    ],
+    "coliving_count": 13,
+    "source": "nomadago",
+    "community_count": 31,
+    "community_members": 15303,
+    "community_cities": [
+      "Lombok",
+      "Indonesia",
+      "Bandung",
+      "Bali"
+    ],
+    "community_platforms": [
+      "WhatsApp",
+      "Reddit",
+      "Other",
+      "Meetup",
+      "Facebook",
+      "Telegram"
+    ],
+    "communities": [
+      {
+        "id": "ID_uluwatu_find_a_home___",
+        "name": "Uluwatu Find A Home 🏡",
+        "type": "Telegram",
+        "platform": "Telegram",
+        "city": "Bali",
+        "groupLink": "https://t.me/uluwatufindahome",
+        "memberCount": 2541,
+        "membersText": "2541",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_canggu_find_a_home_____new_",
+        "name": "Canggu Find A Home 🏡 (NEW)",
+        "type": "Telegram",
+        "platform": "Telegram",
+        "city": "Bali",
+        "groupLink": "https://t.me/canggufindahome",
+        "memberCount": 2370,
+        "membersText": "2370",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_ubud_find_a_home___",
+        "name": "Ubud Find A Home 🏡",
+        "type": "Telegram",
+        "platform": "Telegram",
+        "city": "Bali",
+        "groupLink": "https://t.me/ubudfindahome",
+        "memberCount": 1569,
+        "membersText": "1569",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_solo_travelers_to_bali_____",
+        "name": "Solo Travelers to Bali 🇮🇩",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/E9MMvOVTQ9L8XD2lTjcHfK",
+        "memberCount": 816,
+        "membersText": "816",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_canggu_find_a_home_____new_",
+        "name": "Canggu Find A Home 🏡 (NEW)",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/HLdIhRKtL2B1hoNrXbhkPB",
+        "memberCount": 796,
+        "membersText": "796",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_offchain_bali",
+        "name": "OffChain Bali",
+        "type": "Telegram",
+        "platform": "Telegram",
+        "city": "Bali",
+        "groupLink": "https://t.me/+GFi2Esj5s15jMTA1",
+        "memberCount": 685,
+        "membersText": "685",
+        "tags": [
+          "Digital Nomads",
+          "Web3"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID______bali_long_termers____",
+        "name": "🇮🇩 Bali Long Termers 🛵:",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/LZoLXsf8jbILfeP2Ph5PN2",
+        "memberCount": 667,
+        "membersText": "667",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_bali_nomads_entrepreneurs",
+        "name": "Bali Nomads Entrepreneurs",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/EsUDpnJwFLC6BhvNfNIYms",
+        "memberCount": 646,
+        "membersText": "646",
+        "tags": [
+          "Business",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_canggu______events",
+        "name": "Canggu 🏐🎷 Events",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/EYYw3er3IBf8QOepDSDkSk",
+        "memberCount": 640,
+        "membersText": "640",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID______bali_in_ubud____",
+        "name": "🇮🇩 Bali in Ubud 🍃:",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/H16a9fRkqWKLUS9AGZfqxz",
+        "memberCount": 612,
+        "membersText": "612",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_bali_nomads_4_0_____",
+        "name": "Bali Nomads 4.0 🤙🏼",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/G6lVh7dEaIWKLSRQKQIY7X",
+        "memberCount": 597,
+        "membersText": "597",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID______bali_coworking____",
+        "name": "🇮🇩 Bali Coworking 💻:",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/EYnZPPsSqME9F1TpEJvWQs",
+        "memberCount": 581,
+        "membersText": "581",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_bali_nomads_fit___",
+        "name": "Bali Nomads Fit 💪",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/KV34TwXXY7e5ImLCtb2dCo",
+        "memberCount": 542,
+        "membersText": "542",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID______bali_in_uluwatu____",
+        "name": "🇮🇩 Bali in Uluwatu 🌊:",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/GT76ePV9u2O7cZpxnzoQw3",
+        "memberCount": 480,
+        "membersText": "480",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_nomies_dinner_club_______",
+        "name": "Nomies Dinner Club 🌮🍣🥡",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/Jwx7j7kBjtBFc3k3s7lVYE",
+        "memberCount": 310,
+        "membersText": "310",
+        "tags": [
+          "Food",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_bali_digital_nomads___________",
+        "name": "Bali Digital Nomads 👨‍💻👩‍💻",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/Di0b8sniyNb8qvWCBp37UU",
+        "memberCount": 282,
+        "membersText": "282",
+        "tags": [
+          "Sports",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_bali_nomads_crypto_nft_____",
+        "name": "Bali Nomads Crypto/NFT 🪙🖼",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/F1NwOiYOfpyGr0vy55T5F8",
+        "memberCount": 242,
+        "membersText": "242",
+        "tags": [
+          "Web3",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_indonesia",
+        "name": "Indonesia",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Indonesia",
+        "groupLink": "https://www.reddit.com/r/indonesia/",
+        "memberCount": 240,
+        "membersText": "\"240",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_lombok_nomads____________________",
+        "name": "Lombok Nomads 👩🏼‍💻👨🏽‍💻🏝️💫",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Lombok",
+        "groupLink": "https://chat.whatsapp.com/G2f3i2LowtiBJreIpqiisg",
+        "memberCount": 167,
+        "membersText": "167",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_welcome_to_bali__enjoy_your_stay_",
+        "name": "Welcome to Bali! Enjoy your stay!",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Bali",
+        "groupLink": "https://www.reddit.com/r/bali",
+        "memberCount": 155,
+        "membersText": "\"155",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_bali_nomads_surfers_______________",
+        "name": "Bali Nomads Surfers 🏄🏻‍♂️🏄🏻‍♀️",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/CTEtNunshOlK9fTRzs3oAW",
+        "memberCount": 117,
+        "membersText": "117",
+        "tags": [
+          "Sports",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_bandung_freelancers",
+        "name": "Bandung Freelancers",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Bandung",
+        "groupLink": "https://www.meetup.com/bandung-freelancers/",
+        "memberCount": 111,
+        "membersText": "111",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_digital_nomads_bali",
+        "name": "Digital Nomads Bali",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Bali",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadsinbali/",
+        "memberCount": 76,
+        "membersText": "\"76",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_bali_digital_nomads___borderless_entrepreneurship",
+        "name": "Bali Digital Nomads - Borderless Entrepreneurship",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Bali",
+        "groupLink": "https://www.facebook.com/groups/balidigitalnomads/",
+        "memberCount": 25,
+        "membersText": "\"25",
+        "tags": [
+          "Digital Nomads",
+          "Business"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_n_madas_digitales_indonesia",
+        "name": "Nómadas digitales Indonesia",
+        "type": "Whatsapp",
+        "platform": "Other",
+        "city": "Indonesia",
+        "groupLink": "https://www.gruposviajeros.com/grupo-whatsapp/nomadas-digitales-en-indonesia/",
+        "memberCount": 17,
+        "membersText": "17",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_canggu_entrepreneurs___digital_nomads",
+        "name": "Canggu Entrepreneurs & Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Bali",
+        "groupLink": "https://www.facebook.com/groups/1189122534499703/",
+        "memberCount": 8,
+        "membersText": "\"8",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_bali_digital_nomad_accommodation",
+        "name": "Bali Digital Nomad Accommodation",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Bali",
+        "groupLink": "https://www.facebook.com/groups/413775415397298/",
+        "memberCount": 6,
+        "membersText": "\"6",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_uluwatu_digital_nomads",
+        "name": "Uluwatu Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Bali",
+        "groupLink": "https://www.facebook.com/groups/286421615897348/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID______what_s_poppin_in_bali____",
+        "name": "🇮🇩 What’s Poppin in Bali 💥:",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/EN2GpmVAF5HAeefZf5vu55",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_bali_nomads_5_0_____",
+        "name": "Bali Nomads 5.0 🤙🏼",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bali",
+        "groupLink": "https://chat.whatsapp.com/GLBjO529sxGKE2yPxjY2ms",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇩"
+      },
+      {
+        "id": "ID_canggu_digital_nomads",
+        "name": "Canggu Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Bali",
+        "groupLink": "https://www.facebook.com/groups/217930505654678/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇮🇩"
+      }
+    ]
+  },
+  {
+    "code": "IL",
+    "name": "Israel",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Israel",
+    "flag": "🇮🇱",
+    "continent": "Asia",
+    "currency": "ILS",
+    "timezone": "Local",
+    "popular_cities": [
+      "Israel"
+    ],
+    "coliving_count": 14,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "IT",
+    "name": "Italy",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Italy",
+    "flag": "🇮🇹",
+    "continent": "Europe",
+    "currency": "EUR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Italy"
+    ],
+    "coliving_count": 13,
+    "source": "nomadago",
+    "community_count": 6,
+    "community_members": 15,
+    "community_cities": [
+      "Sicily",
+      "Rome",
+      "Palermo",
+      "Napoli",
+      "Italy"
+    ],
+    "community_platforms": [
+      "Other",
+      "Facebook",
+      "WhatsApp"
+    ],
+    "communities": [
+      {
+        "id": "IT_digital_nomads_italy",
+        "name": "Digital Nomads Italy",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Italy",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadsita/",
+        "memberCount": 7,
+        "membersText": "\"7",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇮🇹"
+      },
+      {
+        "id": "IT_palermo_expats_foreigners_digital_nomads___international_people",
+        "name": "Palermo Expats Foreigners Digital nomads & International people",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Palermo",
+        "groupLink": "https://www.facebook.com/groups/579662189197928/",
+        "memberCount": 5,
+        "membersText": "\"5",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇮🇹"
+      },
+      {
+        "id": "IT_rome_digital_nomads",
+        "name": "Rome Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Rome",
+        "groupLink": "https://www.facebook.com/groups/romedigitalnomads/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇮🇹"
+      },
+      {
+        "id": "IT_napoli_digital_nomads",
+        "name": "Napoli Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Napoli",
+        "groupLink": "https://www.facebook.com/groups/258541586075807/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇮🇹"
+      },
+      {
+        "id": "IT__sicily_digital_nomads_accommodations",
+        "name": "\"Sicily Digital Nomads accommodations",
+        "type": "Co-working co-livings\"",
+        "platform": "Other",
+        "city": "Sicily",
+        "groupLink": "Facebook",
+        "memberCount": 0,
+        "membersText": "None",
+        "tags": [
+          "https://www.facebook.com/groups/1576076382512200/",
+          "Accommodation"
+        ],
+        "requirementToJoin": "Digital Nomads",
+        "flag": "🇮🇹"
+      },
+      {
+        "id": "IT_digital_nomads_napoli",
+        "name": "Digital Nomads Napoli",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Napoli",
+        "groupLink": "https://chat.whatsapp.com/K2ym3rviJ9vICPV4RhFnQN",
+        "memberCount": 0,
+        "membersText": "0",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇮🇹"
+      }
+    ]
+  },
+  {
+    "code": "JP",
+    "name": "Japan",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Japan",
+    "flag": "🇯🇵",
+    "continent": "Asia",
+    "currency": "JPY",
+    "timezone": "Local",
+    "popular_cities": [
+      "Japan"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 2,
+    "community_members": 545,
+    "community_cities": [
+      "Japan"
+    ],
+    "community_platforms": [
+      "WhatsApp",
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "JP_digital_nomad_japan",
+        "name": "Digital Nomad Japan",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Japan",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadjapan/",
+        "memberCount": 522,
+        "membersText": "522",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇯🇵"
+      },
+      {
+        "id": "JP______japan_nomads_____",
+        "name": "🇯🇵 Japan Nomads 🎒🤙",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Japan",
+        "groupLink": "https://chat.whatsapp.com/KqyxRoYNZen8PaE7m2xZvU",
+        "memberCount": 23,
+        "membersText": "23",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇯🇵"
+      }
+    ]
+  },
+  {
+    "code": "KE",
+    "name": "Kenya",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Kenya",
+    "flag": "🇰🇪",
+    "continent": "Africa",
+    "currency": "KES",
+    "timezone": "Local",
+    "popular_cities": [
+      "Kenya"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 1,
+    "community_members": 21,
+    "community_cities": [
+      "Nairobi"
+    ],
+    "community_platforms": [
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "KE_expats_in_nairobi",
+        "name": "Expats in Nairobi",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Nairobi",
+        "groupLink": "https://www.facebook.com/groups/248312915261900/?ref=nomad-toolbox.com",
+        "memberCount": 21,
+        "membersText": "\"21",
+        "tags": [
+          "Expats",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇰🇪"
+      }
+    ]
+  },
+  {
+    "code": "MY",
+    "name": "Malaysia",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Malaysia",
+    "flag": "🇲🇾",
+    "continent": "Asia",
+    "currency": "MYR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Malaysia"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 5,
+    "community_members": 564,
+    "community_cities": [
+      "Penang",
+      "Malaysia",
+      "Kuala Lumpur"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "Reddit",
+      "WhatsApp"
+    ],
+    "communities": [
+      {
+        "id": "MY_malaysia",
+        "name": "Malaysia",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Malaysia",
+        "groupLink": "https://www.reddit.com/r/malaysia/",
+        "memberCount": 386,
+        "membersText": "\"386",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇾"
+      },
+      {
+        "id": "MY_kl_expats__kuala_lumpur_malaysia_",
+        "name": "KL EXPATS (Kuala Lumpur/Malaysia)",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Kuala Lumpur",
+        "groupLink": "https://www.facebook.com/groups/klexpats/",
+        "memberCount": 98,
+        "membersText": "\"98",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇾"
+      },
+      {
+        "id": "MY_kuala_lumpur_nomads________",
+        "name": "Kuala Lumpur Nomads 🏙️🇲🇾",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Kuala Lumpur",
+        "groupLink": "https://chat.whatsapp.com/CNBEaZUhOcUDKOCdDMLYag",
+        "memberCount": 77,
+        "membersText": "77",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇾"
+      },
+      {
+        "id": "MY_kuala_lumpur_digital_nomads",
+        "name": "Kuala Lumpur Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Kuala Lumpur",
+        "groupLink": "https://www.facebook.com/groups/KLDigitalNomads/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇲🇾"
+      },
+      {
+        "id": "MY_penang_digital_nomads",
+        "name": "Penang Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Penang",
+        "groupLink": "https://www.facebook.com/groups/642269085953446/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇲🇾"
+      }
+    ]
+  },
+  {
+    "code": "MT",
+    "name": "Malta",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Malta",
+    "flag": "🇲🇹",
+    "continent": "Europe",
+    "currency": "EUR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Malta"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 2,
+    "community_members": 2,
+    "community_cities": [
+      "Malta"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "Other"
+    ],
+    "communities": [
+      {
+        "id": "MT______malta_digital_nomads___entrepreneurs_community",
+        "name": "🇲🇹 Malta Digital Nomads & Entrepreneurs Community",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Malta",
+        "groupLink": "https://www.facebook.com/groups/maltadigitalnomadisland/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇹"
+      },
+      {
+        "id": "MT___________accommodation_for_digital_nomads_in_malta__coliving",
+        "name": "\"🇲🇹🏠💻 Accommodation for Digital Nomads in Malta (Coliving",
+        "type": "Flatshare...)\"",
+        "platform": "Other",
+        "city": "Malta",
+        "groupLink": "Facebook",
+        "memberCount": 0,
+        "membersText": "None",
+        "tags": [
+          "https://www.facebook.com/groups/digitalnomadsmalta/",
+          "Accommodation"
+        ],
+        "requirementToJoin": "Digital Nomads",
+        "flag": "🇲🇹"
+      }
+    ]
+  },
+  {
+    "code": "MX",
+    "name": "Mexico",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Mexico",
+    "flag": "🇲🇽",
+    "continent": "North America",
+    "currency": "MXN",
+    "timezone": "Local",
+    "popular_cities": [
+      "Mexico"
+    ],
+    "coliving_count": 29,
+    "source": "nomadago",
+    "community_count": 23,
+    "community_members": 2781,
+    "community_cities": [
+      "Tulum",
+      "Sayulita",
+      "Puerto Vallarta",
+      "Puerto Escondido",
+      "Playa Del Carmen",
+      "Oaxaca",
+      "Mexico City",
+      "Mexico",
+      "Merida",
+      "Guadalajara"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "WhatsApp",
+      "Other",
+      "Meetup"
+    ],
+    "communities": [
+      {
+        "id": "MX___ing_and_roomie_eventos_",
+        "name": "🏠ing and Roomie Eventos!",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Mexico City",
+        "groupLink": "https://chat.whatsapp.com/DNsjPsLVfQfCtGoyXQgY2n",
+        "memberCount": 902,
+        "membersText": "902",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_international_thursday_3",
+        "name": "International Thursday 3",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Mexico City",
+        "groupLink": "https://chat.whatsapp.com/B8YvenrrgTA10TQ3Izt6vp",
+        "memberCount": 480,
+        "membersText": "480",
+        "tags": [
+          "Social",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_tulum_sublets___2",
+        "name": "Tulum sublets - 2",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Tulum",
+        "groupLink": "https://chat.whatsapp.com/D3wwfV9E8Ee51ZzUwVk0MD",
+        "memberCount": 457,
+        "membersText": "457",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_digital_nomads_mexico_______",
+        "name": "Digital Nomads Mexico 🇲🇽🪅",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Mexico",
+        "groupLink": "https://chat.whatsapp.com/ELQfGtuKQiZIFp35iIPRWA",
+        "memberCount": 339,
+        "membersText": "339",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_acroyoga_puerto________",
+        "name": "AcroYoga Puerto 🤸🏽‍♀️",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Puerto Escondido",
+        "groupLink": "https://chat.whatsapp.com/CdH5Yg5UtrkFQS1SZ9fHj3",
+        "memberCount": 158,
+        "membersText": "158",
+        "tags": [
+          "Sports",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_playa_del_carmen_____nomads",
+        "name": "Playa del Carmen👨‍💻Nomads",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Playa Del Carmen",
+        "groupLink": "https://chat.whatsapp.com/BjojZZrvPus5c6zqjbbcWE",
+        "memberCount": 97,
+        "membersText": "97",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_cdmx_events__by_ald",
+        "name": "CDMX Events🍷by ALD",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Mexico City",
+        "groupLink": "https://chat.whatsapp.com/IzvD47KeRUk2bruvRRqxmq",
+        "memberCount": 70,
+        "membersText": "70",
+        "tags": [
+          "Social",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_mexico_creative_meets__",
+        "name": "Mexico Creative Meets ✨",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Mexico City",
+        "groupLink": "https://chat.whatsapp.com/B6MAwERVLYFHpPYpVmTBS7",
+        "memberCount": 64,
+        "membersText": "64",
+        "tags": [
+          "Social",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_guadalajara_digital_nomads",
+        "name": "Guadalajara Digital Nomads",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Guadalajara",
+        "groupLink": "https://www.meetup.com/guadalajara-digital-nomads/",
+        "memberCount": 59,
+        "membersText": "59",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_doing_business_in_mexico",
+        "name": "Doing business in Mexico",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Mexico City",
+        "groupLink": "https://chat.whatsapp.com/H93Z1tuTzPk4InfXSATvsM",
+        "memberCount": 52,
+        "membersText": "52",
+        "tags": [
+          "Business",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_oaxaca_expats___nomads",
+        "name": "Oaxaca Expats & Nomads",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Oaxaca",
+        "groupLink": "https://chat.whatsapp.com/LmU655cbiOB4bBCPryfhih",
+        "memberCount": 33,
+        "membersText": "33",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_digital_nomads_m_xico",
+        "name": "Digital Nomads México",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Mexico",
+        "groupLink": "https://www.facebook.com/groups/DigitalNomadsMexico/",
+        "memberCount": 18,
+        "membersText": "\"18",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_sayulita_expats_and_newcomers___",
+        "name": "Sayulita Expats and Newcomers :)",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Sayulita",
+        "groupLink": "https://www.facebook.com/groups/209727724665349/",
+        "memberCount": 11,
+        "membersText": "\"11",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_digital_nomads_puerto_escondido",
+        "name": "Digital Nomads Puerto Escondido",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Puerto Escondido",
+        "groupLink": "https://www.facebook.com/groups/3176695115944845/",
+        "memberCount": 8,
+        "membersText": "\"8",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_digital_nomads_playa_del_carmen_cancun_tulum",
+        "name": "Digital Nomads Playa Del Carmen Cancun Tulum",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Playa Del Carmen",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadplayatulumcancun/",
+        "memberCount": 7,
+        "membersText": "\"7",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_mexico_city_digital_nomads",
+        "name": "Mexico City Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Mexico City",
+        "groupLink": "https://www.facebook.com/groups/mexicocitydigitalnomads/",
+        "memberCount": 7,
+        "membersText": "\"7",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_puerto_vallarta_digital_nomads",
+        "name": "Puerto Vallarta Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Puerto Vallarta",
+        "groupLink": "https://www.facebook.com/groups/pvdigitalnomads/",
+        "memberCount": 6,
+        "membersText": "\"6",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_tulum_digital_nomads",
+        "name": "Tulum Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Tulum",
+        "groupLink": "https://www.facebook.com/groups/tulumdigitalnomads/",
+        "memberCount": 5,
+        "membersText": "\"5",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_comedy_night_meet_up",
+        "name": "Comedy Night Meet-Up",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Mexico City",
+        "groupLink": "https://chat.whatsapp.com/LjuDTu0PfTkDgvH4PSjNx8",
+        "memberCount": 5,
+        "membersText": "5",
+        "tags": [
+          "Social",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_playa_foodies",
+        "name": "Playa Foodies",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Playa Del Carmen",
+        "groupLink": "https://chat.whatsapp.com/FYIdfyAxoJP3UwDVHletNQ",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Food",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX_digital_nomads_in_merida",
+        "name": "Digital Nomads in Merida",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Merida",
+        "groupLink": "https://www.facebook.com/groups/486086372326683/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX__pdc_love",
+        "name": "\"PDC Love",
+        "type": "Light & Energy\"",
+        "platform": "Other",
+        "city": "Playa Del Carmen",
+        "groupLink": "WhatsApp",
+        "memberCount": 0,
+        "membersText": "None",
+        "tags": [
+          "https://chat.whatsapp.com/IkiLqC4fds1Cv5os4Hhdc5",
+          "Social"
+        ],
+        "requirementToJoin": "Digital Nomads",
+        "flag": "🇲🇽"
+      },
+      {
+        "id": "MX__oaxaca_expats",
+        "name": "\"Oaxaca Expats",
+        "type": "Locals",
+        "platform": "Other",
+        "city": "Oaxaca",
+        "groupLink": "Digital Nomads & Entrepreneurs\"",
+        "memberCount": 0,
+        "membersText": "Expats",
+        "tags": [
+          "Facebook",
+          "https://www.facebook.com/groups/oaxacaexpatsnetwork/"
+        ],
+        "requirementToJoin": "Digital Nomads",
+        "flag": "🇲🇽"
+      }
+    ]
+  },
+  {
+    "code": "ME",
+    "name": "Montenegro",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Montenegro",
+    "flag": "🇲🇪",
+    "continent": "Europe",
+    "currency": "EUR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Montenegro"
+    ],
+    "coliving_count": 4,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "MA",
+    "name": "Morocco",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Morocco",
+    "flag": "🇲🇦",
+    "continent": "Africa",
+    "currency": "MAD",
+    "timezone": "Local",
+    "popular_cities": [
+      "Morocco"
+    ],
+    "coliving_count": 8,
+    "source": "nomadago",
+    "community_count": 1,
+    "community_members": 971,
+    "community_cities": [
+      "Marrakect"
+    ],
+    "community_platforms": [
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "MA_marrakech_digital_nomads",
+        "name": "Marrakech Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Marrakect",
+        "groupLink": "https://www.facebook.com/groups/362953525061250/",
+        "memberCount": 971,
+        "membersText": "971",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇲🇦"
+      }
+    ]
+  },
+  {
+    "code": "NA",
+    "name": "Namibia",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Namibia",
+    "flag": "🇳🇦",
+    "continent": "Africa",
+    "currency": "NAD",
+    "timezone": "Local",
+    "popular_cities": [
+      "Namibia"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "NI",
+    "name": "Nicaragua",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Nicaragua",
+    "flag": "🇳🇮",
+    "continent": "Central America",
+    "currency": "NIO",
+    "timezone": "Local",
+    "popular_cities": [
+      "Nicaragua"
+    ],
+    "coliving_count": 5,
+    "source": "nomadago",
+    "community_count": 2,
+    "community_members": 27,
+    "community_cities": [
+      "San Juan Del Sur",
+      "Nicaragua"
+    ],
+    "community_platforms": [
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "NI_backpackers_nicaragua",
+        "name": "Backpackers Nicaragua",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Nicaragua",
+        "groupLink": "https://www.facebook.com/groups/1019544238110437/",
+        "memberCount": 21,
+        "membersText": "\"21",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇳🇮"
+      },
+      {
+        "id": "NI_expats_in_san_juan_del_sur",
+        "name": "Expats in San Juan del Sur",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "San Juan Del Sur",
+        "groupLink": "https://www.facebook.com/groups/expatsinsanjuandelsur/",
+        "memberCount": 6,
+        "membersText": "\"6",
+        "tags": [
+          "Expats",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇳🇮"
+      }
+    ]
+  },
+  {
+    "code": "PA",
+    "name": "Panama",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Panama",
+    "flag": "🇵🇦",
+    "continent": "Central America",
+    "currency": "PAB",
+    "timezone": "Local",
+    "popular_cities": [
+      "Panama"
+    ],
+    "coliving_count": 8,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "PE",
+    "name": "Peru",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Peru",
+    "flag": "🇵🇪",
+    "continent": "South America",
+    "currency": "PEN",
+    "timezone": "Local",
+    "popular_cities": [
+      "Peru"
+    ],
+    "coliving_count": 9,
+    "source": "nomadago",
+    "community_count": 3,
+    "community_members": 349,
+    "community_cities": [
+      "Peru",
+      "Lima"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "WhatsApp"
+    ],
+    "communities": [
+      {
+        "id": "PE_peru___exchange_2022_lima____",
+        "name": "Peru - Exchange 2022 Lima🇵🇪",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Lima",
+        "groupLink": "https://chat.whatsapp.com/F01Xu8HKF3x5EGnDj6BW9H",
+        "memberCount": 207,
+        "membersText": "207",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇪"
+      },
+      {
+        "id": "PE_digital_nomads_lima",
+        "name": "Digital Nomads Lima",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Lima",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadslima/",
+        "memberCount": 141,
+        "membersText": "141",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇵🇪"
+      },
+      {
+        "id": "PE_peru___digital_nomads___residency_options",
+        "name": "Peru - Digital Nomads & Residency Options",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Peru",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadsperu/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇵🇪"
+      }
+    ]
+  },
+  {
+    "code": "PH",
+    "name": "Philippines",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Philippines",
+    "flag": "🇵🇭",
+    "continent": "Asia",
+    "currency": "PHP",
+    "timezone": "Local",
+    "popular_cities": [
+      "Philippines"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 9,
+    "community_members": 1662,
+    "community_cities": [
+      "Siargao",
+      "Philippines",
+      "Manila",
+      "Makati",
+      "Davao",
+      "Cebu",
+      "Boracay"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "WhatsApp",
+      "Other"
+    ],
+    "communities": [
+      {
+        "id": "PH_cebu_digital_nomads",
+        "name": "Cebu Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Cebu",
+        "groupLink": "https://www.facebook.com/groups/CebuDigitalNomads/",
+        "memberCount": 641,
+        "membersText": "641",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇭"
+      },
+      {
+        "id": "PH_siargao_digital_nomads_chat",
+        "name": "Siargao Digital nomads chat",
+        "type": "Whatsapp",
+        "platform": "WhatsApp",
+        "city": "Siargao",
+        "groupLink": "https://chat.whatsapp.com/D9ZJbKI1pAx563aNTwIQsP",
+        "memberCount": 600,
+        "membersText": "600",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇭"
+      },
+      {
+        "id": "PH_digital_nomads_davao",
+        "name": "Digital Nomads Davao",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Davao",
+        "groupLink": "https://www.facebook.com/groups/oDeskDavao/",
+        "memberCount": 374,
+        "membersText": "374",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇭"
+      },
+      {
+        "id": "PH_siargao_homestay___tours",
+        "name": "Siargao Homestay & Tours",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Siargao",
+        "groupLink": "https://www.facebook.com/groups/798877421323411/",
+        "memberCount": 33,
+        "membersText": "\"33",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇭"
+      },
+      {
+        "id": "PH_siargao_long_term_rentals",
+        "name": "Siargao Long-Term Rentals",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Siargao",
+        "groupLink": "https://www.facebook.com/groups/siargaorentals/",
+        "memberCount": 5,
+        "membersText": "\"5",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇭"
+      },
+      {
+        "id": "PH_digital_nomad_philippines",
+        "name": "Digital Nomad Philippines",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Philippines",
+        "groupLink": "https://www.facebook.com/groups/nomadhood.co/",
+        "memberCount": 5,
+        "membersText": "\"5",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇭"
+      },
+      {
+        "id": "PH_wfh_in_boracay",
+        "name": "WFH In Boracay",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Boracay",
+        "groupLink": "https://www.facebook.com/groups/867478090483706/",
+        "memberCount": 4,
+        "membersText": "\"4",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇭"
+      },
+      {
+        "id": "PH__manila_digital_nomads",
+        "name": "\"Manila Digital Nomads",
+        "type": "Entrepreneurs & Creatives\"",
+        "platform": "Other",
+        "city": "Manila",
+        "groupLink": "Facebook",
+        "memberCount": 0,
+        "membersText": "None",
+        "tags": [
+          "https://www.meetup.com/manila-digital-nomads-entrepreneurs-creatives/",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Social",
+        "flag": "🇵🇭"
+      },
+      {
+        "id": "PH__digital_nomads___makati",
+        "name": "\"Digital Nomads - Makati",
+        "type": "Philippines\"",
+        "platform": "Other",
+        "city": "Makati",
+        "groupLink": "Facebook",
+        "memberCount": 0,
+        "membersText": "None",
+        "tags": [
+          "https://www.facebook.com/groups/DigitalNomadsMakati/",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Social",
+        "flag": "🇵🇭"
+      }
+    ]
+  },
+  {
+    "code": "PT",
+    "name": "Portugal",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Portugal",
+    "flag": "🇵🇹",
+    "continent": "Europe",
+    "currency": "EUR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Portugal"
+    ],
+    "coliving_count": 35,
+    "source": "nomadago",
+    "community_count": 18,
+    "community_members": 1310,
+    "community_cities": [
+      "Portugal",
+      "Porto",
+      "Portimao",
+      "Madeira",
+      "Lisbon",
+      "Lagos",
+      "Funchal",
+      "Algarve"
+    ],
+    "community_platforms": [
+      "Reddit",
+      "Facebook",
+      "WhatsApp",
+      "Meetup"
+    ],
+    "communities": [
+      {
+        "id": "PT_lagos_remoters_____no_ads",
+        "name": "Lagos Remoters 💻☀️no ads",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Lagos",
+        "groupLink": "https://chat.whatsapp.com/Faa5Hcwx59d8rP1oqPSjeo",
+        "memberCount": 516,
+        "membersText": "516",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT__r_portugal",
+        "name": "/r/Portugal",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Portugal",
+        "groupLink": "https://www.reddit.com/r/portugal/",
+        "memberCount": 393,
+        "membersText": "\"393",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_digital_nomads___expats_in_porto",
+        "name": "Digital Nomads & Expats in Porto",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Porto",
+        "groupLink": "https://www.facebook.com/groups/2856657887915664/",
+        "memberCount": 182,
+        "membersText": "182",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_portugal___lisbon_hangout_2022_23",
+        "name": "Portugal - Lisbon Hangout 2022/23",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Lisbon",
+        "groupLink": "https://chat.whatsapp.com/Gw2zwGk5ZmyCEVRivUVzv1",
+        "memberCount": 70,
+        "membersText": "70",
+        "tags": [
+          "Meetups",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_lisbon_digital_nomads___expats",
+        "name": "Lisbon Digital Nomads & Expats",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Lisbon",
+        "groupLink": "https://www.facebook.com/groups/532696873566509/",
+        "memberCount": 49,
+        "membersText": "\"49",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_accommodation_for_digital_nomads_in_lisbon",
+        "name": "Accommodation for digital nomads in Lisbon",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Lisbon",
+        "groupLink": "https://www.facebook.com/groups/543566312667172/",
+        "memberCount": 23,
+        "membersText": "\"23",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_porto_santo_digital_nomads_and_meet_ups",
+        "name": "Porto Santo Digital Nomads and Meet Ups",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Funchal",
+        "groupLink": "https://www.meetup.com/porto-santo-digital-nomads-and-meet-ups/",
+        "memberCount": 17,
+        "membersText": "17",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_portugal___meetup_lisbon",
+        "name": "Portugal - Meetup Lisbon",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Lisbon",
+        "groupLink": "https://chat.whatsapp.com/EGFZyfYzIMNEWfmxeP07mE",
+        "memberCount": 14,
+        "membersText": "14",
+        "tags": [
+          "Meetups",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_lisbon_expats___nomads",
+        "name": "Lisbon Expats & Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Lisbon",
+        "groupLink": "https://www.facebook.com/groups/lisbonomads/",
+        "memberCount": 12,
+        "membersText": "\"12",
+        "tags": [
+          "Digital Nomads",
+          "Accommodation"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_a_place_to_discuss_living_in_and_moving_to_portugal",
+        "name": "A place to discuss living in and moving to Portugal",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Portugal",
+        "groupLink": "https://www.reddit.com/r/PortugalExpats/",
+        "memberCount": 6,
+        "membersText": "\"6",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_digital_nomads_madeira",
+        "name": "Digital Nomads Madeira",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Madeira",
+        "groupLink": "https://www.facebook.com/digitalnomadsmadeira/",
+        "memberCount": 6,
+        "membersText": "\"6",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_algarve_digital_nomads",
+        "name": "Algarve Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Algarve",
+        "groupLink": "https://www.facebook.com/groups/algarvedigitalnomads/",
+        "memberCount": 6,
+        "membersText": "\"6",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_digital_nomads_in_madeira",
+        "name": "Digital Nomads in Madeira",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Madeira",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadsinmadeira/",
+        "memberCount": 5,
+        "membersText": "\"5",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_digital_nomads_porto",
+        "name": "Digital Nomads Porto",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Porto",
+        "groupLink": "https://www.facebook.com/groups/portodigitalnomads/",
+        "memberCount": 4,
+        "membersText": "\"4",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_porto_digital_nomads",
+        "name": "Porto Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Porto",
+        "groupLink": "https://www.facebook.com/groups/portodigitalnomad/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_taste_wine___make_friends",
+        "name": "Taste wine & make friends",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Lisbon",
+        "groupLink": "https://www.meetup.com/drink-wine-make-friends/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Food",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_western_algarve_digital_nomads___freelancers",
+        "name": "Western Algarve Digital Nomads & Freelancers",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Algarve",
+        "groupLink": "https://www.facebook.com/groups/1024441064321694/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇵🇹"
+      },
+      {
+        "id": "PT_portim_o_digital_nomads",
+        "name": "Portimão Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Portimao",
+        "groupLink": "https://www.facebook.com/groups/1081332299362905/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇵🇹"
+      }
+    ]
+  },
+  {
+    "code": "PR",
+    "name": "Puerto Rico",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Puerto Rico",
+    "flag": "🇵🇷",
+    "continent": "Caribbean",
+    "currency": "USD",
+    "timezone": "Local",
+    "popular_cities": [
+      "Puerto Rico"
+    ],
+    "coliving_count": 3,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "RO",
+    "name": "Romania",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Romania",
+    "flag": "🇷🇴",
+    "continent": "Europe",
+    "currency": "RON",
+    "timezone": "Local",
+    "popular_cities": [
+      "Romania"
+    ],
+    "coliving_count": 4,
+    "source": "nomadago",
+    "community_count": 4,
+    "community_members": 653,
+    "community_cities": [
+      "Romania",
+      "Cluj",
+      "Bucharest",
+      "Brasov"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "Meetup"
+    ],
+    "communities": [
+      {
+        "id": "RO_bucharest_digital_nomads",
+        "name": "Bucharest Digital Nomads",
+        "type": "Facebook",
+        "platform": "Meetup",
+        "city": "Bucharest",
+        "groupLink": "https://www.meetup.com/bucharest-digital-nomads/",
+        "memberCount": 647,
+        "membersText": "647",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇷🇴"
+      },
+      {
+        "id": "RO_foreigners___expats_in_bra_ov",
+        "name": "Foreigners & Expats in Brașov",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Brasov",
+        "groupLink": "https://www.facebook.com/groups/398182307534892/",
+        "memberCount": 3,
+        "membersText": "\"3",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇷🇴"
+      },
+      {
+        "id": "RO_expats_in_cluj_",
+        "name": "Expats in Cluj!",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Cluj",
+        "groupLink": "https://www.facebook.com/groups/expatsincluj/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇷🇴"
+      },
+      {
+        "id": "RO_digital_nomads_in_romania",
+        "name": "Digital Nomads in Romania",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Romania",
+        "groupLink": "https://www.facebook.com/groups/DigitalNomadsInRomania/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇷🇴"
+      }
+    ]
+  },
+  {
+    "code": "RS",
+    "name": "Serbia",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Serbia",
+    "flag": "🇷🇸",
+    "continent": "Europe",
+    "currency": "RSD",
+    "timezone": "Local",
+    "popular_cities": [
+      "Serbia"
+    ],
+    "coliving_count": 3,
+    "source": "nomadago",
+    "community_count": 1,
+    "community_members": 100,
+    "community_cities": [
+      "Belgrade"
+    ],
+    "community_platforms": [
+      "Meetup"
+    ],
+    "communities": [
+      {
+        "id": "RS_belgrade_digital_nomads",
+        "name": "Belgrade Digital Nomads",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Belgrade",
+        "groupLink": "https://www.meetup.com/belgrade-digital-nomads/",
+        "memberCount": 100,
+        "membersText": "100",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇷🇸"
+      }
+    ]
+  },
+  {
+    "code": "ZA",
+    "name": "South Africa",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=South Africa",
+    "flag": "🇿🇦",
+    "continent": "Africa",
+    "currency": "ZAR",
+    "timezone": "Local",
+    "popular_cities": [
+      "South Africa"
+    ],
+    "coliving_count": 3,
+    "source": "nomadago",
+    "community_count": 2,
+    "community_members": 10,
+    "community_cities": [
+      "Cape Town"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "Other"
+    ],
+    "communities": [
+      {
+        "id": "ZA_cape_town_digital_nomads",
+        "name": "Cape Town Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Cape Town",
+        "groupLink": "https://www.facebook.com/groups/1535417433393446/",
+        "memberCount": 10,
+        "membersText": "\"10",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇿🇦"
+      },
+      {
+        "id": "ZA_nomad_gig_guide",
+        "name": "Nomad Gig Guide",
+        "type": "WhatsApp",
+        "platform": "Other",
+        "city": "Cape Town",
+        "groupLink": "https://linktr.ee/nomadgigguide",
+        "memberCount": 0,
+        "membersText": "0",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇿🇦"
+      }
+    ]
+  },
+  {
+    "code": "ES",
+    "name": "Spain",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Spain",
+    "flag": "🇪🇸",
+    "continent": "Europe",
+    "currency": "EUR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Spain"
+    ],
+    "coliving_count": 42,
+    "source": "nomadago",
+    "community_count": 33,
+    "community_members": 4663,
+    "community_cities": [
+      "Valencia",
+      "Tenerife",
+      "Spain",
+      "Sevilla",
+      "Santa Pola",
+      "Mallorca",
+      "Malaga",
+      "Madrid",
+      "Las Palmas",
+      "Lanzarote",
+      "Gran Canaria",
+      "Fuerteventura",
+      "Barcelona"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "Telegram",
+      "WhatsApp",
+      "Other",
+      "Meetup"
+    ],
+    "communities": [
+      {
+        "id": "ES_nomad_rentals_bcn",
+        "name": "Nomad Rentals BCN",
+        "type": "WhatsApp",
+        "platform": "Other",
+        "city": "Barcelona",
+        "groupLink": "NA",
+        "memberCount": 802,
+        "membersText": "802",
+        "tags": [
+          "Accommodation",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_m_laga_digital_nomads",
+        "name": "Málaga Digital Nomads",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Malaga",
+        "groupLink": "https://www.meetup.com/malaga-digital-nomads/",
+        "memberCount": 609,
+        "membersText": "609",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_tenerife_digital_nomads",
+        "name": "Tenerife Digital Nomads",
+        "type": "Telegram",
+        "platform": "Telegram",
+        "city": "Tenerife",
+        "groupLink": "https://t.me/+5n-VTOLAJXs2M2Q0",
+        "memberCount": 545,
+        "membersText": "545",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_spain___m_laga_bailong_s",
+        "name": "Spain - Málaga BAILONG@S",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Malaga",
+        "groupLink": "https://chat.whatsapp.com/CeCE39gi4RnAlXK3PBFV8M",
+        "memberCount": 497,
+        "membersText": "497",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_mallorca_digital_nomads____",
+        "name": "MALLORCA Digital Nomads💻🌴",
+        "type": "Telegram",
+        "platform": "Telegram",
+        "city": "Mallorca",
+        "groupLink": "https://t.me/+MofgtDDK9SE0Yzc0",
+        "memberCount": 475,
+        "membersText": "475",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_spain___barcelona_digital_nomads",
+        "name": "Spain - Barcelona Digital Nomads",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Barcelona",
+        "groupLink": "https://chat.whatsapp.com/LkAtbcEMfjCLijR4KwfWUZ",
+        "memberCount": 403,
+        "membersText": "403",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_santa_pola_remote_workers_and_digital_nomads_meetup_group",
+        "name": "Santa Pola Remote Workers and Digital Nomads Meetup Group",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Santa Pola",
+        "groupLink": "https://www.meetup.com/santa-pola-remote-workers-digital-nomads-meetup-group/",
+        "memberCount": 283,
+        "membersText": "283",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_mallorca_digital_nomads____",
+        "name": "Mallorca Digital Nomads💻🏝",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Mallorca",
+        "groupLink": "https://chat.whatsapp.com/ELytckZCKj8Fw5xB3SPKRJ",
+        "memberCount": 224,
+        "membersText": "224",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_tenerife_digital_nomads____",
+        "name": "Tenerife Digital Nomads💻🏝",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Tenerife",
+        "groupLink": "https://chat.whatsapp.com/LXHogchmannHwq1k3iI0eK",
+        "memberCount": 223,
+        "membersText": "223",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_lanzarote_digital",
+        "name": "Lanzarote Digital",
+        "type": "Telegram",
+        "platform": "Telegram",
+        "city": "Lanzarote",
+        "groupLink": "https://t.me/lanzarotedigital",
+        "memberCount": 160,
+        "membersText": "160",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_tenerife_south_digital_2",
+        "name": "Tenerife South Digital 2",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Tenerife",
+        "groupLink": "https://chat.whatsapp.com/J64owcOVGzAIzM6diWhwuE",
+        "memberCount": 147,
+        "membersText": "147",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_las_palmas_caf_",
+        "name": "Las Palmas Café",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Las Palmas",
+        "groupLink": "https://chat.whatsapp.com/EkUKrm2Sz5W3lMrhWJAOZL",
+        "memberCount": 98,
+        "membersText": "98",
+        "tags": [
+          "Food",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_digital_nomads_spain",
+        "name": "Digital Nomads Spain",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Spain",
+        "groupLink": "https://es-es.facebook.com/groups/digitalnomadsspain/",
+        "memberCount": 45,
+        "membersText": "\"45",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_tenerife_remote_workers___digital_nomads",
+        "name": "Tenerife Remote Workers & Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Tenerife",
+        "groupLink": "https://www.facebook.com/groups/507332689404652/",
+        "memberCount": 30,
+        "membersText": "\"30",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_gran_canaria_digital_nomads",
+        "name": "Gran Canaria Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Gran Canaria",
+        "groupLink": "https://www.facebook.com/groups/201877786658754/",
+        "memberCount": 20,
+        "membersText": "\"20",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_barcelona_digital_nomads",
+        "name": "Barcelona Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Barcelona",
+        "groupLink": "https://www.facebook.com/groups/847138072058478/",
+        "memberCount": 20,
+        "membersText": "\"20",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_digital_nomads_madrid",
+        "name": "Digital Nomads Madrid",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Madrid",
+        "groupLink": "https://chat.whatsapp.com/LiMBRrF42GS0HUl6oXPIO9",
+        "memberCount": 15,
+        "membersText": "15",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_fuerteventura_digital_nomads_and_expats",
+        "name": "Fuerteventura Digital Nomads and expats",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Fuerteventura",
+        "groupLink": "https://www.facebook.com/groups/498086787062291/",
+        "memberCount": 12,
+        "membersText": "\"12",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_n_madas_digitales_indonesia",
+        "name": "Nómadas digitales Indonesia",
+        "type": "Whatsapp",
+        "platform": "Other",
+        "city": "Spain",
+        "groupLink": "https://www.gruposviajeros.com/grupo-whatsapp/nomadas-digitales-en-espana/",
+        "memberCount": 9,
+        "membersText": "9",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_m_laga_digital_nomads",
+        "name": "Málaga Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Malaga",
+        "groupLink": "https://www.facebook.com/groups/malagadigitalnomads/",
+        "memberCount": 8,
+        "membersText": "\"8",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_tarifa_digital_nomads",
+        "name": "Tarifa Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Spain",
+        "groupLink": "https://www.facebook.com/groups/769268589801675/",
+        "memberCount": 7,
+        "membersText": "\"7",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_yoga_plaza_del_pueblo",
+        "name": "Yoga Plaza del Pueblo",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Gran Canaria",
+        "groupLink": "https://chat.whatsapp.com/EbaTtonsNcFB8VKFDPrpzs",
+        "memberCount": 6,
+        "membersText": "6",
+        "tags": [
+          "Sports",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_digital_nomads_mallorca",
+        "name": "Digital Nomads Mallorca",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Mallorca",
+        "groupLink": "https://www.facebook.com/groups/DNMallorca/",
+        "memberCount": 4,
+        "membersText": "\"4",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_accommodation_for_digital_nomads_in_gran_canaria",
+        "name": "Accommodation for Digital Nomads in Gran Canaria",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Gran Canaria",
+        "groupLink": "https://www.facebook.com/groups/939473640299616/",
+        "memberCount": 4,
+        "membersText": "\"4",
+        "tags": [
+          "Accommodation",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_barcelona_entrepreneurs___digital_nomads",
+        "name": "Barcelona Entrepreneurs & Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Barcelona",
+        "groupLink": "https://www.facebook.com/groups/barcelonadigitalnomads/",
+        "memberCount": 4,
+        "membersText": "\"4",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_barcelona_freelancer_meetup",
+        "name": "Barcelona Freelancer Meetup",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Barcelona",
+        "groupLink": "https://www.meetup.com/barcelona-freelancers-meetup/",
+        "memberCount": 3,
+        "membersText": "\"3",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_valencia_digital_nomads",
+        "name": "Valencia Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Valencia",
+        "groupLink": "https://www.facebook.com/groups/822085512017504/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_digital_nomads_madrid",
+        "name": "Digital Nomads Madrid",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Madrid",
+        "groupLink": "https://www.facebook.com/groups/252529318788363/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_digital_people_barcelona",
+        "name": "Digital People Barcelona",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Barcelona",
+        "groupLink": "https://www.meetup.com/digital-people-barcelona/",
+        "memberCount": 2,
+        "membersText": "\"2",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_seville_remote_workers",
+        "name": "Seville Remote Workers",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Sevilla",
+        "groupLink": "https://www.facebook.com/groups/sevilleremoteworkers/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_digital_nomads_mallorca",
+        "name": "Digital nomads mallorca",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Mallorca",
+        "groupLink": "https://www.meetup.com/bedndesk-meetup/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_digital_nomads_gran_canaria",
+        "name": "Digital Nomads Gran Canaria",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Gran Canaria",
+        "groupLink": "https://www.meetup.com/gran-canaria-digital-nomads/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      },
+      {
+        "id": "ES_bcn_digital_nomads___",
+        "name": "BCN Digital Nomads 🌎",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Barcelona",
+        "groupLink": "https://chat.whatsapp.com/IHtX97yIj2YG2MbeRkgXYC",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇪🇸"
+      }
+    ]
+  },
+  {
+    "code": "LK",
+    "name": "Sri Lanka",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Sri Lanka",
+    "flag": "🇱🇰",
+    "continent": "Asia",
+    "currency": "LKR",
+    "timezone": "Local",
+    "popular_cities": [
+      "Sri Lanka"
+    ],
+    "coliving_count": 4,
+    "source": "nomadago",
+    "community_count": 3,
+    "community_members": 117,
+    "community_cities": [
+      "Sri Lanka"
+    ],
+    "community_platforms": [
+      "Reddit",
+      "WhatsApp",
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "LK_sri_lanka",
+        "name": "Sri Lanka",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Sri Lanka",
+        "groupLink": "https://www.reddit.com/r/srilanka/",
+        "memberCount": 87,
+        "membersText": "\"87",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇱🇰"
+      },
+      {
+        "id": "LK_sri_lanka______foreigners___expats___digital_nomads_",
+        "name": "Sri Lanka 🇱🇰 Foreigners | Expats | Digital Nomads.",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Sri Lanka",
+        "groupLink": "https://www.facebook.com/groups/889138717772937/",
+        "memberCount": 20,
+        "membersText": "\"20",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇱🇰"
+      },
+      {
+        "id": "LK_sri_lanka____srilanka______digitalnomads",
+        "name": "Sri Lanka - #SriLanka🇱🇰 #DigitalNomads",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Sri Lanka",
+        "groupLink": "https://chat.whatsapp.com/EWGxCSEL3K7H1jAwEeQYvx",
+        "memberCount": 10,
+        "membersText": "10",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇱🇰"
+      }
+    ]
+  },
+  {
+    "code": "CH",
+    "name": "Switzerland",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Switzerland",
+    "flag": "🇨🇭",
+    "continent": "Europe",
+    "currency": "CHF",
+    "timezone": "Local",
+    "popular_cities": [
+      "Switzerland"
+    ],
+    "coliving_count": 5,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "TZ",
+    "name": "Tanzania",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Tanzania",
+    "flag": "🇹🇿",
+    "continent": "Africa",
+    "currency": "TZS",
+    "timezone": "Local",
+    "popular_cities": [
+      "Tanzania"
+    ],
+    "coliving_count": 2,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "TH",
+    "name": "Thailand",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Thailand",
+    "flag": "🇹🇭",
+    "continent": "Asia",
+    "currency": "THB",
+    "timezone": "Local",
+    "popular_cities": [
+      "Thailand"
+    ],
+    "coliving_count": 8,
+    "source": "nomadago",
+    "community_count": 39,
+    "community_members": 7382,
+    "community_cities": [
+      "Thailand",
+      "Phuket",
+      "Pattaya",
+      "Pai",
+      "Krabi",
+      "Koh Tao",
+      "Koh Samui",
+      "Koh Phangan",
+      "Koh Lanta",
+      "Chiang Mai",
+      "Bangkok"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "WhatsApp",
+      "Discord",
+      "Reddit",
+      "Other",
+      "Meetup"
+    ],
+    "communities": [
+      {
+        "id": "TH_thailand___digital_nomads_chiang_mai_1_0",
+        "name": "Thailand - Digital Nomads Chiang Mai 1.0",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Chiang Mai",
+        "groupLink": "https://chat.whatsapp.com/GrgKJ03yhweA8efZnw80XG",
+        "memberCount": 1002,
+        "membersText": "1002",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_digital_nomads_rawai_phuket",
+        "name": "Digital Nomads Rawai Phuket",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Phuket",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadsrawai/",
+        "memberCount": 998,
+        "membersText": "998",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_digital_nomads_koh_phangan",
+        "name": "Digital Nomads Koh Phangan",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Koh Phangan",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadkohphangan/",
+        "memberCount": 895,
+        "membersText": "895",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_chiang_mai_backpackers",
+        "name": "Chiang Mai Backpackers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Chiang Mai",
+        "groupLink": "https://chat.whatsapp.com/JUWeAvzA1fkDDgDApNmvOO",
+        "memberCount": 367,
+        "membersText": "367",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_chiang_mai_backpackers",
+        "name": "Chiang Mai Backpackers",
+        "type": "Whatsapp",
+        "platform": "WhatsApp",
+        "city": "Chiang Mai",
+        "groupLink": "https://chat.whatsapp.com/JUWeAvzA1fkDDgDApNmvOO",
+        "memberCount": 367,
+        "membersText": "367",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_chiang_mai_cs___friends",
+        "name": "Chiang Mai CS & Friends",
+        "type": "Whatsapp",
+        "platform": "WhatsApp",
+        "city": "Chiang Mai",
+        "groupLink": "https://chat.whatsapp.com/Dbdx63plMdHKnWUqXwbErJ",
+        "memberCount": 346,
+        "membersText": "346",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_koh_tao_backpackers",
+        "name": "Koh Tao Backpackers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Koh Tao",
+        "groupLink": "https://chat.whatsapp.com/GfuoY3Wb4TG7qlHR2Ozuom",
+        "memberCount": 321,
+        "membersText": "321",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_bangkok_startup_business_and_digital_nomads",
+        "name": "Bangkok Startup Business and Digital Nomads",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Bangkok",
+        "groupLink": "https://www.meetup.com/bangkok-startup-business-digital-nomads/",
+        "memberCount": 282,
+        "membersText": "282",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_thailand_nomads_____",
+        "name": "Thailand Nomads 🤙🏼",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Thailand",
+        "groupLink": "https://chat.whatsapp.com/BtP78LZqIJNBafgHbaR9RH",
+        "memberCount": 278,
+        "membersText": "278",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_phuket_backpackers",
+        "name": "Phuket Backpackers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Phuket",
+        "groupLink": "https://chat.whatsapp.com/DFwi8K7EfJb3Bhs9Xf1qau",
+        "memberCount": 253,
+        "membersText": "253",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_pai_backpackers",
+        "name": "Pai Backpackers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Pai",
+        "groupLink": "https://chat.whatsapp.com/BhVdUfKWtJH2HVhXDGcmag",
+        "memberCount": 234,
+        "membersText": "234",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_koh_samui_backpackers",
+        "name": "Koh Samui Backpackers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Koh Samui",
+        "groupLink": "https://chat.whatsapp.com/GMMGkfhLzBnECu2lrPSGNf",
+        "memberCount": 232,
+        "membersText": "232",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_welcome_to_r_thailand",
+        "name": "Welcome to r/Thailand",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Thailand",
+        "groupLink": "https://www.reddit.com/r/Thailand/",
+        "memberCount": 220,
+        "membersText": "\"220",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_krabi_railay_backpackers",
+        "name": "Krabi/Railay Backpackers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Krabi",
+        "groupLink": "https://chat.whatsapp.com/FsvKejhtjEgCHP9dLl2RUB",
+        "memberCount": 202,
+        "membersText": "202",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_thailand___digital_nomads_chiang_mai_2_0",
+        "name": "Thailand - Digital Nomads Chiang Mai 2.0",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Chiang Mai",
+        "groupLink": "https://chat.whatsapp.com/Jj6aRzWsMag6yHuMHKO5YC",
+        "memberCount": 189,
+        "membersText": "189",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_bangkok_backpackers",
+        "name": "Bangkok Backpackers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bangkok",
+        "groupLink": "https://chat.whatsapp.com/GWjCg1FxZsBHbiKfmV7f5T",
+        "memberCount": 175,
+        "membersText": "175",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_thailand_traveller_community",
+        "name": "Thailand Traveller Community",
+        "type": "Discord",
+        "platform": "Discord",
+        "city": "Thailand",
+        "groupLink": "https://discord.com/invite/3zTmY2N6uq",
+        "memberCount": 173,
+        "membersText": "173",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_____bangkok_nomads_______",
+        "name": "🏙️ Bangkok Nomads 🇹🇭🤙",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Bangkok",
+        "groupLink": "https://chat.whatsapp.com/EB1Lo19f71nIIkjyal8y0c",
+        "memberCount": 166,
+        "membersText": "166",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_koh_phangan_backpackers",
+        "name": "Koh Phangan Backpackers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Koh Phangan",
+        "groupLink": "https://chat.whatsapp.com/BrqrQBrrYLKDH39Zf5hnAh",
+        "memberCount": 139,
+        "membersText": "139",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_koh_lanta_backpackers",
+        "name": "Koh Lanta Backpackers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Koh Lanta",
+        "groupLink": "https://chat.whatsapp.com/FOkupYavPz93nwnoXTCvPS",
+        "memberCount": 137,
+        "membersText": "137",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_pattaya_backpackers",
+        "name": "Pattaya Backpackers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Pattaya",
+        "groupLink": "https://chat.whatsapp.com/DIKNncOr0kc9qm5tF1izm1",
+        "memberCount": 125,
+        "membersText": "125",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_nomads___location_independent_on_fire___chiang_mai",
+        "name": "Nomads / Location independent on FIRE - Chiang Mai",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Chiang Mai",
+        "groupLink": "https://www.meetup.com/chiang-mai-financial-independence-meetup-group/",
+        "memberCount": 108,
+        "membersText": "108",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_chiang_mai_digital_nomads",
+        "name": "Chiang Mai Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Chiang Mai",
+        "groupLink": "https://www.facebook.com/groups/cmnomads/",
+        "memberCount": 38,
+        "membersText": "\"38",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH________phuket_nomads___",
+        "name": "🌴🇹🇭 Phuket Nomads 🤙",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Phuket",
+        "groupLink": "https://chat.whatsapp.com/GZIcRqSX2RRLQmVRhANnNm",
+        "memberCount": 31,
+        "membersText": "31",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_ko_samui_expats",
+        "name": "Ko Samui Expats",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Koh Samui",
+        "groupLink": "https://www.facebook.com/groups/samuiexpats/",
+        "memberCount": 22,
+        "membersText": "\"22",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_phuket",
+        "name": "Phuket",
+        "type": "Reddit",
+        "platform": "Reddit",
+        "city": "Phuket",
+        "groupLink": "https://www.reddit.com/r/phuket/",
+        "memberCount": 17,
+        "membersText": "\"17",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_digital_nomads_thailand",
+        "name": "Digital Nomads Thailand",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Thailand",
+        "groupLink": "https://www.facebook.com/groups/thailanddigitalnomads/",
+        "memberCount": 15,
+        "membersText": "\"15",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_n_madas_digitales_en_tailandia",
+        "name": "Nómadas digitales en Tailandia",
+        "type": "Whatsapp",
+        "platform": "Other",
+        "city": "Thailand",
+        "groupLink": "https://www.gruposviajeros.com/grupo-whatsapp/nomadas-digitales-en-tailandia/",
+        "memberCount": 10,
+        "membersText": "10",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_koh_phangan_nomads_community",
+        "name": "Koh Phangan Nomads Community",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Koh Phangan",
+        "groupLink": "https://www.facebook.com/groups/256735521672143/",
+        "memberCount": 9,
+        "membersText": "\"9",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_thailand_expats_and_digital_nomads_____",
+        "name": "Thailand Expats and Digital Nomads 🇹🇭",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Thailand",
+        "groupLink": "https://www.facebook.com/groups/thailanddigitalexpats/",
+        "memberCount": 7,
+        "membersText": "\"7",
+        "tags": [
+          "Digital Nomads",
+          "Expats"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_bangkok_digital_nomads",
+        "name": "Bangkok Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Bangkok",
+        "groupLink": "https://www.facebook.com/groups/1497047133843898/",
+        "memberCount": 6,
+        "membersText": "\"6",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_phuket_digital_nomads",
+        "name": "Phuket Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Phuket",
+        "groupLink": "https://www.facebook.com/groups/phuketnomads",
+        "memberCount": 5,
+        "membersText": "\"5",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_koh_phangan_digital_nomads",
+        "name": "Koh Phangan Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Koh Phangan",
+        "groupLink": "https://www.facebook.com/groups/kpdigitalnomads/about/",
+        "memberCount": 4,
+        "membersText": "\"4",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_krabi_expats",
+        "name": "Krabi Expats",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Krabi",
+        "groupLink": "https://www.facebook.com/groups/246449763033018/",
+        "memberCount": 3,
+        "membersText": "\"3",
+        "tags": [
+          "Expats",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_chiang_mai_digital_nomads_entrepreneurs",
+        "name": "Chiang Mai Digital Nomads Entrepreneurs",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Chiang Mai",
+        "groupLink": "https://www.facebook.com/groups/cnxdne/",
+        "memberCount": 3,
+        "membersText": "\"3",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_krabi_events___parties",
+        "name": "Krabi events & parties",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Krabi",
+        "groupLink": "https://www.facebook.com/groups/KrabiEvents/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Events"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_digital_nomads_on_koh_samui",
+        "name": "Digital Nomads on Koh Samui",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Koh Samui",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadsonkohsamui/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH_chiang_mai_entrepreneur_and_beer_group",
+        "name": "Chiang Mai Entrepreneur and Beer Group",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Chiang Mai",
+        "groupLink": "https://www.meetup.com/chiang-mai-entrepreneur-and-beer-group/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Business"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇹🇭"
+      },
+      {
+        "id": "TH__the_break_room",
+        "name": "\"The Break Room",
+        "type": "by Chiang Mai Digital Nomads\"",
+        "platform": "Other",
+        "city": "Chiang Mai",
+        "groupLink": "Facebook",
+        "memberCount": 0,
+        "membersText": "Request to join",
+        "tags": [
+          "https://www.facebook.com/groups/436338589849184/discussion/preview",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Social",
+        "flag": "🇹🇭"
+      }
+    ]
+  },
+  {
+    "code": "GB",
+    "name": "United Kingdom",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=United Kingdom",
+    "flag": "🇬🇧",
+    "continent": "Europe",
+    "currency": "GBP",
+    "timezone": "Local",
+    "popular_cities": [
+      "United Kingdom"
+    ],
+    "coliving_count": 8,
+    "source": "nomadago",
+    "community_count": 3,
+    "community_members": 930,
+    "community_cities": [
+      "London"
+    ],
+    "community_platforms": [
+      "Meetup",
+      "Facebook"
+    ],
+    "communities": [
+      {
+        "id": "GB_digital_nomads_london",
+        "name": "Digital Nomads London",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "London",
+        "groupLink": "https://www.meetup.com/digital-nomads-london/",
+        "memberCount": 572,
+        "membersText": "572",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇬🇧"
+      },
+      {
+        "id": "GB_london_digital_nomads",
+        "name": "London Digital Nomads",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "London",
+        "groupLink": "https://www.meetup.com/london-digital-nomads/",
+        "memberCount": 357,
+        "membersText": "357",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇬🇧"
+      },
+      {
+        "id": "GB_london_digital_nomads",
+        "name": "London Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "London",
+        "groupLink": "https://www.facebook.com/groups/londondigitalnomads/",
+        "memberCount": 1,
+        "membersText": "\"1",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇬🇧"
+      }
+    ]
+  },
+  {
+    "code": "US",
+    "name": "United States",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=United States",
+    "flag": "🇺🇸",
+    "continent": "North America",
+    "currency": "USD",
+    "timezone": "Local",
+    "popular_cities": [
+      "United States"
+    ],
+    "coliving_count": 33,
+    "source": "nomadago",
+    "community_count": 15,
+    "community_members": 2086,
+    "community_cities": [
+      "San Diego",
+      "New York City",
+      "Miami",
+      "Los Angeles",
+      "Las Vegas",
+      "Jackson Hole",
+      "Denver",
+      "Boston",
+      "Bend",
+      "Austin"
+    ],
+    "community_platforms": [
+      "Facebook",
+      "Other",
+      "Meetup"
+    ],
+    "communities": [
+      {
+        "id": "US_bend_remote_worker_meetup",
+        "name": "Bend Remote Worker Meetup",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Bend",
+        "groupLink": "https://www.meetup.com/bend-remote-workers-meetup/",
+        "memberCount": 770,
+        "membersText": "770",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US_la_digital_nomads",
+        "name": "LA Digital Nomads",
+        "type": "Meetup",
+        "platform": "Meetup",
+        "city": "Los Angeles",
+        "groupLink": "https://www.meetup.com/la-digital-nomads/",
+        "memberCount": 388,
+        "membersText": "388",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US_digital_nomads___new_york_city",
+        "name": "Digital Nomads - New York City",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "New York City",
+        "groupLink": "https://www.facebook.com/groups/1054273381315892/",
+        "memberCount": 316,
+        "membersText": "316",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US_expats_world_in_miami",
+        "name": "Expats World in Miami",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Miami",
+        "groupLink": "https://www.facebook.com/groups/expatsworldmiami/",
+        "memberCount": 308,
+        "membersText": "308",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US_expats_in_boston",
+        "name": "Expats in Boston",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Boston",
+        "groupLink": "https://www.facebook.com/groups/expatsinboston/",
+        "memberCount": 102,
+        "membersText": "102",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US_austin_digital_nomads",
+        "name": "Austin Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Austin",
+        "groupLink": "https://www.facebook.com/groups/1990235837948491/",
+        "memberCount": 102,
+        "membersText": "102",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US_moving_to_austin_texas",
+        "name": "Moving to Austin Texas",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Austin",
+        "groupLink": "https://www.facebook.com/groups/1703103966607022",
+        "memberCount": 35,
+        "membersText": "\"35",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US_living_in_las_vegas",
+        "name": "Living In Las Vegas",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Las Vegas",
+        "groupLink": "https://www.facebook.com/groups/1542924422495895",
+        "memberCount": 30,
+        "membersText": "\"30",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US_san_diego_international_connection",
+        "name": "San Diego International Connection",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "San Diego",
+        "groupLink": "https://www.facebook.com/groups/SDinternationalconnection",
+        "memberCount": 15,
+        "membersText": "\"15",
+        "tags": [
+          "Expats",
+          "Accomodation"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US_moving_to_l_a_",
+        "name": "Moving to L.A.",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Los Angeles",
+        "groupLink": "https://www.facebook.com/groups/683306318783872/",
+        "memberCount": 9,
+        "membersText": "\"9",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US_work_and_travel_jackson_hole_wy_2023",
+        "name": "Work and Travel Jackson Hole WY 2023",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Jackson Hole",
+        "groupLink": "https://www.facebook.com/groups/1426039444348901/",
+        "memberCount": 6,
+        "membersText": "\"6",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US_moving_to_las_vegas_nevada",
+        "name": "Moving to Las Vegas Nevada",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Las Vegas",
+        "groupLink": "https://www.facebook.com/groups/1028559384007326",
+        "memberCount": 5,
+        "membersText": "\"5",
+        "tags": [
+          "Expats",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US__new_york_city",
+        "name": "\"New York City",
+        "type": "Party--Meetup---Travel---Couchsurfing\"",
+        "platform": "Other",
+        "city": "New York City",
+        "groupLink": "Facebook",
+        "memberCount": 0,
+        "membersText": "Request to join",
+        "tags": [
+          "https://www.facebook.com/groups/198732963497526",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Social",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US__jackson_hole",
+        "name": "\"Jackson Hole",
+        "type": "Wyoming",
+        "platform": "Other",
+        "city": "Jackson Hole",
+        "groupLink": "Yellowstone and Grand Tetons Visitors\"",
+        "memberCount": 0,
+        "membersText": "Social",
+        "tags": [
+          "Facebook",
+          "https://www.facebook.com/groups/52655391893"
+        ],
+        "requirementToJoin": "Digital Nomads",
+        "flag": "🇺🇸"
+      },
+      {
+        "id": "US__moving_to_denver___boulder",
+        "name": "\"Moving to Denver / Boulder",
+        "type": "Colorado\"",
+        "platform": "Other",
+        "city": "Denver",
+        "groupLink": "Facebook",
+        "memberCount": 0,
+        "membersText": "Request to join",
+        "tags": [
+          "https://www.facebook.com/groups/movetodenver/",
+          "Expats"
+        ],
+        "requirementToJoin": "Social",
+        "flag": "🇺🇸"
+      }
+    ]
+  },
+  {
+    "code": "UY",
+    "name": "Uruguay",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Uruguay",
+    "flag": "🇺🇾",
+    "continent": "South America",
+    "currency": "UYU",
+    "timezone": "Local",
+    "popular_cities": [
+      "Uruguay"
+    ],
+    "coliving_count": 4,
+    "source": "nomadago",
+    "community_count": 0,
+    "community_members": 0,
+    "community_cities": [],
+    "community_platforms": [],
+    "communities": []
+  },
+  {
+    "code": "VN",
+    "name": "Vietnam",
+    "cover_image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=Vietnam",
+    "flag": "🇻🇳",
+    "continent": "Asia",
+    "currency": "VND",
+    "timezone": "Local",
+    "popular_cities": [
+      "Vietnam"
+    ],
+    "coliving_count": 3,
+    "source": "nomadago",
+    "community_count": 9,
+    "community_members": 2871,
+    "community_cities": [
+      "Vietnam",
+      "Hoi An",
+      "Ho Chi Minh",
+      "Hanoi",
+      "Da Nang"
+    ],
+    "community_platforms": [
+      "WhatsApp",
+      "Facebook",
+      "Other"
+    ],
+    "communities": [
+      {
+        "id": "VN_vi_tnam",
+        "name": "Viëtnam",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Vietnam",
+        "groupLink": "https://chat.whatsapp.com/JTDf6YGiBXRCPj0uBMYL7h",
+        "memberCount": 843,
+        "membersText": "843",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇻🇳"
+      },
+      {
+        "id": "VN_vietnam___nomadas_vietnam",
+        "name": "Vietnam - Nomadas Vietnam",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Vietnam",
+        "groupLink": "https://chat.whatsapp.com/IvpQ5hu0CqxElCyXHYVPzY",
+        "memberCount": 842,
+        "membersText": "842",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇻🇳"
+      },
+      {
+        "id": "VN_hoi_an_digital_nomads",
+        "name": "Hoi An Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Hoi An",
+        "groupLink": "https://www.facebook.com/groups/980369888684205/",
+        "memberCount": 562,
+        "membersText": "562",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "Request to join",
+        "flag": "🇻🇳"
+      },
+      {
+        "id": "VN_hanoi_digital_nomads",
+        "name": "Hanoi Digital Nomads",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Hanoi",
+        "groupLink": "https://www.facebook.com/groups/hanoidigitalnomadsgroup/",
+        "memberCount": 419,
+        "membersText": "419",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇻🇳"
+      },
+      {
+        "id": "VN_vietnam_nomads_________",
+        "name": "Vietnam Nomads 🤙🏼🇻🇳",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Vietnam",
+        "groupLink": "https://chat.whatsapp.com/KGl3CPA9LeVKvK87MtZhmg",
+        "memberCount": 176,
+        "membersText": "176",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇻🇳"
+      },
+      {
+        "id": "VN_vietnam___vietnam_dns___travelers",
+        "name": "Vietnam - Vietnam DNs & Travelers",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Vietnam",
+        "groupLink": "https://chat.whatsapp.com/D6aS5W7arnLLVHfCpyn4ip",
+        "memberCount": 14,
+        "membersText": "14",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇻🇳"
+      },
+      {
+        "id": "VN____n_ng_nomads_________",
+        "name": "Đà Nẵng Nomads 🇻🇳⛱️🤙",
+        "type": "WhatsApp",
+        "platform": "WhatsApp",
+        "city": "Da Nang",
+        "groupLink": "https://chat.whatsapp.com/BkDLKuP3QHbKTm6opNdQby",
+        "memberCount": 10,
+        "membersText": "10",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇻🇳"
+      },
+      {
+        "id": "VN_digital_nomads_in_da_nang",
+        "name": "Digital Nomads in Da Nang",
+        "type": "Facebook",
+        "platform": "Facebook",
+        "city": "Da Nang",
+        "groupLink": "https://www.facebook.com/groups/digitalnomadsindanang/",
+        "memberCount": 5,
+        "membersText": "\"5",
+        "tags": [
+          "Digital Nomads",
+          "Social"
+        ],
+        "requirementToJoin": "None",
+        "flag": "🇻🇳"
+      },
+      {
+        "id": "VN__saigon_digital_nomads",
+        "name": "\"Saigon Digital Nomads",
+        "type": "aka Ho Chi Minh\"",
+        "platform": "Other",
+        "city": "Ho Chi Minh",
+        "groupLink": "Facebook",
+        "memberCount": 0,
+        "membersText": "Private",
+        "tags": [
+          "https://www.facebook.com/groups/saigonnomads/",
+          "Digital Nomads"
+        ],
+        "requirementToJoin": "Social",
+        "flag": "🇻🇳"
+      }
+    ]
+  }
+]

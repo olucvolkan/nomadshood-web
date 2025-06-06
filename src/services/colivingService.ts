@@ -1,7 +1,6 @@
-
-import { db } from '@/lib/firebase'; 
-import { collection, getDocs, doc, getDoc, type DocumentData, type QueryDocumentSnapshot, query, Timestamp, where, limit as firestoreLimit } from 'firebase/firestore';
-import type { ColivingSpace, CountryWithCommunities, Community, ColivingReviewData, ReviewItem, NearbyPlace, FirestoreNearbyPlacesDoc, CategorizedNearbyPlaceGroup } from '@/types';
+import { db } from '@/lib/firebase';
+import type { CategorizedNearbyPlaceGroup, ColivingReviewData, ColivingSpace, Community, CountryWithCommunities, FirestoreNearbyPlacesDoc, NearbyPlace, ReviewItem } from '@/types';
+import { collection, doc, limit as firestoreLimit, getDoc, getDocs, query, Timestamp, where, type DocumentData, type QueryDocumentSnapshot } from 'firebase/firestore';
 
 const parseCoordinate = (value: any): number | undefined => {
   if (typeof value === 'number') {
@@ -240,12 +239,9 @@ const mapDocToCountryWithCommunities = (docSnap: QueryDocumentSnapshot<DocumentD
   }
 
   let flagImageUrl: string | undefined = undefined;
-  const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
-  if (data.code && typeof data.code === 'string' && data.code.trim() !== '' && storageBucket) {
-    const flagPath = `flags/${data.code.trim().toLowerCase()}.png`;
-    flagImageUrl = `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${encodeURIComponent(flagPath)}?alt=media`;
-  } else if (!storageBucket && data.code) {
-     console.warn(`Firebase Storage Bucket (NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) for country ${data.name} (ID: ${docSnap.id}) is not set. Cannot construct flag image URL.`);
+  if (data.code && typeof data.code === 'string' && data.code.trim() !== '') {
+    const flagPath = `/flags/${data.code.trim().toLowerCase()}.png`;
+    flagImageUrl = flagPath;
   }
 
 

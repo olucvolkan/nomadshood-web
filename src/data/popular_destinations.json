@@ -2,7 +2,7 @@
   "title": "Popular Coliving Destinations",
   "description": "Top destinations for digital nomads and coliving spaces",
   "last_updated": "2025-01-03",
-  "total_destinations": 8,
+  "total_destinations": 9,
   
   "destinations": [
     {
@@ -40,12 +40,30 @@
       "coliving_count": 13,
       "country_flag": "🇮🇩",
       "country_image_link": "https://storage.googleapis.com/nomadshood.firebasestorage.app/explore-top-destinations/indonesia.jpg"
+    },
+    {
+      "country": "Colombia",
+      "coliving_count": 13,
+      "country_flag": "🇨🇴",
+      "country_image_link": "https://storage.googleapis.com/nomadshood.firebasestorage.app/explore-top-destinations/colombia.jpg"
+    },
+    {
+      "country": "Thailand",
+      "coliving_count": 12,
+      "country_flag": "🇹🇭",
+      "country_image_link": "https://firebasestorage.googleapis.com/v0/b/nomadshood.firebasestorage.app/o/explore-top-destinations%2Fthailand.jpg?alt=media&token=6935d8ef-9251-46d6-b178-a16b8c103d8d"
+    },
+    {
+      "country": "Brazil",
+      "coliving_count": 11,
+      "country_flag": "🇧🇷",
+      "country_image_link": "https://firebasestorage.googleapis.com/v0/b/nomadshood.firebasestorage.app/o/explore-top-destinations%2Fbrazil.jpg?alt=media&token=34a9e987-c05b-48e5-a71a-93b1728a78f1"
     }
   ],
   
   "statistics": {
-    "total_colivings_in_top_destinations": 191,
-    "percentage_of_all_colivings": "58.95%",
+    "total_colivings_in_top_destinations": 234,
+    "percentage_of_all_colivings": "72.22%",
     "top_destination": {
       "country": "Spain",
       "coliving_count": 52,
@@ -58,6 +76,6 @@
     "firebase_storage_bucket": "explore-top-destinations",
     "image_format": "jpg",
     "countries_sorted_by": "coliving_count DESC",
-    "additional_country_selected": "Colombia (13 colivings)"
+    "grid_layout": "3x3 grid system"
   }
 } 
