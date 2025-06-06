@@ -1,67 +1,43 @@
 
 import type { ColivingSpace, CountryWithCommunities, NomadVideo } from '@/types';
-import { getAllColivingSpaces, getAllCountriesFromDB } from '@/services/colivingService';
+import { getAllColivingSpaces } from '@/services/colivingService'; // getAllCountriesFromDB removed
 import { getNomadsHoodPodcastVideosFromFirestore } from '@/services/videoService';
-import { getFirebaseStorageDownloadUrl } from '@/services/storageService';
+// getFirebaseStorageDownloadUrl might still be used if other image logic exists elsewhere, 
+// but its direct use here for popular destinations is removed.
+// import { getFirebaseStorageDownloadUrl } from '@/services/storageService'; 
 import { HomePageClientContent } from '@/components/HomePageClientContent';
-
-// This map defines image sources for countries.
-// Values can be:
-// 1. A simple filename (e.g., "colombia.jpg") - Assumed to be in Firebase Storage under 'explore-top-destinations/'.
-// 2. A full path starting with '/' (e.g., "/popular_destination/spain.jpg") - Assumed to be a local public file.
-const destinationImageFileMap: { [key: string]: string } = {
-  'colombia': 'colombia.jpg',
-  'costa rica': 'costa_rica.jpg',
-  'indonesia': 'indonesia.jpg',
-  'spain': '/popular_destination/spain.jpg', // Updated to use local public image for Spain
-  'mexico': 'mexico.jpg',
-  'portugal': 'porto.jpg',
-  'usa': 'usa.jpg'
-  // Add more mappings as needed
-};
+import popularDestinationsData from '@/data/popular_destinations.json'; // Import the new JSON data
 
 export default async function HomePage() {
   const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
-  let countriesData: CountryWithCommunities[] = await getAllCountriesFromDB();
   const nomadsHoodPodcastVideos: NomadVideo[] = await getNomadsHoodPodcastVideosFromFirestore();
 
-  // Fetch image URLs for mapped country images
-  const countriesWithImageUrls = await Promise.all(
-    countriesData.map(async (country) => {
-      const countryNameLower = country.name.toLowerCase();
-      const mappedImageSource = destinationImageFileMap[countryNameLower];
-      let updatedCountry = { ...country };
+  // Prepare countries data from popular_destinations.json
+  // This data will be used for both "Popular Destinations" and "Connect with Nomad Communities" sections as per original structure
+  const processedPopularDestinations: CountryWithCommunities[] = popularDestinationsData.destinations.map(dest => ({
+    // Ensure the structure matches the CountryWithCommunities type definition.
+    id: dest.country.toLowerCase().replace(/\s+/g, '-'), // Example: 'costa-rica'
+    name: dest.country,
+    coliving_count: dest.coliving_count, // Assumed to be part of CountryWithCommunities or handled by component
+    country_flag: dest.country_flag,     // Assumed to be part of CountryWithCommunities or handled by component
+    
+    // country_image_link from JSON is a full URL.
+    // Assign to firebaseCoverImageUrl, assuming it's for any remote URLs.
+    firebaseCoverImageUrl: dest.country_image_link, 
+    cover_image: undefined, // Explicitly set to undefined as firebaseCoverImageUrl is used for the remote URL
 
-      if (mappedImageSource) {
-        if (mappedImageSource.startsWith('/')) {
-          // It's a local public file, assign to cover_image
-          // next/image will handle paths starting with '/' as relative to the public directory
-          updatedCountry.cover_image = mappedImageSource;
-          // Optionally, update dataAiHint if specific to the local image
-          if (countryNameLower === 'spain') {
-            updatedCountry.dataAiHint = 'madrid cityscape gran via';
-          }
-        } else {
-          // It's a Firebase Storage file, fetch download URL
-          const imagePath = `explore-top-destinations/${mappedImageSource}`;
-          const downloadUrl = await getFirebaseStorageDownloadUrl(imagePath);
-          if (downloadUrl) {
-            updatedCountry.firebaseCoverImageUrl = downloadUrl;
-          }
-          // Retain existing dataAiHint logic or set a default if needed
-          // For Firebase images, the hint is usually generated in HomePageClientContent or based on country name
-        }
-      }
-      return updatedCountry;
-    })
-  );
+    // Default or placeholder values for other potential fields in CountryWithCommunities:
+    communities: [], // Assuming an empty array or that this field is optional
+    dataAiHint: `Beautiful view of ${dest.country}`, // Generic AI hint
+    // Add any other fields required by CountryWithCommunities with default/derived values as necessary
+  }));
   
   return (
     <HomePageClientContent
       allSpaces={allSpaces}
-      allCountries={countriesWithImageUrls} // Used for "Popular Destinations"
+      allCountries={processedPopularDestinations} // Used for "Popular Destinations"
       nomadsHoodPodcastVideos={nomadsHoodPodcastVideos}
-      countriesWithCommunities={countriesWithImageUrls} // Used for "Connect with Nomad Communities"
+      countriesWithCommunities={processedPopularDestinations} // Also updated for "Connect with Nomad Communities"
     />
   );
 }

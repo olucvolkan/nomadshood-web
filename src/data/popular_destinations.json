@@ -1,0 +1,63 @@
+{
+  "title": "Popular Coliving Destinations",
+  "description": "Top destinations for digital nomads and coliving spaces",
+  "last_updated": "2025-01-03",
+  "total_destinations": 8,
+  
+  "destinations": [
+    {
+      "country": "Spain",
+      "coliving_count": 52,
+      "country_flag": "🇪🇸",
+      "country_image_link": "https://storage.googleapis.com/nomadshood.firebasestorage.app/explore-top-destinations/madrid.jpg"
+    },
+    {
+      "country": "Portugal", 
+      "coliving_count": 41,
+      "country_flag": "🇵🇹",
+      "country_image_link": "https://storage.googleapis.com/nomadshood.firebasestorage.app/explore-top-destinations/porto.jpg"
+    },
+    {
+      "country": "Mexico",
+      "coliving_count": 29,
+      "country_flag": "🇲🇽", 
+      "country_image_link": "https://storage.googleapis.com/nomadshood.firebasestorage.app/explore-top-destinations/mexico.jpg"
+    },
+    {
+      "country": "Costa Rica",
+      "coliving_count": 17,
+      "country_flag": "🇨🇷",
+      "country_image_link": "https://storage.googleapis.com/nomadshood.firebasestorage.app/explore-top-destinations/costa_rica.jpg"
+    },
+    {
+      "country": "United States",
+      "coliving_count": 16,
+      "country_flag": "🇺🇸",
+      "country_image_link": "https://storage.googleapis.com/nomadshood.firebasestorage.app/explore-top-destinations/usa.jpg"
+    },
+    {
+      "country": "Indonesia",
+      "coliving_count": 13,
+      "country_flag": "🇮🇩",
+      "country_image_link": "https://storage.googleapis.com/nomadshood.firebasestorage.app/explore-top-destinations/indonesia.jpg"
+    }
+  ],
+  
+  "statistics": {
+    "total_colivings_in_top_destinations": 191,
+    "percentage_of_all_colivings": "58.95%",
+    "top_destination": {
+      "country": "Spain",
+      "coliving_count": 52,
+      "percentage": "16.05%"
+    }
+  },
+  
+  "metadata": {
+    "data_source": "coliving_list.json",
+    "firebase_storage_bucket": "explore-top-destinations",
+    "image_format": "jpg",
+    "countries_sorted_by": "coliving_count DESC",
+    "additional_country_selected": "Colombia (13 colivings)"
+  }
+} 
