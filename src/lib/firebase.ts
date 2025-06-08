@@ -1,6 +1,6 @@
-
-import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
+import { getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import { getFirestore, type Firestore } from 'firebase/firestore'; // Updated import for Firestore
+import { getFunctions, type Functions } from 'firebase/functions'; // Added for Firebase Functions
 import { getStorage, type FirebaseStorage } from 'firebase/storage'; // Added for Firebase Storage
 
 // Define the expected structure of the config for clarity
@@ -57,6 +57,7 @@ const firebaseConfig = firebaseConfigValues as Required<FirebaseConfig>;
 let app: FirebaseApp;
 let db: Firestore; // Changed db to be Firestore type
 let storage: FirebaseStorage; // Added for Firebase Storage
+let functions: Functions; // Added for Firebase Functions
 
 // Initialize Firebase App
 if (!getApps().length) {
@@ -90,6 +91,14 @@ try {
   throw new Error(`Failed to get Firebase Storage instance. Original error: ${error.message}. Ensure Firebase Storage is enabled in your Firebase project and that your project configuration is correct.`);
 }
 
-export { app, db, storage }; // db now exports the Firestore instance, storage exports Storage instance
+// Get Functions instance
+try {
+  functions = getFunctions(app);
+} catch (error: any) {
+  console.error("Firebase getFunctions error:", error.message);
+  throw new Error(`Failed to get Firebase Functions instance. Original error: ${error.message}. Ensure Firebase Functions is enabled in your Firebase project and that your project configuration is correct.`);
+}
+
+export { app, db, functions, storage }; // Added functions to exports
 
     

@@ -1,11 +1,11 @@
-
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import type { ColivingSpace } from '@/types';
+import { createColivingSlug, slugify } from '@/utils/slugify';
+import { MapPin, MessageSquare, Video } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { MapPin, Video, MessageSquare } from 'lucide-react';
 
 interface ColivingCardProps {
   space: ColivingSpace;
@@ -15,6 +15,22 @@ interface ColivingCardProps {
 export function ColivingCard({ space, showViewDetailsButton = false }: ColivingCardProps) {
   // The address should now always be a string due to mapping in colivingService.ts
   const displayAddress = space.address || 'Location not specified';
+
+  // Generate SEO-friendly URL
+  const getColivingUrl = () => {
+    if (!space.country || !space.city) {
+      // Fallback to old URL if missing required data
+      return `/coliving/${space.id}`;
+    }
+    
+    const countrySlug = slugify(space.country);
+    const citySlug = slugify(space.city);
+    const spaceSlug = createColivingSlug(space.name, space.id);
+    
+    return `/colivings/${countrySlug}/${citySlug}/${spaceSlug}`;
+  };
+
+  const colivingUrl = getColivingUrl();
 
   return (
     <Card className="flex flex-col h-full shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -28,7 +44,7 @@ export function ColivingCard({ space, showViewDetailsButton = false }: ColivingC
           data-ai-hint={space.dataAiHint || 'logo building'}
         />
         <div className="flex-1">
-          <Link href={`/coliving/${space.id}`} className="group">
+          <Link href={colivingUrl} className="group">
             <CardTitle className="text-xl mb-1 group-hover:text-primary transition-colors">
               {space.name}
             </CardTitle>
@@ -71,7 +87,7 @@ export function ColivingCard({ space, showViewDetailsButton = false }: ColivingC
           )}
            {showViewDetailsButton && (
             <Button size="sm" asChild className="flex-1">
-              <Link href={`/coliving/${space.id}`}>View Details</Link>
+              <Link href={colivingUrl}>View Details</Link>
             </Button>
           )}
         </div>

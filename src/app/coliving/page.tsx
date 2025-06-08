@@ -4,200 +4,319 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getAllColivingSpaces, getAllCountriesFromDB } from '@/services/colivingService';
-import type { ColivingSpace, CountryData } from '@/types';
-import { ArrowLeft, Building, Compass, Globe, Home, MapPin, Search, Users } from 'lucide-react';
+import type { ColivingSpace, CountryWithCommunities } from '@/types';
+import { slugify } from '@/utils/slugify';
+import { AlertCircle, ArrowLeft, Building, Compass, Globe, Home, MapPin, Search } from 'lucide-react';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default async function ColivingDirectoryPage({
-  searchParams,
-}: {
+type Props = {
   searchParams?: { country?: string; city?: string };
-}) {
+};
+
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const selectedCountryName = searchParams?.country ? decodeURIComponent(searchParams.country) : null;
   const selectedCityName = searchParams?.city ? decodeURIComponent(searchParams.city) : null;
 
-  // If no country is selected, show the list of countries from "countries" collection
-  if (!selectedCountryName) {
-    const allCountries: CountryData[] = await getAllCountriesFromDB();
-    
-    // Sort countries by coliving count (most popular first)
-    const sortedCountries = allCountries.sort((a, b) => (b.coliving_count || 0) - (a.coliving_count || 0));
-    const totalSpaces = allCountries.reduce((sum, country) => sum + (country.coliving_count || 0), 0);
-    
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-        {/* Hero Section */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-orange-100 via-amber-100 to-yellow-100 rounded-3xl shadow-2xl mb-8">
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-200/30 to-yellow-200/30"></div>
-          <div className="relative z-10 text-center py-20 px-6">
-            <div className="inline-flex items-center gap-4 mb-8">
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-xl">
-                <Globe className="h-8 w-8 text-white" />
-              </div>
-              <h1 className="text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 bg-clip-text text-transparent">
-                Explore Colivings
-              </h1>
-            </div>
-            <p className="text-xl lg:text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
-              Discover your perfect coliving destination from our global network of amazing spaces and communities.
-            </p>
-            
-            {/* Stats */}
-            <div className="flex flex-wrap justify-center gap-8 mb-8">
-              <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                <div className="text-3xl font-bold text-orange-600">{allCountries.length}</div>
-                <div className="text-sm text-gray-600">Countries</div>
-              </div>
-              <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                <div className="text-3xl font-bold text-orange-600">{totalSpaces}</div>
-                <div className="text-sm text-gray-600">Coliving Spaces</div>
-              </div>
-              <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                <div className="text-3xl font-bold text-orange-600">50K+</div>
-                <div className="text-sm text-gray-600">Happy Nomads</div>
-              </div>
-            </div>
+  let title = 'Discover Amazing Coliving Spaces';
+  let description = 'Find the perfect coliving space for digital nomads and remote workers. Explore colivings worldwide with community, workspace, and adventure.';
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button size="lg" className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg px-8 py-4" asChild>
-                <Link href="/">
-                  <Home className="mr-2 h-5 w-5" />
-                  Back to Home
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-2 border-orange-300 text-orange-700 hover:bg-orange-50 px-8 py-4" asChild>
-                <Link href="#countries">
-                  <Search className="mr-2 h-5 w-5" />
-                  Browse Countries
-                </Link>
-              </Button>
-            </div>
+  if (selectedCountryName && selectedCityName) {
+    title = `Coliving Spaces in ${selectedCityName}, ${selectedCountryName}`;
+    description = `Discover coliving spaces in ${selectedCityName}, ${selectedCountryName}. Perfect for digital nomads seeking community and workspace.`;
+  } else if (selectedCountryName) {
+    title = `Coliving Spaces in ${selectedCountryName}`;
+    description = `Explore coliving spaces in ${selectedCountryName}. Find the perfect place for remote work and nomadic lifestyle.`;
+  }
+
+  const canonicalUrl = selectedCountryName 
+    ? `/colivings/${slugify(selectedCountryName)}${selectedCityName ? `/${slugify(selectedCityName)}` : ''}`
+    : '/coliving';
+
+  return {
+    title,
+    description: description.slice(0, 160),
+    openGraph: {
+      title: `${title} | NomadsHood`,
+      description,
+    },
+    twitter: {
+      title: `${title} | NomadsHood`,
+      description,
+    },
+    alternates: {
+      canonical: canonicalUrl
+    }
+  };
+}
+
+export default async function ColivingDirectoryPage({
+  searchParams,
+}: Props) {
+  const selectedCountryName = searchParams?.country ? decodeURIComponent(searchParams.country) : null;
+  const selectedCityName = searchParams?.city ? decodeURIComponent(searchParams.city) : null;
+
+  const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
+  const countries: CountryWithCommunities[] = await getAllCountriesFromDB();
+
+  // Filter spaces based on selected country and city
+  const filteredSpaces = allSpaces.filter((space) => {
+    const matchesCountry = selectedCountryName ? space.country === selectedCountryName : true;
+    const matchesCity = selectedCityName ? space.city === selectedCityName : true;
+    return matchesCountry && matchesCity;
+  });
+
+  const sortedCountries = countries.sort((a, b) => (b.coliving_count || 0) - (a.coliving_count || 0));
+
+  // Get unique cities for the selected country
+  const uniqueCities = selectedCountryName 
+    ? Array.from(new Set(
+        allSpaces
+          .filter(space => space.country === selectedCountryName && space.city)
+          .map(space => space.city!)
+      )).sort()
+    : [];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+      <div className="container mx-auto px-4 py-12">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-500 to-amber-500 rounded-3xl mb-6 shadow-xl">
+            <Home className="h-10 w-10 text-white" />
           </div>
+          <h1 className="text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 bg-clip-text text-transparent mb-6">
+            {selectedCityName 
+              ? `Coliving in ${selectedCityName}` 
+              : selectedCountryName 
+                ? `Coliving in ${selectedCountryName}` 
+                : 'Discover Amazing Coliving Spaces'
+            }
+          </h1>
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+            {selectedCityName 
+              ? `Find the perfect coliving space in ${selectedCityName}, ${selectedCountryName}. Join a community of digital nomads and remote workers.`
+              : selectedCountryName 
+                ? `Explore coliving spaces across ${selectedCountryName}. Connect with like-minded people and find your ideal workspace.`
+                : 'Find the perfect coliving space for digital nomads and remote workers. Explore colivings worldwide with community, workspace, and adventure.'
+            }
+          </p>
         </div>
 
-        {/* Countries Section */}
-        <div id="countries" className="space-y-8">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-3 mb-4">
-              <Compass className="h-8 w-8 text-orange-500" />
-              <h2 className="text-3xl font-bold text-gray-800">Choose Your Destination</h2>
+        {/* Breadcrumb Navigation */}
+        {(selectedCountryName || selectedCityName) && (
+          <div className="mb-8">
+            <div className="flex items-center gap-2 text-sm">
+              <Link href="/coliving" className="text-orange-600 hover:text-orange-700 transition-colors">
+                All Countries
+              </Link>
+              {selectedCountryName && (
+                <>
+                  <span className="text-gray-400">/</span>
+                  {selectedCityName ? (
+                    <Link 
+                      href={`/colivings/${slugify(selectedCountryName)}`} 
+                      className="text-orange-600 hover:text-orange-700 transition-colors"
+                    >
+                      {selectedCountryName}
+                    </Link>
+                  ) : (
+                    <span className="text-gray-700">{selectedCountryName}</span>
+                  )}
+                </>
+              )}
+              {selectedCityName && (
+                <>
+                  <span className="text-gray-400">/</span>
+                  <span className="text-gray-700">{selectedCityName}</span>
+                </>
+              )}
             </div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              From vibrant city centers to peaceful coastal towns, find your ideal coliving experience worldwide.
-            </p>
           </div>
+        )}
 
-          {allCountries.length > 0 ? (
-            <>
-              {/* Featured/Popular Countries */}
-              {sortedCountries.slice(0, 6).length > 0 && (
-                <div className="mb-16">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-amber-400 rounded-lg flex items-center justify-center">
-                      <Users className="h-4 w-4 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-800">Most Popular Destinations</h3>
-                    <div className="flex-1 h-px bg-gradient-to-r from-orange-300 to-transparent"></div>
-                  </div>
+        {/* Back Button */}
+        {selectedCountryName && (
+          <div className="mb-8">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="border-orange-300 text-orange-700 hover:bg-orange-50 shadow-md" 
+              asChild
+            >
+              {selectedCityName ? (
+                <Link href={`/colivings/${slugify(selectedCountryName)}`}>
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to {selectedCountryName}
+                </Link>
+              ) : (
+                <Link href="/coliving">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to All Countries
+                </Link>
+              )}
+            </Button>
+          </div>
+        )}
+
+        {/* City Selection for Country View */}
+        {selectedCountryName && !selectedCityName && uniqueCities.length > 1 && (
+          <div className="mb-12">
+            <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-xl p-8">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <MapPin className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-800">Choose a City in {selectedCountryName}</h2>
+                  <p className="text-gray-600">Select a specific city to see available coliving spaces</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {uniqueCities.map((city) => {
+                  const citySpaceCount = allSpaces.filter(space => 
+                    space.country === selectedCountryName && space.city === city
+                  ).length;
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {sortedCountries.slice(0, 6).map((country, index) => (
-                      <Link
-                        key={country.id}
-                        href={`/coliving?country=${encodeURIComponent(country.name)}`}
-                        className="block group"
-                      >
-                        <Card className="relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 bg-gradient-to-br from-white to-orange-50 group-hover:from-orange-50 group-hover:to-amber-50">
-                          {/* Popular Badge */}
-                          {index < 3 && (
-                            <div className="absolute top-4 right-4 z-10">
-                              <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium">
-                                #{index + 1} Popular
-                              </Badge>
-                            </div>
-                          )}
-                          
-                          <div className="p-8 text-center">
-                            {/* Flag */}
-                            <div className="relative mb-6 mx-auto">
+                  return (
+                    <Link
+                      key={city}
+                      href={`/colivings/${slugify(selectedCountryName)}/${slugify(city)}`}
+                      className="group block"
+                    >
+                      <div className="bg-gradient-to-br from-white/80 to-orange-50/80 backdrop-blur-sm rounded-xl p-4 border border-orange-200 hover:border-orange-300 hover:shadow-lg transition-all duration-300">
+                        <div className="text-center">
+                          <h3 className="font-semibold text-gray-800 group-hover:text-orange-600 transition-colors mb-1">
+                            {city}
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            {citySpaceCount} space{citySpaceCount !== 1 ? 's' : ''}
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Main Content */}
+        {!selectedCountryName ? (
+          // Country Directory
+          <>
+            <div className="mb-16">
+              <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-orange-100">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Globe className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-3xl font-bold text-gray-800">Most Popular Destinations</h2>
+                    <p className="text-gray-600 mt-1">Top countries chosen by digital nomads for coliving experiences</p>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {sortedCountries.slice(0, 6).map((country, index) => (
+                    <Link
+                      key={country.id}
+                      href={`/colivings/${slugify(country.name)}`}
+                      className="block group"
+                    >
+                      <Card className="relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 bg-gradient-to-br from-white to-orange-50 group-hover:from-orange-50 group-hover:to-amber-50">
+                        {/* Popular Badge */}
+                        {index < 3 && (
+                          <div className="absolute top-4 right-4 z-10">
+                            <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium">
+                              #{index + 1} Popular
+                            </Badge>
+                          </div>
+                        )}
+                        
+                        <div className="p-6">
+                          <CardHeader className="p-0 mb-4">
+                            <div className="flex items-center gap-4">
                               {country.flagImageUrl ? (
-                                <div className="relative w-24 h-16 mx-auto group-hover:scale-110 transition-transform duration-300">
+                                <div className="relative w-16 h-10 group-hover:scale-110 transition-transform duration-300">
                                   <Image
                                     src={country.flagImageUrl}
                                     alt={`${country.name} flag`}
                                     fill
-                                    className="object-contain rounded-lg shadow-lg"
+                                    className="object-contain rounded-sm"
                                     data-ai-hint={`flag ${country.name.toLowerCase()}`}
                                   />
                                 </div>
                               ) : (
-                                <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                                <div className="text-4xl group-hover:scale-110 transition-transform duration-300">
                                   {country.flag}
                                 </div>
                               )}
-                              
-                              {/* Decorative Ring */}
-                              <div className="absolute -inset-4 border-2 border-orange-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            </div>
-                            
-                            {/* Country Info */}
-                            <CardHeader className="p-0 mb-4">
-                              <CardTitle className="text-2xl font-bold group-hover:text-orange-600 transition-colors duration-300">
-                                {country.name}
-                              </CardTitle>
-                            </CardHeader>
-                            
-                            <CardContent className="p-0">
-                              <div className="space-y-3">
-                                <div className="flex items-center justify-center gap-2 text-orange-600">
-                                  <Building className="h-4 w-4" />
-                                  <span className="font-semibold">
-                                    {country.coliving_count || 0} Coliving Space{country.coliving_count !== 1 ? 's' : ''}
-                                  </span>
-                                </div>
-                                
-                                {/* Progress Bar */}
-                                <div className="w-full bg-orange-100 rounded-full h-2">
-                                  <div 
-                                    className="bg-gradient-to-r from-orange-400 to-amber-400 h-2 rounded-full transition-all duration-500"
-                                    style={{ width: `${Math.min((country.coliving_count || 0) / Math.max(...sortedCountries.map(c => c.coliving_count || 0)) * 100, 100)}%` }}
-                                  ></div>
-                                </div>
-                                
-                                <div className="text-sm text-gray-500">
-                                  Perfect for digital nomads
-                                </div>
+                              <div>
+                                <CardTitle className="text-xl font-bold group-hover:text-orange-600 transition-colors duration-300">
+                                  {country.name}
+                                </CardTitle>
+                                <p className="text-sm text-gray-500 mt-1">Explore amazing spaces</p>
                               </div>
-                            </CardContent>
-                          </div>
+                            </div>
+                          </CardHeader>
                           
-                          {/* Hover Effect Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </Card>
-                      </Link>
-                    ))}
-                  </div>
+                          <CardContent className="p-0">
+                            <div className="space-y-3">
+                              <div className="flex items-center justify-center gap-2 text-orange-600">
+                                <Building className="h-4 w-4" />
+                                <span className="font-semibold">
+                                  {country.coliving_count || 0} Coliving Space{country.coliving_count !== 1 ? 's' : ''}
+                                </span>
+                              </div>
+                              
+                              {/* Progress Bar */}
+                              <div className="w-full bg-orange-100 rounded-full h-2">
+                                <div 
+                                  className="bg-gradient-to-r from-orange-400 to-amber-400 h-2 rounded-full transition-all duration-500"
+                                  style={{ width: `${Math.min((country.coliving_count || 0) / Math.max(...sortedCountries.map(c => c.coliving_count || 0)) * 100, 100)}%` }}
+                                ></div>
+                              </div>
+                              
+                              <div className="text-sm text-gray-500">
+                                Perfect for digital nomads
+                              </div>
+                            </div>
+                          </CardContent>
+                        </div>
+                        
+                        {/* Hover Effect Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      </Card>
+                    </Link>
+                  ))}
                 </div>
-              )}
+              </div>
+            </div>
 
-              {/* All Countries */}
-              {sortedCountries.length > 6 && (
-                <div>
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-400 rounded-lg flex items-center justify-center">
-                      <Globe className="h-4 w-4 text-white" />
+            {/* All Countries */}
+            {sortedCountries.length > 6 && (
+              <div className="mb-16">
+                <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-xl p-8">
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
+                      <Compass className="h-6 w-6 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-800">All Destinations</h3>
-                    <div className="flex-1 h-px bg-gradient-to-r from-blue-300 to-transparent"></div>
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-800">All Destinations</h2>
+                      <p className="text-gray-600">Explore coliving spaces in every corner of the world</p>
+                    </div>
                   </div>
                   
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                     {sortedCountries.slice(6).map((country) => (
                       <Link
                         key={country.id}
-                        href={`/coliving?country=${encodeURIComponent(country.name)}`}
-                        className="block group"
+                        href={`/colivings/${slugify(country.name)}`}
+                        className="group"
                       >
                         <Card className="h-full overflow-hidden shadow-md hover:shadow-xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 flex flex-col items-center justify-center p-4 text-center bg-white group-hover:bg-blue-50">
                           {country.flagImageUrl ? (
@@ -232,149 +351,70 @@ export default async function ColivingDirectoryPage({
                     ))}
                   </div>
                 </div>
-              )}
-            </>
-          ) : (
-            <Alert className="max-w-lg mx-auto">
-              <Building className="h-4 w-4" />
-              <AlertTitle>No Countries Found</AlertTitle>
-              <AlertDescription>
-                It seems there are no countries listed in the database yet. Please add data to the 'countries' collection in Firestore.
-              </AlertDescription>
-            </Alert>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // If a country is selected, fetch all coliving spaces and filter
-  const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
-  const spacesInSelectedCountry = allSpaces.filter(
-    (space) => space.country && space.country.toLowerCase() === selectedCountryName.toLowerCase()
-  );
-
-  const uniqueCitiesInCountry = Array.from(
-    new Set(spacesInSelectedCountry.map((space) => space.city).filter(Boolean))
-  ).map(city => ({
-    name: city!,
-    count: spacesInSelectedCountry.filter(s => s.city === city).length
-  })).sort((a,b) => a.name.localeCompare(b.name));
-
-  const filteredSpaces = selectedCityName
-    ? spacesInSelectedCountry.filter(
-        (space) => space.city && space.city.toLowerCase() === selectedCityName.toLowerCase()
-      )
-    : spacesInSelectedCountry;
-
-  const pageTitle = selectedCityName
-    ? `${selectedCityName}, ${selectedCountryName}`
-    : `${selectedCountryName} Coliving Spaces`;
-
-  const pageDescription = selectedCityName
-    ? `Browse coliving spaces in ${selectedCityName}, ${selectedCountryName}.`
-    : `Discover amazing coliving spaces in ${selectedCountryName}. Select a city or browse all.`;
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-      {/* Navigation Header */}
-      <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-6 mb-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <Button variant="outline" size="lg" className="border-orange-300 text-orange-700 hover:bg-orange-50" asChild>
-            <Link href="/coliving">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to All Countries
-            </Link>
-          </Button>
-          {selectedCityName && selectedCountryName && (
-            <Button variant="outline" size="lg" className="border-blue-300 text-blue-700 hover:bg-blue-50" asChild>
-              <Link href={`/coliving?country=${encodeURIComponent(selectedCountryName)}`}>
-                <MapPin className="mr-2 h-4 w-4" />
-                All cities in {selectedCountryName}
-              </Link>
-            </Button>
-          )}
-        </div>
-      </div>
-
-      {/* Page Header */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-orange-100 via-amber-100 to-yellow-100 rounded-3xl shadow-2xl mb-8">
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-200/30 to-yellow-200/30"></div>
-        <div className="relative z-10 text-center py-16 px-6">
-          <div className="inline-flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-xl">
-              <MapPin className="h-6 w-6 text-white" />
-            </div>
-            <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 bg-clip-text text-transparent">
-              {pageTitle}
-            </h1>
-          </div>
-          <p className="text-lg lg:text-xl text-gray-700 max-w-2xl mx-auto leading-relaxed">
-            {pageDescription}
-          </p>
-          
-          {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-6 mt-8">
-            <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
-              <div className="text-2xl font-bold text-orange-600">{filteredSpaces.length}</div>
-              <div className="text-sm text-gray-600">Available Spaces</div>
-            </div>
-            {uniqueCitiesInCountry.length > 0 && (
-              <div className="text-center bg-white/60 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
-                <div className="text-2xl font-bold text-orange-600">{uniqueCitiesInCountry.length}</div>
-                <div className="text-sm text-gray-600">Cities</div>
               </div>
             )}
-          </div>
-        </div>
-      </div>
-
-      {/* Coliving Spaces Grid */}
-      <div className="space-y-8">
-        {filteredSpaces.length > 0 ? (
-          <>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-teal-500 rounded-lg flex items-center justify-center">
-                <Building className="h-4 w-4 text-white" />
-              </div>
-              <h2 className="text-2xl font-bold text-gray-800">
-                {selectedCityName ? `Coliving Spaces in ${selectedCityName}` : `All Spaces in ${selectedCountryName}`}
-              </h2>
-              <div className="flex-1 h-px bg-gradient-to-r from-green-300 to-transparent"></div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredSpaces.map((space) => (
-                <div key={space.id} className="transform hover:-translate-y-2 transition-transform duration-300">
-                  <ColivingCard space={space} showViewDetailsButton={true} />
-                </div>
-              ))}
-            </div>
           </>
-        ) : (
-          <div className="text-center py-16">
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 border border-gray-200/50 max-w-2xl mx-auto">
-              <MapPin className="h-16 w-16 text-gray-400 mx-auto mb-6" />
-              <h3 className="text-2xl font-semibold text-gray-700 mb-4">No Spaces Found</h3>
-              <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                Sorry, we couldn't find any coliving spaces for {selectedCityName ? `${selectedCityName}, ` : ''}{selectedCountryName}. 
-                This could be because data is still being added or your location is not yet covered.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="outline" size="lg" className="border-orange-300 text-orange-600 hover:bg-orange-50" asChild>
-                  <Link href="/coliving">
-                    <Globe className="mr-2 h-4 w-4" />
-                    Browse All Countries
-                  </Link>
-                </Button>
-                <Button variant="outline" size="lg" className="border-blue-300 text-blue-600 hover:bg-blue-50" asChild>
-                  <Link href="/">
-                    <Home className="mr-2 h-4 w-4" />
-                    Back to Home
-                  </Link>
-                </Button>
-              </div>
+        ) : filteredSpaces.length === 0 ? (
+          // No spaces found
+          <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-xl p-12 text-center">
+            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Search className="h-12 w-12 text-gray-400" />
             </div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">No Coliving Spaces Found</h2>
+            <p className="text-lg text-gray-600 mb-8">
+              {selectedCityName 
+                ? `We couldn't find any coliving spaces in ${selectedCityName}, ${selectedCountryName}.`
+                : `We couldn't find any coliving spaces in ${selectedCountryName}.`
+              }
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild variant="outline" size="lg">
+                <Link href="/coliving">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Explore All Countries
+                </Link>
+              </Button>
+              {selectedCityName && (
+                <Button asChild size="lg">
+                  <Link href={`/colivings/${slugify(selectedCountryName)}`}>
+                    View All {selectedCountryName} Spaces
+                  </Link>
+                </Button>
+              )}
+            </div>
+          </div>
+        ) : (
+          // Coliving Spaces
+          <div className="space-y-8">
+            {filteredSpaces.length > 0 ? (
+              <>
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-teal-500 rounded-lg flex items-center justify-center">
+                    <Building className="h-4 w-4 text-white" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    {selectedCityName ? `Coliving Spaces in ${selectedCityName}` : `All Spaces in ${selectedCountryName}`}
+                  </h2>
+                  <div className="flex-1 h-px bg-gradient-to-r from-green-300 to-transparent"></div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredSpaces.map((space) => (
+                    <div key={space.id} className="transform hover:-translate-y-2 transition-transform duration-300">
+                      <ColivingCard space={space} showViewDetailsButton={true} />
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>No Results Found</AlertTitle>
+                <AlertDescription>
+                  No coliving spaces found for your search criteria. Try adjusting your filters.
+                </AlertDescription>
+              </Alert>
+            )}
           </div>
         )}
       </div>

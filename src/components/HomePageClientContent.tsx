@@ -1,11 +1,12 @@
 'use client';
 
+import { NewsletterSignup } from '@/components/NewsletterSignup';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { ColivingSpace, Community, CountryWithCommunities, NomadVideo } from '@/types';
-import { Compass, ExternalLink, Facebook, Globe, MapPin, MessageSquare, Podcast, Send, Slack, Star, Users, Youtube } from 'lucide-react';
+import { Compass, ExternalLink, Facebook, Globe, Mail, MapPin, MessageSquare, Podcast, Send, Slack, Star, Users, Youtube } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
@@ -187,7 +188,7 @@ export function HomePageClientContent({
               <span className="block bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 bg-clip-text text-transparent">
                 NomadsHood
               </span>
-            </h1>
+        </h1>
             
             {/* Subtitle */}
             <p className="mt-6 text-lg leading-8 text-gray-600 max-w-3xl mx-auto sm:text-xl lg:text-2xl">
@@ -213,7 +214,7 @@ export function HomePageClientContent({
             {/* CTA Buttons */}
             <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button size="lg" className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg transform hover:scale-105 transition-all duration-200 px-8 py-4 text-lg" asChild>
-                <Link href="/coliving">
+            <Link href="/coliving">
                   <MapPin className="mr-2 h-5 w-5" /> 
                   Explore Colivings
                 </Link>
@@ -232,8 +233,8 @@ export function HomePageClientContent({
                     <path d="M20.216 6.415l-.132-.666c-.119-.598-.388-1.163-.806-1.58C18.895 3.785 18.33 3.516 17.732 3.397L17.066 3.264c-1.043-.208-2.088-.208-3.131 0L13.268 3.397c-.598.119-1.163.388-1.58.806-.383.384-.653.913-.806 1.58l-.132.666c-.208 1.043-.208 2.088 0 3.131l.132.666c.119.598.388 1.163.806 1.58.384.383.913.653 1.58.806l.666.132c1.043.208 2.088.208 3.131 0l.666-.132c.598-.119 1.163-.388 1.58-.806.383-.384.653-.913.806-1.58l-.132-.666c.208-1.043.208-2.088 0-3.131zM6.5 8.5h11v7c0 1.1-.9 2-2 2h-7c-1.1 0-2-.9-2-2v-7z"/>
                   </svg>
                   Buy Me a Coffee
-                </Link>
-              </Button>
+            </Link>
+          </Button>
             </div>
             
             {/* Visual Elements */}
@@ -253,6 +254,26 @@ export function HomePageClientContent({
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-16 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 rounded-3xl shadow-xl">
+        <div className="text-center mb-12">
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <Mail className="h-8 w-8 text-white" />
+            </div>
+          </div>
+          
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 bg-clip-text text-transparent mb-4">
+            Stay Ahead of the Nomad Game
+          </h2>
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            Get exclusive insights, early access to events, and personalized recommendations delivered to your inbox every week.
+          </p>
+        </div>
+
+        <NewsletterSignup />
       </section>
 
       {/* Feature Cards */}
@@ -478,7 +499,7 @@ export function HomePageClientContent({
                 </Button>
               </div>
             </div>
-          </div>
+        </div>
         )}
       </section>
 

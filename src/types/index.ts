@@ -1,4 +1,3 @@
-
 export interface ColivingSpace {
   id: string;
   name: string;
@@ -270,4 +269,20 @@ export interface CategorizedNearbyPlaceGroup {
   categoryKey: string;
   categoryDisplayName: string;
   places: NearbyPlace[];
+}
+
+// Newsletter subscription types
+export interface NewsletterSubscription {
+  id?: string;
+  email: string;
+  countries: string[];
+  createdAt?: Date;
+  paymentStatus?: 'pending' | 'completed' | 'failed';
+  paymentId?: string;
+  active?: boolean;
+}
+
+export interface NewsletterFormData {
+  email: string;
+  countries: string[];
 }

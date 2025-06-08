@@ -1,11 +1,30 @@
 import { getAllColivingSpaces, getAllCountriesFromDB } from '@/services/colivingService'; // Add getAllCountriesFromDB
 import { getNomadsHoodPodcastVideosFromFirestore } from '@/services/videoService';
 import type { ColivingSpace, CountryWithCommunities, NomadVideo } from '@/types';
+import type { Metadata } from 'next';
 // getFirebaseStorageDownloadUrl might still be used if other image logic exists elsewhere, 
 // but its direct use here for popular destinations is removed.
 // import { getFirebaseStorageDownloadUrl } from '@/services/storageService'; 
 import { HomePageClientContent } from '@/components/HomePageClientContent';
+import { JsonLd } from '@/components/JsonLd';
 import popularDestinationsData from '@/data/popular_destinations.json'; // Import the new JSON data
+
+export const metadata: Metadata = {
+  title: 'Home',
+  description: 'Discover the best coliving spaces worldwide. Connect with digital nomad communities, watch authentic travel stories, and find your perfect home away from home.',
+  openGraph: {
+    title: 'NomadsHood - Your Gateway to Global Coliving',
+    description: 'Discover the best coliving spaces worldwide. Connect with digital nomad communities, watch authentic travel stories, and find your perfect home away from home.',
+    images: ['/og-home.jpg'],
+  },
+  twitter: {
+    title: 'NomadsHood - Your Gateway to Global Coliving',
+    description: 'Discover the best coliving spaces worldwide. Connect with digital nomad communities, watch authentic travel stories, and find your perfect home away from home.',
+  },
+  alternates: {
+    canonical: '/'
+  }
+};
 
 // Country name to country code mapping
 const countryNameToCode: Record<string, string> = {
@@ -51,13 +70,39 @@ export default async function HomePage() {
       // Add any other fields required by CountryWithCommunities with default/derived values as necessary
     };
   });
+
+  // Structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "NomadsHood",
+    "description": "Discover the best coliving spaces worldwide. Connect with digital nomad communities, watch authentic travel stories, and find your perfect home away from home.",
+    "url": "https://nomadshood.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://nomadshood.com/coliving?country={search_term_string}",
+      "query-input": "required name=search_term_string"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "NomadsHood",
+      "url": "https://nomadshood.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://nomadshood.com/logo.png"
+      }
+    }
+  };
   
   return (
-    <HomePageClientContent
-      allSpaces={allSpaces}
-      allCountries={processedPopularDestinations} // Used for "Popular Destinations" (from JSON)
-      nomadsHoodPodcastVideos={nomadsHoodPodcastVideos}
-      countriesWithCommunities={countriesWithCommunities} // Now uses Firestore data with actual communities
-    />
+    <>
+      <JsonLd data={structuredData} />
+      <HomePageClientContent
+        allSpaces={allSpaces}
+        allCountries={processedPopularDestinations} // Used for "Popular Destinations" (from JSON)
+        nomadsHoodPodcastVideos={nomadsHoodPodcastVideos}
+        countriesWithCommunities={countriesWithCommunities} // Now uses Firestore data with actual communities
+      />
+    </>
   );
 }

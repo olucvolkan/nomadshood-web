@@ -1,0 +1,38 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+🔹 Meta Tags
+	•	Add a unique <title> tag for every page (max 60 characters)
+	•	Add a unique and relevant <meta name="description"> (max 160 characters)
+	•	Include <meta property="og:title"> for Open Graph
+	•	Include <meta property="og:description"> for Open Graph
+	•	Include <meta property="og:image"> with a valid image URL
+	•	Include <meta property="og:url"> that matches the canonical URL
+	•	Add <meta name="twitter:card" content="summary_large_image">
+	•	Add <meta name="twitter:title"> and <meta name="twitter:description">
+	•	Add <meta name="twitter:image"> with a valid URL
+
+🔹 Structural SEO
+	•	Add a <link rel="canonical" href="..."> tag to every page
+	•	Use only one <h1> tag per page
+	•	Ensure each page has clear heading hierarchy (<h1> > <h2> > <h3>)
+
+🔹 Content Matching
+	•	Ensure the title, description, and body contain target keywords
+	•	Avoid duplicate meta tags across pages
+	•	Make sure all images have descriptive alt attributes
+	•	Avoid keyword stuffing — write naturally
+
+🔹 Sitemap & Robots.txt
+	•	Add /sitemap.xml and include all key pages (home, colivings, blog, etc.)
+	•	Add /robots.txt with Sitemap: https://www.nomadshood.com/sitemap.xml
+	•	Submit the sitemap to Google Search Console
+	•	Verify domain in Search Console via DNS or HTML meta tag
+
+🔹 Mobile & Speed
+	•	Ensure pages are mobile-friendly (responsive design)
+	•	Use compressed images and lazy loading
+	•	Minimize critical JavaScript and CSS
+	•	Add <meta name="viewport" content="width=device-width, initial-scale=1">
