@@ -105,8 +105,8 @@ exports.createNewsletterCheckout = functions.https.onCall(async (data, context) 
                 },
             ],
             mode: 'subscription',
-            success_url: `${((_a = functions.config().app) === null || _a === void 0 ? void 0 : _a.url) || 'http://localhost:9002'}/newsletter/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${((_b = functions.config().app) === null || _b === void 0 ? void 0 : _b.url) || 'http://localhost:9002'}/#newsletter`,
+            success_url: `${((_a = functions.config().app) === null || _a === void 0 ? void 0 : _a.url) || 'https://nomadshood.com'}/newsletter/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${((_b = functions.config().app) === null || _b === void 0 ? void 0 : _b.url) || 'https://nomadshood.com'}/newsletter/cancel`,
             metadata: {
                 email: email,
                 countries: countries.join(', '),

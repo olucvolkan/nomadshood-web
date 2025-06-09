@@ -94,8 +94,8 @@ export const createNewsletterCheckout = functions.https.onCall(async (data, cont
         },
       ],
       mode: 'subscription',
-      success_url: `${functions.config().app?.url || 'http://localhost:9002'}/newsletter/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${functions.config().app?.url || 'http://localhost:9002'}/#newsletter`,
+      success_url: `${functions.config().app?.url || 'https://nomadshood.com'}/newsletter/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${functions.config().app?.url || 'https://nomadshood.com'}/newsletter/cancel`,
       metadata: {
         email: email,
         countries: countries.join(', '),
