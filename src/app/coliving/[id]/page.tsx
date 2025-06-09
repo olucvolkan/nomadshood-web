@@ -151,15 +151,12 @@ export default async function OldColivingDetailPage({ params }: { params: { id: 
       redirect('/coliving');
     }
     
-    // Generate the new SEO-friendly URL
-    const countrySlug = slugify(space.country);
-    const citySlug = slugify(space.city);
-    const spaceSlug = createColivingSlug(space.name, space.id);
-    
-    const newUrl = `/colivings/${countrySlug}/${citySlug}/${spaceSlug}`;
-    
-    // Redirect to the new URL structure
-    redirect(newUrl);
+    if (space) {
+      const countrySlug = slugify(space.country);
+      const spaceSlug = createColivingSlug(space.name, space.id);
+      const newUrl = `/colivings/${countrySlug}/${spaceSlug}`;
+      redirect(newUrl);
+    }
   } catch (error) {
     console.error('Error redirecting from old URL:', error);
     redirect('/coliving');

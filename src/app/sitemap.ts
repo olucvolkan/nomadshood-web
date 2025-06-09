@@ -70,9 +70,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Individual coliving space pages with new URL structure
   const colivingRoutes: MetadataRoute.Sitemap = allSpaces
-    .filter(space => space.country && space.city && space.name)
+    .filter(space => space.country && space.name)
     .map(space => ({
-      url: `${baseUrl}/colivings/${slugify(space.country!)}/${slugify(space.city!)}/${createColivingSlug(space.name, space.id)}`,
+      url: `${baseUrl}/colivings/${slugify(space.country!)}/${createColivingSlug(space.name, space.id)}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.5,

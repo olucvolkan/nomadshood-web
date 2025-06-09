@@ -42,7 +42,7 @@ const countryNameToCode: Record<string, string> = {
 export default async function HomePage() {
   const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
   const nomadsHoodPodcastVideos: NomadVideo[] = await getNomadsHoodPodcastVideosFromFirestore();
-  
+
   // Fetch countries with communities from Firestore
   const countriesWithCommunities: CountryWithCommunities[] = await getAllCountriesFromDB();
 
@@ -51,23 +51,23 @@ export default async function HomePage() {
     const countryCode = countryNameToCode[dest.country] || 'xx'; // fallback to 'xx' if not found
     
     return {
-      // Ensure the structure matches the CountryWithCommunities type definition.
-      id: dest.country.toLowerCase().replace(/\s+/g, '-'), // Example: 'costa-rica'
+    // Ensure the structure matches the CountryWithCommunities type definition.
+    id: dest.country.toLowerCase().replace(/\s+/g, '-'), // Example: 'costa-rica'
       code: countryCode, // Add the country code
-      name: dest.country,
-      coliving_count: dest.coliving_count, // Assumed to be part of CountryWithCommunities or handled by component
+    name: dest.country,
+    coliving_count: dest.coliving_count, // Assumed to be part of CountryWithCommunities or handled by component
       flag: dest.country_flag,     // Keep emoji flag as fallback
       flagImageUrl: `/flags/${countryCode}.png`, // Use local flag image
-      
-      // country_image_link from JSON is a full URL.
-      // Assign to firebaseCoverImageUrl, assuming it's for any remote URLs.
-      firebaseCoverImageUrl: dest.country_image_link, 
-      cover_image: undefined, // Explicitly set to undefined as firebaseCoverImageUrl is used for the remote URL
+    
+    // country_image_link from JSON is a full URL.
+    // Assign to firebaseCoverImageUrl, assuming it's for any remote URLs.
+    firebaseCoverImageUrl: dest.country_image_link, 
+    cover_image: undefined, // Explicitly set to undefined as firebaseCoverImageUrl is used for the remote URL
 
-      // Default or placeholder values for other potential fields in CountryWithCommunities:
-      communities: [], // Assuming an empty array or that this field is optional
-      dataAiHint: `Beautiful view of ${dest.country}`, // Generic AI hint
-      // Add any other fields required by CountryWithCommunities with default/derived values as necessary
+    // Default or placeholder values for other potential fields in CountryWithCommunities:
+    communities: [], // Assuming an empty array or that this field is optional
+    dataAiHint: `Beautiful view of ${dest.country}`, // Generic AI hint
+    // Add any other fields required by CountryWithCommunities with default/derived values as necessary
     };
   });
 
@@ -97,12 +97,12 @@ export default async function HomePage() {
   return (
     <>
       <JsonLd data={structuredData} />
-      <HomePageClientContent
-        allSpaces={allSpaces}
+    <HomePageClientContent
+      allSpaces={allSpaces}
         allCountries={processedPopularDestinations} // Used for "Popular Destinations" (from JSON)
-        nomadsHoodPodcastVideos={nomadsHoodPodcastVideos}
+      nomadsHoodPodcastVideos={nomadsHoodPodcastVideos}
         countriesWithCommunities={countriesWithCommunities} // Now uses Firestore data with actual communities
-      />
+    />
     </>
   );
 }

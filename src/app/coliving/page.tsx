@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getAllColivingSpaces, getAllCountriesFromDB } from '@/services/colivingService';
 import type { ColivingSpace, CountryWithCommunities } from '@/types';
 import { slugify } from '@/utils/slugify';
-import { AlertCircle, ArrowLeft, Building, Compass, Globe, Home, MapPin, Search } from 'lucide-react';
+import { AlertCircle, ArrowLeft, Building, Compass, Globe, Home, Search } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -31,7 +31,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   }
 
   const canonicalUrl = selectedCountryName 
-    ? `/colivings/${slugify(selectedCountryName)}${selectedCityName ? `/${slugify(selectedCityName)}` : ''}`
+    ? `/colivings/${slugify(selectedCountryName)}`
     : '/coliving';
 
   return {
@@ -68,15 +68,6 @@ export default async function ColivingDirectoryPage({
   });
 
   const sortedCountries = countries.sort((a, b) => (b.coliving_count || 0) - (a.coliving_count || 0));
-
-  // Get unique cities for the selected country
-  const uniqueCities = selectedCountryName 
-    ? Array.from(new Set(
-        allSpaces
-          .filter(space => space.country === selectedCountryName && space.city)
-          .map(space => space.city!)
-      )).sort()
-    : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
@@ -157,50 +148,6 @@ export default async function ColivingDirectoryPage({
                 </Link>
               )}
             </Button>
-          </div>
-        )}
-
-        {/* City Selection for Country View */}
-        {selectedCountryName && !selectedCityName && uniqueCities.length > 1 && (
-          <div className="mb-12">
-            <div className="bg-white/60 backdrop-blur-sm rounded-3xl shadow-xl p-8">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg">
-                  <MapPin className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-800">Choose a City in {selectedCountryName}</h2>
-                  <p className="text-gray-600">Select a specific city to see available coliving spaces</p>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {uniqueCities.map((city) => {
-                  const citySpaceCount = allSpaces.filter(space => 
-                    space.country === selectedCountryName && space.city === city
-                  ).length;
-                  
-                  return (
-                    <Link
-                      key={city}
-                      href={`/colivings/${slugify(selectedCountryName)}/${slugify(city)}`}
-                      className="group block"
-                    >
-                      <div className="bg-gradient-to-br from-white/80 to-orange-50/80 backdrop-blur-sm rounded-xl p-4 border border-orange-200 hover:border-orange-300 hover:shadow-lg transition-all duration-300">
-                        <div className="text-center">
-                          <h3 className="font-semibold text-gray-800 group-hover:text-orange-600 transition-colors mb-1">
-                            {city}
-                          </h3>
-                          <p className="text-sm text-gray-600">
-                            {citySpaceCount} space{citySpaceCount !== 1 ? 's' : ''}
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
           </div>
         )}
 

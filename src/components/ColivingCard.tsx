@@ -4,8 +4,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import type { ColivingSpace } from '@/types';
 import { createColivingSlug, slugify } from '@/utils/slugify';
 import { MapPin, MessageSquare, Video } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
+import ColivingLogo from './ColivingLogo';
 
 interface ColivingCardProps {
   space: ColivingSpace;
@@ -18,16 +18,15 @@ export function ColivingCard({ space, showViewDetailsButton = false }: ColivingC
 
   // Generate SEO-friendly URL
   const getColivingUrl = () => {
-    if (!space.country || !space.city) {
+    if (!space.country) {
       // Fallback to old URL if missing required data
       return `/coliving/${space.id}`;
     }
     
     const countrySlug = slugify(space.country);
-    const citySlug = slugify(space.city);
     const spaceSlug = createColivingSlug(space.name, space.id);
     
-    return `/colivings/${countrySlug}/${citySlug}/${spaceSlug}`;
+    return `/colivings/${countrySlug}/${spaceSlug}`;
   };
 
   const colivingUrl = getColivingUrl();
@@ -35,14 +34,9 @@ export function ColivingCard({ space, showViewDetailsButton = false }: ColivingC
   return (
     <Card className="flex flex-col h-full shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardHeader className="flex flex-row items-start gap-4 p-4">
-        <Image
-          src={space.logoUrl} 
-          alt={`${space.name} logo`}
-          width={80}
-          height={80}
-          className="rounded-lg border object-cover" // Added object-cover
-          data-ai-hint={space.dataAiHint || 'logo building'}
-        />
+        <div className="relative w-20 h-20 rounded-lg overflow-hidden border bg-white flex-shrink-0">
+          <ColivingLogo logoUrl={space.logoUrl} name={space.name} />
+        </div>
         <div className="flex-1">
           <Link href={colivingUrl} className="group">
             <CardTitle className="text-xl mb-1 group-hover:text-primary transition-colors">
