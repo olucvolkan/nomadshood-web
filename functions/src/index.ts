@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
+import { Resend } from 'resend';
 import Stripe from 'stripe';
 
 // Initialize Firebase Admin SDK
@@ -15,6 +16,15 @@ const getStripe = () => {
   return new Stripe(stripeSecretKey, {
     apiVersion: '2025-05-28.basil',
   });
+};
+
+// Initialize Resend
+const getResend = () => {
+  const resendApiKey = functions.config().resend?.api_key;
+  if (!resendApiKey) {
+    throw new Error('Resend API key not found in Firebase config');
+  }
+  return new Resend(resendApiKey);
 };
 
 interface MailSubscriber {
@@ -473,7 +483,7 @@ export const getSubscriberSyncStatus = functions.https.onCall(async (data, conte
 });
 
 /**
- * Send welcome email to new subscribers using MailerLite API
+ * Send welcome email to new subscribers using Resend API
  */
 export const sendWelcomeEmail = functions.firestore
   .document('mail_subscriber/{subscriberId}')
@@ -489,47 +499,34 @@ export const sendWelcomeEmail = functions.firestore
         return;
       }
 
-      // Get MailerLite API key
-      const mailerLiteApiKey = functions.config().mailerlite?.api_key;
-      if (!mailerLiteApiKey) {
-        console.error('MailerLite API key not found in Firebase config');
-        return;
-      }
+      // Initialize Resend
+      const resend = getResend();
 
       // Generate email content based on selected countries
       const emailContent = await generateWelcomeEmailContent(subscriberData.countries);
+      const plainTextContent = await generatePlainTextContent(subscriberData.countries);
 
-      // Send email via MailerLite API
-      const emailData = {
-        to: [{ email: subscriberData.email }],
+      // Send email via Resend API
+      const { data, error } = await resend.emails.send({
+        from: 'NomadsHood Team <newsletter@nomadshood.com>',
+        to: [subscriberData.email],
         subject: '🎉 Welcome to NomadsHood! Your personalized travel guide awaits',
-        from: {
-          email: 'newsletter@nomadshood.com',
-          name: 'NomadsHood Team'
-        },
         html: emailContent,
-        text: await generatePlainTextContent(subscriberData.countries)
-      };
+        text: plainTextContent,
+      });
 
-      const response = await axios.post(
-        'https://connect.mailerlite.com/api/emails',
-        emailData,
-        {
-          headers: {
-            'Authorization': `Bearer ${mailerLiteApiKey}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        }
-      );
+      if (error) {
+        throw new Error(`Resend error: ${error.message}`);
+      }
 
-      console.log('Welcome email sent successfully:', response.data);
+      console.log('Welcome email sent successfully:', data);
 
       // Update subscriber document with welcome email status
       await snap.ref.update({
         welcomeEmailSent: true,
         welcomeEmailSentAt: admin.firestore.FieldValue.serverTimestamp(),
-        welcomeEmailStatus: 'sent'
+        welcomeEmailStatus: 'sent',
+        resendMessageId: data?.id
       });
 
     } catch (error) {
