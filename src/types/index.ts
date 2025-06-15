@@ -276,6 +276,7 @@ export interface NewsletterSubscription {
   id?: string;
   email: string;
   countries: string[];
+  language?: string;
   createdAt?: Date;
   paymentStatus?: 'pending' | 'completed' | 'failed';
   paymentId?: string;
@@ -285,4 +286,5 @@ export interface NewsletterSubscription {
 export interface NewsletterFormData {
   email: string;
   countries: string[];
+  language?: string;
 }

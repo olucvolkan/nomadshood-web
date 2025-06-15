@@ -70,10 +70,12 @@ const getResend = () => {
 exports.createNewsletterCheckout = functions.https.onCall(async (data, context) => {
     var _a, _b;
     try {
-        const { email, countries } = data;
+        const { email, countries, language } = data;
         if (!email || !countries || !Array.isArray(countries) || countries.length === 0) {
             throw new functions.https.HttpsError('invalid-argument', 'Email and countries are required');
         }
+        // Default to English if no language specified
+        const selectedLanguage = language || 'en';
         const stripe = getStripe();
         // Create or retrieve customer
         let customer;
@@ -83,12 +85,21 @@ exports.createNewsletterCheckout = functions.https.onCall(async (data, context) 
         });
         if (existingCustomers.data.length > 0) {
             customer = existingCustomers.data[0];
+            // Update customer metadata with new preferences
+            await stripe.customers.update(customer.id, {
+                metadata: {
+                    countries: countries.join(', '),
+                    language: selectedLanguage,
+                    source: 'nomadshood_newsletter'
+                }
+            });
         }
         else {
             customer = await stripe.customers.create({
                 email: email,
                 metadata: {
                     countries: countries.join(', '),
+                    language: selectedLanguage,
                     source: 'nomadshood_newsletter'
                 }
             });
@@ -103,7 +114,7 @@ exports.createNewsletterCheckout = functions.https.onCall(async (data, context) 
                         currency: 'eur',
                         product_data: {
                             name: 'NomadsHood Newsletter Subscription',
-                            description: 'Monthly premium nomad content and insights',
+                            description: 'Monthly premium nomad content and personalized PDF guides',
                             images: ['https://nomadshood.com/newsletter-preview.jpg'], // Add your image
                         },
                         recurring: {
@@ -120,6 +131,7 @@ exports.createNewsletterCheckout = functions.https.onCall(async (data, context) 
             metadata: {
                 email: email,
                 countries: countries.join(', '),
+                language: selectedLanguage,
                 source: 'nomadshood_newsletter'
             }
         });
@@ -127,6 +139,7 @@ exports.createNewsletterCheckout = functions.https.onCall(async (data, context) 
         const pendingSubscription = {
             email: email,
             countries: countries,
+            language: selectedLanguage,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
             paymentStatus: 'pending',
             stripeSessionId: session.id,
@@ -210,6 +223,7 @@ async function handleCheckoutCompleted(session) {
         const activeSubscription = {
             email: pendingData.email,
             countries: pendingData.countries,
+            language: pendingData.language,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
             paymentStatus: 'completed',
             paymentId: session.payment_intent,
@@ -313,6 +327,7 @@ exports.syncSubscriberToMailerLite = functions.firestore
             email: subscriberData.email,
             fields: {
                 countries: subscriberData.countries.join(', '),
+                language: subscriberData.language || 'en',
                 created_at: subscriberData.createdAt.toDate().toISOString(),
                 payment_status: subscriberData.paymentStatus || 'pending',
                 source: 'nomadshood_website'
@@ -382,6 +397,7 @@ exports.retrySyncToMailerLite = functions.https.onCall(async (data, context) => 
             email: subscriberData.email,
             fields: {
                 countries: subscriberData.countries.join(', '),
+                language: subscriberData.language || 'en',
                 created_at: subscriberData.createdAt.toDate().toISOString(),
                 payment_status: subscriberData.paymentStatus || 'pending',
                 source: 'nomadshood_website_retry'
@@ -570,6 +586,7 @@ async function generateWelcomeEmailContent(countries) {
                   <li style="margin-bottom: 8px;">✨ Featured nomad stories</li>
                   <li style="margin-bottom: 8px;">🎥 Curated YouTube content</li>
                   <li style="margin-bottom: 8px;">💰 Monthly budget planning guides</li>
+                  <li style="margin-bottom: 8px;">📄 Personalized PDF travel guides in your preferred language</li>
               </ul>
           </div>
 
@@ -625,7 +642,8 @@ async function generatePlainTextContent(countries) {
         content += `• Exclusive coliving events\n`;
         content += `• Featured nomad stories\n`;
         content += `• Curated YouTube content\n`;
-        content += `• Monthly budget planning guides\n\n`;
+        content += `• Monthly budget planning guides\n`;
+        content += `• Personalized PDF travel guides in your preferred language\n\n`;
         content += `Questions? Contact us at volkanoluc@gmail.com\n`;
         content += `Visit: https://nomadshood.com\n`;
         content += `YouTube: https://youtube.com/@nomadshood`;
@@ -751,6 +769,7 @@ function generateFallbackEmailContent(countries) {
                 <li style="margin-bottom: 8px;">✨ Featured nomad stories</li>
                 <li style="margin-bottom: 8px;">🎥 Curated YouTube content</li>
                 <li style="margin-bottom: 8px;">💰 Monthly budget planning guides</li>
+                <li style="margin-bottom: 8px;">📄 Personalized PDF travel guides in your preferred language</li>
             </ul>
         </div>
 
@@ -783,6 +802,7 @@ Thanks for joining our community! We're currently curating the best coliving spa
 • Featured nomad stories
 • Curated YouTube content
 • Monthly budget planning guides
+• Personalized PDF travel guides in your preferred language
 
 Questions? Contact us at volkanoluc@gmail.com
 Visit: https://nomadshood.com

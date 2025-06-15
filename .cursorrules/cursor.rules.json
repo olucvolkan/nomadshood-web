@@ -1,0 +1,29 @@
+{
+  "rules": [
+    {
+      "description": "Page must promote the bonus PDF as a core part of the value proposition.",
+      "query": "body text",
+      "assert": "includes('Nomad Starter Guide') || includes('bonus PDF')"
+    },
+    {
+      "description": "There should be a visual (image or icon) representation of the PDF.",
+      "query": "img[src], svg",
+      "assert": "includes('pdf') || includes('guide') || includes('starter')"
+    },
+    {
+      "description": "The subscription call-to-action should reference the PDF reward.",
+      "query": "button, a[href]",
+      "assert": "text.includes('Get the Guide') || text.includes('PDF') || text.includes('Bonus')"
+    },
+    {
+      "description": "The value of the PDF should be clearly described with a bullet-point list or section.",
+      "query": "ul, section, div",
+      "assert": "text.includes('Packing list') && text.includes('Budget') && text.includes('Fitness')"
+    },
+    {
+      "description": "The email subscription pitch should mention both the PDF and ongoing weekly content.",
+      "query": "body text",
+      "assert": "includes('weekly') && includes('newsletter') && includes('PDF')"
+    }
+  ]
+}
