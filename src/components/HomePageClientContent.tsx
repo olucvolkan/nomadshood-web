@@ -182,14 +182,10 @@ export function HomePageClientContent({
               </div>
             </div>
             
-            {/* Improved SEO-Focused Title */}
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-              <span className="block">Find Your Next</span>
+            {/* Brand Title */}
+            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
               <span className="block bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 bg-clip-text text-transparent">
-                Coliving Space
-              </span>
-              <span className="block text-2xl sm:text-3xl lg:text-4xl mt-2 text-gray-700">
-                Join the Global Nomad Community
+                NomadsHood
               </span>
         </h1>
             
