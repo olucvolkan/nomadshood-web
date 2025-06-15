@@ -3,6 +3,7 @@ import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { Resend } from 'resend';
 import Stripe from 'stripe';
+import { onSubscriberCreate } from './subscriberTrigger';
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
@@ -912,3 +913,4 @@ Questions? Contact us at volkanoluc@gmail.com
 Visit: https://nomadshood.com
 YouTube: https://youtube.com/@nomadshood`;
 } 
+export { onSubscriberCreate };
