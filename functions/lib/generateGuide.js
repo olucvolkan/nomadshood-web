@@ -38,9 +38,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateCountryGuide = generateCountryGuide;
 const admin = __importStar(require("firebase-admin"));
+const functions = __importStar(require("firebase-functions"));
 const openai_1 = require("openai");
 const puppeteer_1 = __importDefault(require("puppeteer"));
-const openai = new openai_1.OpenAI();
+const openai = new openai_1.OpenAI({
+    apiKey: functions.config().openai.api_key,
+});
 async function fetchData(country) {
     var _a, _b, _c, _d;
     const db = admin.firestore();

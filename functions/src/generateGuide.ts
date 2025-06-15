@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions';
 import { OpenAI } from 'openai';
 import puppeteer from 'puppeteer';
 
@@ -11,7 +12,9 @@ type GuideSections = {
   communities: any[];
 };
 
-const openai = new OpenAI();
+const openai = new OpenAI({
+  apiKey: functions.config().openai.api_key,
+});
 
 async function fetchData(country: string): Promise<GuideSections> {
   const db = admin.firestore();
