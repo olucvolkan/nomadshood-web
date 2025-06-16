@@ -4,6 +4,7 @@ import * as functions from 'firebase-functions';
 import { Resend } from 'resend';
 import Stripe from 'stripe';
 import { onSubscriberCreate } from './subscriberTrigger';
+import { generateTestPdf } from './testPdfEndpoint';
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
@@ -913,4 +914,5 @@ Questions? Contact us at volkanoluc@gmail.com
 Visit: https://nomadshood.com
 YouTube: https://youtube.com/@nomadshood`;
 } 
-export { onSubscriberCreate };
+export { generateTestPdf, onSubscriberCreate };
+

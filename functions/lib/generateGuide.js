@@ -32,84 +32,138 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateCountryGuide = generateCountryGuide;
 const admin = __importStar(require("firebase-admin"));
 const functions = __importStar(require("firebase-functions"));
 const openai_1 = require("openai");
-const puppeteer_1 = __importDefault(require("puppeteer"));
 const openai = new openai_1.OpenAI({
     apiKey: functions.config().openai.api_key,
 });
-async function fetchData(country) {
-    var _a, _b, _c, _d;
+async function fetchData(countryCode, language) {
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     const db = admin.firestore();
+    // Fetch all colivings for this country
     const colivingsSnap = await db
         .collection('colivings')
-        .where('country', '==', country)
-        .limit(5)
+        .where('country_code', '==', countryCode)
         .get();
-    const colivings = colivingsSnap.docs.map((d) => d.data());
-    const countryDoc = await db.collection('countries').doc(country).get();
-    const communities = countryDoc.exists ? ((_a = countryDoc.data()) === null || _a === void 0 ? void 0 : _a.community_links) || [] : [];
-    const nearbyDoc = await db.collection('coliving_nearby_places').doc(country).get();
-    const nearby = nearbyDoc.exists ? ((_b = nearbyDoc.data()) === null || _b === void 0 ? void 0 : _b.nearby) || [] : [];
-    const prompt = `Write a short digital nomad guide for ${country}. Include a one paragraph overview, internet tips, visa information and budget advice.`;
+    const colivings = [];
+    for (const doc of colivingsSnap.docs) {
+        const data = doc.data();
+        const colivingId = doc.id;
+        // Fetch nearby places for this coliving
+        let nearbyPlaces = [];
+        try {
+            const nearbyDoc = await db.collection('coliving_nearby_places').doc(colivingId).get();
+            if (nearbyDoc.exists) {
+                const nearbyData = nearbyDoc.data();
+                if (nearbyData === null || nearbyData === void 0 ? void 0 : nearbyData.nearby) {
+                    nearbyPlaces = nearbyData.nearby.slice(0, 5); // Top 5 nearby places
+                }
+            }
+        }
+        catch (err) {
+            console.log(`Could not fetch nearby places for coliving ${colivingId}`);
+        }
+        colivings.push({
+            name: data.name || 'Unnamed Coliving',
+            city: data.city,
+            country: data.country,
+            monthlyPrice: data.monthlyPrice || data.min_price,
+            website: data.website,
+            nomadshoodUrl: `https://nomadshood.com/colivings/${countryCode}/${data.slug || colivingId}`,
+            nearbyPlaces
+        });
+    }
+    // Fetch country data for communities
+    const countryDoc = await db.collection('countries').doc(countryCode).get();
+    const communities = countryDoc.exists ? ((_a = countryDoc.data()) === null || _a === void 0 ? void 0 : _a.communities) || [] : [];
+    // Generate comprehensive content with OpenAI
+    const prompt = `Write a comprehensive 2-page digital nomad guide for ${countryCode}. 
+
+  Please structure your response with clear sections:
+  
+  1. COUNTRY_OVERVIEW: Write 2-3 detailed paragraphs about why ${countryCode} is perfect for digital nomads. Include information about the lifestyle, culture, digital infrastructure, and what makes it special for remote workers. Make it engaging and informative.
+  
+  2. INTERNET_VISA_TIPS: Provide detailed and practical information about internet speeds, reliable wifi spots, coworking spaces, visa requirements for digital nomads, visa processes, and any digital nomad visa programs available.
+  
+  3. WORKING_TIPS: Provide advice about best places to work, time zones, business culture, networking opportunities, and productivity tips specific to this country.
+  
+  4. CULTURAL_TIPS: Share insights about local customs, language basics, cultural dos and don'ts, social norms, and how to integrate with the local community.
+  
+  5. BUDGET_FOOD_TIPS: Give specific budget ranges, cost of living details, local food recommendations, where to eat affordably, grocery shopping tips, and local food culture insights.
+  
+  Make each section detailed and practical. Write in an engaging, informative tone that would be valuable for someone planning to spend months in ${countryCode} as a digital nomad.`;
     const chat = await openai.chat.completions.create({
         model: 'gpt-4o',
         messages: [{ role: 'user', content: prompt }],
+        max_tokens: 2000,
     });
-    const text = ((_d = (_c = chat.choices[0]) === null || _c === void 0 ? void 0 : _c.message) === null || _d === void 0 ? void 0 : _d.content) || '';
-    const [countryOverview = '', internetVisaTips = '', budgetFoodTips = ''] = text.split('\n').map((s) => s.trim());
-    return { countryOverview, internetVisaTips, budgetFoodTips, colivings, nearby, communities };
+    const text = ((_c = (_b = chat.choices[0]) === null || _b === void 0 ? void 0 : _b.message) === null || _c === void 0 ? void 0 : _c.content) || '';
+    // Parse the structured response
+    const sections = text.split(/\d+\.\s+[A-Z_]+:/);
+    const countryOverview = ((_d = sections[1]) === null || _d === void 0 ? void 0 : _d.trim()) || 'No overview available.';
+    const internetVisaTips = ((_e = sections[2]) === null || _e === void 0 ? void 0 : _e.trim()) || 'No internet/visa tips available.';
+    const workingTips = ((_f = sections[3]) === null || _f === void 0 ? void 0 : _f.trim()) || 'No working tips available.';
+    const culturalTips = ((_g = sections[4]) === null || _g === void 0 ? void 0 : _g.trim()) || 'No cultural tips available.';
+    const budgetFoodTips = ((_h = sections[5]) === null || _h === void 0 ? void 0 : _h.trim()) || 'No budget/food tips available.';
+    return {
+        countryCode,
+        language,
+        title: `${countryCode} Digital Nomad Guide`,
+        generatedAt: new Date().toISOString(),
+        sections: {
+            countryOverview: {
+                title: 'Country Overview',
+                content: countryOverview
+            },
+            internetVisaTips: {
+                title: 'Internet & Visa Tips',
+                content: internetVisaTips
+            },
+            workingTips: {
+                title: 'Working Tips',
+                content: workingTips
+            },
+            culturalTips: {
+                title: 'Cultural Tips',
+                content: culturalTips
+            },
+            budgetFoodTips: {
+                title: 'Budget & Food Tips',
+                content: budgetFoodTips
+            }
+        },
+        colivings,
+        communities,
+        footer: {
+            generatedBy: 'NomadsHood.com',
+            website: 'https://nomadshood.com'
+        }
+    };
 }
-function renderHtml(data, language, country) {
-    const colivingHtml = data.colivings.map((c) => `<li>${c.name || 'Coliving'}</li>`).join('');
-    const nearbyHtml = data.nearby.map((n) => `<li>${n.name || 'Place'}</li>`).join('');
-    const communityHtml = data.communities.map((c) => `<li><a href="${c.link}">${c.name}</a></li>`).join('');
-    return `<!DOCTYPE html>
-<html lang="${language}">
-<head>
-<meta charset="utf-8">
-<title>${country} Guide</title>
-</head>
-<body>
-<h1>${country} Guide</h1>
-<h2>Overview</h2>
-<p>${data.countryOverview}</p>
-<h2>Internet & Visa Tips</h2>
-<p>${data.internetVisaTips}</p>
-<h2>Top Colivings</h2>
-<ul>${colivingHtml}</ul>
-<h2>Nearby Spots</h2>
-<ul>${nearbyHtml}</ul>
-<h2>Community Links</h2>
-<ul>${communityHtml}</ul>
-<h2>Budget & Food Tips</h2>
-<p>${data.budgetFoodTips}</p>
-</body>
-</html>`;
-}
-async function generateCountryGuide(language, country) {
+async function generateCountryGuide(language, countryCode) {
     const bucket = admin.storage().bucket();
-    const filePath = `pdfs/${language}/${country}.pdf`;
+    const filePath = `guide-data/${language}/${countryCode}.json`;
     const file = bucket.file(filePath);
     const [exists] = await file.exists();
     if (exists) {
-        return file.publicUrl();
+        // If file exists, download it to get the data
+        const [buffer] = await file.download();
+        const data = JSON.parse(buffer.toString());
+        return {
+            url: file.publicUrl(),
+            data: data
+        };
     }
-    const data = await fetchData(country);
-    const html = renderHtml(data, language, country);
-    const browser = await puppeteer_1.default.launch({ args: ['--no-sandbox'] });
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: 'networkidle0' });
-    const pdfBuffer = await page.pdf({ format: 'A4' });
-    await browser.close();
-    await file.save(pdfBuffer, { contentType: 'application/pdf' });
+    const data = await fetchData(countryCode, language);
+    const jsonString = JSON.stringify(data, null, 2);
+    await file.save(jsonString, { contentType: 'application/json' });
     await file.makePublic();
-    return file.publicUrl();
+    return {
+        url: file.publicUrl(),
+        data: data
+    };
 }
 //# sourceMappingURL=generateGuide.js.map

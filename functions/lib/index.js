@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.onSubscriberCreate = exports.sendWelcomeEmail = exports.getSubscriberSyncStatus = exports.retrySyncToMailerLite = exports.syncSubscriberToMailerLite = exports.stripeWebhook = exports.createNewsletterCheckout = void 0;
+exports.onSubscriberCreate = exports.generateTestPdf = exports.sendWelcomeEmail = exports.getSubscriberSyncStatus = exports.retrySyncToMailerLite = exports.syncSubscriberToMailerLite = exports.stripeWebhook = exports.createNewsletterCheckout = void 0;
 const axios_1 = __importDefault(require("axios"));
 const admin = __importStar(require("firebase-admin"));
 const functions = __importStar(require("firebase-functions"));
@@ -44,6 +44,8 @@ const resend_1 = require("resend");
 const stripe_1 = __importDefault(require("stripe"));
 const subscriberTrigger_1 = require("./subscriberTrigger");
 Object.defineProperty(exports, "onSubscriberCreate", { enumerable: true, get: function () { return subscriberTrigger_1.onSubscriberCreate; } });
+const testPdfEndpoint_1 = require("./testPdfEndpoint");
+Object.defineProperty(exports, "generateTestPdf", { enumerable: true, get: function () { return testPdfEndpoint_1.generateTestPdf; } });
 // Initialize Firebase Admin SDK
 admin.initializeApp();
 // Initialize Stripe with secret key from config

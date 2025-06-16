@@ -50,24 +50,36 @@ exports.onSubscriberCreate = functions.firestore
     const data = snap.data();
     const language = data.language || 'en';
     const resend = getResend();
-    const links = [];
-    for (const country of data.countries) {
+    const guideLinks = [];
+    const guideData = [];
+    for (const countryCode of data.countries) {
         try {
-            const url = await (0, generateGuide_1.generateCountryGuide)(language, country);
-            links.push(`${country}: ${url}`);
+            const result = await (0, generateGuide_1.generateCountryGuide)(language, countryCode);
+            guideLinks.push(`${countryCode}: ${result.url}`);
+            guideData.push({
+                countryCode,
+                jsonUrl: result.url,
+                data: result.data
+            });
         }
         catch (err) {
-            console.error('Error generating guide for', country, err);
+            console.error('Error generating guide data for', countryCode, err);
         }
     }
-    if (links.length > 0) {
+    if (guideLinks.length > 0) {
         await resend.emails.send({
             from: 'info@nomadshood.com',
             to: data.email,
-            subject: 'Your Nomad Guides',
-            text: `Here are your guides:\n${links.join('\n')}`,
+            subject: 'Your Nomad Guide Data is Ready!',
+            text: `Hello! Your personalized nomad guide data has been generated.\n\nCountries included: ${data.countries.join(', ')}\n\nGuide data URLs:\n${guideLinks.join('\n')}\n\nYou can use this data to generate beautiful PDF guides.\n\nHappy travels!`,
+            // Note: PDF generation will be handled via Placid using the JSON data
         });
     }
-    await snap.ref.update({ pdfGenerated: true, emailSent: true });
+    // Store guide data in the document for future reference
+    await snap.ref.update({
+        guideDataGenerated: true,
+        emailSent: true,
+        guideData: guideData
+    });
 });
 //# sourceMappingURL=subscriberTrigger.js.map
