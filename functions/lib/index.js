@@ -36,16 +36,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.onSubscriberCreate = exports.generateTestPdf = exports.sendWelcomeEmail = exports.getSubscriberSyncStatus = exports.retrySyncToMailerLite = exports.syncSubscriberToMailerLite = exports.stripeWebhook = exports.createNewsletterCheckout = void 0;
+exports.testResendConfig = exports.sendTestEmail = exports.sendPersonalizedColivingEmail = exports.sendBatchPersonalizedEmails = exports.selectColivingForSubscriber = exports.getAllSubscribers = exports.generatePersonalizedRecommendation = exports.triggerPersonalizedEmails = exports.sendWeeklyPersonalizedEmails = exports.onSubscriberCreate = exports.generateTestPdf = exports.sendWelcomeEmail = exports.getSubscriberSyncStatus = exports.retrySyncToMailerLite = exports.syncSubscriberToMailerLite = exports.stripeWebhook = exports.createNewsletterCheckout = void 0;
 const axios_1 = __importDefault(require("axios"));
+const dotenv = __importStar(require("dotenv"));
 const admin = __importStar(require("firebase-admin"));
 const functions = __importStar(require("firebase-functions"));
 const resend_1 = require("resend");
 const stripe_1 = __importDefault(require("stripe"));
+const countryBasedColivingEmail_1 = require("./countryBasedColivingEmail");
+Object.defineProperty(exports, "generatePersonalizedRecommendation", { enumerable: true, get: function () { return countryBasedColivingEmail_1.generatePersonalizedRecommendation; } });
+Object.defineProperty(exports, "getAllSubscribers", { enumerable: true, get: function () { return countryBasedColivingEmail_1.getAllSubscribers; } });
+Object.defineProperty(exports, "selectColivingForSubscriber", { enumerable: true, get: function () { return countryBasedColivingEmail_1.selectColivingForSubscriber; } });
+Object.defineProperty(exports, "sendBatchPersonalizedEmails", { enumerable: true, get: function () { return countryBasedColivingEmail_1.sendBatchPersonalizedEmails; } });
+Object.defineProperty(exports, "sendPersonalizedColivingEmail", { enumerable: true, get: function () { return countryBasedColivingEmail_1.sendPersonalizedColivingEmail; } });
+Object.defineProperty(exports, "sendTestEmail", { enumerable: true, get: function () { return countryBasedColivingEmail_1.sendTestEmail; } });
 const subscriberTrigger_1 = require("./subscriberTrigger");
 Object.defineProperty(exports, "onSubscriberCreate", { enumerable: true, get: function () { return subscriberTrigger_1.onSubscriberCreate; } });
 const testPdfEndpoint_1 = require("./testPdfEndpoint");
 Object.defineProperty(exports, "generateTestPdf", { enumerable: true, get: function () { return testPdfEndpoint_1.generateTestPdf; } });
+const weeklyPersonalizedScheduler_1 = require("./weeklyPersonalizedScheduler");
+Object.defineProperty(exports, "sendWeeklyPersonalizedEmails", { enumerable: true, get: function () { return weeklyPersonalizedScheduler_1.sendWeeklyPersonalizedEmails; } });
+Object.defineProperty(exports, "triggerPersonalizedEmails", { enumerable: true, get: function () { return weeklyPersonalizedScheduler_1.triggerPersonalizedEmails; } });
+// Load environment variables from .env file first
+dotenv.config();
 // Initialize Firebase Admin SDK
 admin.initializeApp();
 // Initialize Stripe with secret key from config
@@ -596,7 +609,7 @@ async function generateWelcomeEmailContent(countries) {
 
           <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
               <p style="color: #7f8c8d;">Questions? Reply to this email or contact us at</p>
-              <p><a href="mailto:volkanoluc@gmail.com" style="color: #e67e22; text-decoration: none;">volkanoluc@gmail.com</a></p>
+              <p><a href="mailto:volkanoluc@nomadshood.com" style="color: #e67e22; text-decoration: none;">volkanoluc@nomadshood.com</a></p>
               
               <div style="margin-top: 20px;">
                   <a href="https://nomadshood.com" style="color: #e67e22; text-decoration: none; margin-right: 20px;">🏠 Visit Website</a>
@@ -648,7 +661,7 @@ async function generatePlainTextContent(countries) {
         content += `• Curated YouTube content\n`;
         content += `• Monthly budget planning guides\n`;
         content += `• Personalized PDF travel guides in your preferred language\n\n`;
-        content += `Questions? Contact us at volkanoluc@gmail.com\n`;
+        content += `Questions? Contact us at volkanoluc@nomadshood.com\n`;
         content += `Visit: https://nomadshood.com\n`;
         content += `YouTube: https://youtube.com/@nomadshood`;
         return content;
@@ -779,7 +792,7 @@ function generateFallbackEmailContent(countries) {
 
         <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
             <p style="color: #7f8c8d;">Questions? Reply to this email or contact us at</p>
-            <p><a href="mailto:volkanoluc@gmail.com" style="color: #e67e22; text-decoration: none;">volkanoluc@gmail.com</a></p>
+            <p><a href="mailto:volkanoluc@nomadshood.com" style="color: #e67e22; text-decoration: none;">volkanoluc@nomadshood.com</a></p>
             
             <div style="margin-top: 20px;">
                 <a href="https://nomadshood.com" style="color: #e67e22; text-decoration: none; margin-right: 20px;">🏠 Visit Website</a>
@@ -808,8 +821,37 @@ Thanks for joining our community! We're currently curating the best coliving spa
 • Monthly budget planning guides
 • Personalized PDF travel guides in your preferred language
 
-Questions? Contact us at volkanoluc@gmail.com
+Questions? Contact us at volkanoluc@nomadshood.com
 Visit: https://nomadshood.com
 YouTube: https://youtube.com/@nomadshood`;
 }
+// Test function to verify Resend API configuration
+exports.testResendConfig = functions.https.onCall(async (data, context) => {
+    try {
+        const apiKey = process.env.RESEND_API_KEY;
+        if (!apiKey) {
+            return {
+                success: false,
+                error: 'RESEND_API_KEY not found in environment variables'
+            };
+        }
+        if (apiKey === 'your_resend_api_key_here') {
+            return {
+                success: false,
+                error: 'RESEND_API_KEY is still set to placeholder value. Please update .env file with real API key.'
+            };
+        }
+        return {
+            success: true,
+            message: 'Resend API key is configured correctly',
+            keyPrefix: apiKey.substring(0, 8) + '...'
+        };
+    }
+    catch (error) {
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error'
+        };
+    }
+});
 //# sourceMappingURL=index.js.map

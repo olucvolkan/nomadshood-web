@@ -91,8 +91,8 @@ export default function NewsletterCancelPage() {
           <div className="text-center pt-4 border-t border-gray-200">
             <p className="text-sm text-gray-500">
               Questions? Email us at{' '}
-              <a href="mailto:volkanoluc@gmail.com" className="text-orange-600 hover:underline">
-                volkanoluc@gmail.com
+              <a href="mailto:volkanoluc@nomadshood.com" className="text-orange-600 hover:underline">
+                volkanoluc@nomadshood.com
               </a>
             </p>
           </div>

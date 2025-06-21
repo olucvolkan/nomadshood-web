@@ -449,7 +449,7 @@ export function HomePageClientContent({
                     We'd love to showcase your coliving space with a professional video tour and feature your story.
                   </p>
                   <Button size="lg" variant="outline" className="border-green-300 text-green-600 hover:bg-green-50" asChild>
-                    <Link href="mailto:volkanoluc@gmail.com?subject=Coliving Video Feature Request&body=Hi, I would like to promote my coliving space and create a video tour. Please let me know more about this opportunity.">
+                    <Link href="mailto:volkanoluc@nomadshood.com?subject=Coliving Video Feature Request&body=Hi, I would like to promote my coliving space and create a video tour. Please let me know more about this opportunity.">
                       <Send className="mr-2 h-5 w-5" />
                       Contact Us
                     </Link>
@@ -482,7 +482,7 @@ export function HomePageClientContent({
                   We'd love to showcase your coliving space with a professional video tour and feature your story.
                 </p>
                 <Button size="lg" variant="outline" className="border-green-300 text-green-600 hover:bg-green-50" asChild>
-                  <Link href="mailto:volkanoluc@gmail.com?subject=Coliving Video Feature Request&body=Hi, I would like to promote my coliving space and create a video tour. Please let me know more about this opportunity.">
+                  <Link href="mailto:volkanoluc@nomadshood.com?subject=Coliving Video Feature Request&body=Hi, I would like to promote my coliving space and create a video tour. Please let me know more about this opportunity.">
                     <Send className="mr-2 h-5 w-5" />
                     Contact Us
                   </Link>

@@ -1,10 +1,23 @@
 import axios from 'axios';
+import * as dotenv from 'dotenv';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { Resend } from 'resend';
 import Stripe from 'stripe';
+import {
+  generatePersonalizedRecommendation,
+  getAllSubscribers,
+  selectColivingForSubscriber,
+  sendBatchPersonalizedEmails,
+  sendPersonalizedColivingEmail,
+  sendTestEmail
+} from './countryBasedColivingEmail';
 import { onSubscriberCreate } from './subscriberTrigger';
 import { generateTestPdf } from './testPdfEndpoint';
+import { sendWeeklyPersonalizedEmails, triggerPersonalizedEmails } from './weeklyPersonalizedScheduler';
+
+// Load environment variables from .env file first
+dotenv.config();
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
@@ -657,7 +670,7 @@ async function generateWelcomeEmailContent(countries: string[]): Promise<string>
 
           <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
               <p style="color: #7f8c8d;">Questions? Reply to this email or contact us at</p>
-              <p><a href="mailto:volkanoluc@gmail.com" style="color: #e67e22; text-decoration: none;">volkanoluc@gmail.com</a></p>
+              <p><a href="mailto:volkanoluc@nomadshood.com" style="color: #e67e22; text-decoration: none;">volkanoluc@nomadshood.com</a></p>
               
               <div style="margin-top: 20px;">
                   <a href="https://nomadshood.com" style="color: #e67e22; text-decoration: none; margin-right: 20px;">🏠 Visit Website</a>
@@ -717,7 +730,7 @@ async function generatePlainTextContent(countries: string[]): Promise<string> {
     content += `• Monthly budget planning guides\n`;
     content += `• Personalized PDF travel guides in your preferred language\n\n`;
 
-    content += `Questions? Contact us at volkanoluc@gmail.com\n`;
+    content += `Questions? Contact us at volkanoluc@nomadshood.com\n`;
     content += `Visit: https://nomadshood.com\n`;
     content += `YouTube: https://youtube.com/@nomadshood`;
 
@@ -880,7 +893,7 @@ function generateFallbackEmailContent(countries: string[]): string {
 
         <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
             <p style="color: #7f8c8d;">Questions? Reply to this email or contact us at</p>
-            <p><a href="mailto:volkanoluc@gmail.com" style="color: #e67e22; text-decoration: none;">volkanoluc@gmail.com</a></p>
+            <p><a href="mailto:volkanoluc@nomadshood.com" style="color: #e67e22; text-decoration: none;">volkanoluc@nomadshood.com</a></p>
             
             <div style="margin-top: 20px;">
                 <a href="https://nomadshood.com" style="color: #e67e22; text-decoration: none; margin-right: 20px;">🏠 Visit Website</a>
@@ -910,9 +923,54 @@ Thanks for joining our community! We're currently curating the best coliving spa
 • Monthly budget planning guides
 • Personalized PDF travel guides in your preferred language
 
-Questions? Contact us at volkanoluc@gmail.com
+Questions? Contact us at volkanoluc@nomadshood.com
 Visit: https://nomadshood.com
 YouTube: https://youtube.com/@nomadshood`;
 } 
 export { generateTestPdf, onSubscriberCreate };
+
+// Weekly Personalized Coliving Email System
+  export { sendWeeklyPersonalizedEmails };
+
+// Export manual trigger function
+  export { triggerPersonalizedEmails };
+
+// Export individual email functions for testing
+  export {
+    generatePersonalizedRecommendation, getAllSubscribers,
+    selectColivingForSubscriber, sendBatchPersonalizedEmails, sendPersonalizedColivingEmail, sendTestEmail
+  };
+
+// Test function to verify Resend API configuration
+export const testResendConfig = functions.https.onCall(async (data, context) => {
+  try {
+    const apiKey = process.env.RESEND_API_KEY;
+    
+    if (!apiKey) {
+      return {
+        success: false,
+        error: 'RESEND_API_KEY not found in environment variables'
+      };
+    }
+    
+    if (apiKey === 'your_resend_api_key_here') {
+      return {
+        success: false,
+        error: 'RESEND_API_KEY is still set to placeholder value. Please update .env file with real API key.'
+      };
+    }
+    
+    return {
+      success: true,
+      message: 'Resend API key is configured correctly',
+      keyPrefix: apiKey.substring(0, 8) + '...'
+    };
+    
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+});
 
