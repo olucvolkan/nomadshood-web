@@ -82,39 +82,42 @@ export function NewsletterSignup() {
                 FREE
               </div>
             </div>
-            <h2 className="text-xl font-bold">Get Your FREE Nomad Starter Guide</h2>
+            <h2 className="text-xl font-bold">Get Your FREE Weekly Nomad Brief</h2>
           </div>
-          <p className="text-orange-100 text-sm">Plus weekly newsletter with premium content</p>
+          <p className="text-orange-100 text-sm">Premium nomad content delivered weekly</p>
         </div>
 
         <CardContent className="p-6 space-y-4">
-          {/* PDF Benefits - Above Form */}
+          {/* Weekly Nomad Brief - Above Form */}
           <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
-            <h3 className="font-bold text-gray-900 mb-3 text-center">🎁 What's Inside Your Bonus PDF:</h3>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="flex items-center gap-2">
-                <span>🎒</span>
-                <span>Packing checklist</span>
+            <h3 className="font-bold text-gray-900 mb-4 text-center">🧭 What You'll Get in the Weekly Nomad Brief:</h3>
+            <div className="space-y-4 text-sm">
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                  <span className="text-lg">🏡</span>
+                </div>
+                <div className="flex-1">
+                  <div className="font-semibold text-gray-900 mb-1">Coliving Spot of the Week</div>
+                  <div className="text-gray-600 leading-relaxed">✨ Real experiences, hidden gems, and top facilities</div>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span>📊</span>
-                <span>Budget planner</span>
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                  <span className="text-lg">📅</span>
+                </div>
+                <div className="flex-1">
+                  <div className="font-semibold text-gray-900 mb-1">Local Events & Communities</div>
+                  <div className="text-gray-600 leading-relaxed">🌍 WhatsApp & Telegram links to connect instantly</div>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span>💪</span>
-                <span>Fitness guide</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span>📄</span>
-                <span>Visa tips</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span>🌐</span>
-                <span>Remote work advice</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span>📧</span>
-                <span>Weekly nomad tips</span>
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                  <span className="text-lg">💡</span>
+                </div>
+                <div className="flex-1">
+                  <div className="font-semibold text-gray-900 mb-1">Nomad Pro Tips</div>
+                  <div className="text-gray-600 leading-relaxed">Remote work, visa updates, fitness on the road, and more</div>
+                </div>
               </div>
             </div>
           </div>
@@ -195,7 +198,7 @@ export function NewsletterSignup() {
               ) : (
                 <>
                   <Download className="mr-2 h-5 w-5" />
-                  🔓 Access the Guide for €2/month
+                  🔓 Get Weekly Nomad Brief for €2/month
                 </>
               )}
             </Button>
@@ -210,7 +213,7 @@ export function NewsletterSignup() {
 
             {/* Additional Benefits */}
             <div className="text-xs text-gray-500 text-center space-y-1">
-              <p>📩 Instant PDF download after payment</p>
+              <p>📧 Weekly nomad brief delivered every Monday</p>
               <p>🌟 Join 2,847+ nomads already using our guides</p>
             </div>
           </form>
