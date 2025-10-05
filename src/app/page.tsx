@@ -43,6 +43,12 @@ export default async function HomePage() {
   const allSpaces: ColivingSpace[] = await getAllColivingSpaces();
   const nomadsHoodPodcastVideos: NomadVideo[] = await getNomadsHoodPodcastVideosFromFirestore();
 
+  // Filter only Spain colivings for the Spain Colivings section
+  const spainColivings = allSpaces.filter(space =>
+    space.country?.toLowerCase() === 'spain' ||
+    space.country?.toLowerCase() === 'españa'
+  ).slice(0, 4); // Get only first 4
+
   // Fetch countries with communities from Firestore
   const countriesWithCommunities: CountryWithCommunities[] = await getAllCountriesFromDB();
 
@@ -99,7 +105,7 @@ export default async function HomePage() {
       <JsonLd data={structuredData} />
     <HomePageClientContent
       allSpaces={allSpaces}
-        allCountries={processedPopularDestinations} // Used for "Popular Destinations" (from JSON)
+        spainColivings={spainColivings} // Only Spain colivings
       nomadsHoodPodcastVideos={nomadsHoodPodcastVideos}
         countriesWithCommunities={countriesWithCommunities} // Now uses Firestore data with actual communities
     />

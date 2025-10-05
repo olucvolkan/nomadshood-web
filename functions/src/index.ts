@@ -172,6 +172,100 @@ export const createNewsletterCheckout = functions.https.onCall(async (data, cont
 });
 
 /**
+ * Create Stripe checkout session for Spain Guide one-time purchase
+ */
+export const buySpainGuide = functions.https.onCall(async (data, context) => {
+  try {
+    const { email } = data;
+
+    if (!email) {
+      throw new functions.https.HttpsError('invalid-argument', 'Email is required');
+    }
+
+    console.log('Creating Spain Guide checkout for:', email);
+
+    const stripe = getStripe();
+
+    // Create or retrieve customer
+    let customer;
+    const existingCustomers = await stripe.customers.list({
+      email: email,
+      limit: 1,
+    });
+
+    if (existingCustomers.data.length > 0) {
+      customer = existingCustomers.data[0];
+      console.log('Found existing customer:', customer.id);
+    } else {
+      customer = await stripe.customers.create({
+        email: email,
+        metadata: {
+          source: 'spain_guide_purchase'
+        }
+      });
+      console.log('Created new customer:', customer.id);
+    }
+
+    // Create checkout session for one-time payment
+    const session = await stripe.checkout.sessions.create({
+      customer: customer.id,
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'eur',
+            product_data: {
+              name: 'Spain Digital Nomad Guide 2025',
+              description: 'Complete guide with 50+ colivings, visa resources, essential apps, and WhatsApp communities',
+            },
+            unit_amount: 1000, // €10.00 in cents
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'payment', // One-time payment, not subscription
+      success_url: `${functions.config().app?.url || 'https://nomadshood.com'}/spain-guide/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${functions.config().app?.url || 'https://nomadshood.com'}/spain-guide`,
+      metadata: {
+        email: email,
+        product: 'spain_guide',
+        source: 'nomadshood_website'
+      }
+    });
+
+    console.log('Created checkout session:', session.id);
+
+    // Store pending purchase in Firestore
+    const pendingPurchase = {
+      email: email,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      paymentStatus: 'pending' as const,
+      stripeSessionId: session.id,
+      stripeCustomerId: customer.id,
+      product: 'spain_guide',
+      amount: 10,
+      currency: 'eur'
+    };
+
+    await admin.firestore()
+      .collection('spain_guide_purchases_pending')
+      .doc(session.id)
+      .set(pendingPurchase);
+
+    console.log('Stored pending purchase in Firestore');
+
+    return {
+      sessionId: session.id,
+      checkoutUrl: session.url
+    };
+
+  } catch (error) {
+    console.error('Error creating Spain Guide checkout session:', error);
+    throw new functions.https.HttpsError('internal', `Failed to create checkout session: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+});
+
+/**
  * Handle Stripe webhook events
  */
 export const stripeWebhook = functions.https.onRequest(async (req, res) => {
