@@ -43,15 +43,21 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'firebasestorage.googleapis.com', // For Firebase Storage images
+        hostname: 'firebasestorage.googleapis.com', // For Firebase Storage images (DEPRECATED)
         port: '',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'storage.googleapis.com', // Added to support this common GCS hostname
+        hostname: 'storage.googleapis.com', // Added to support this common GCS hostname (DEPRECATED)
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co', // Supabase Storage - supports all project subdomains
+        port: '',
+        pathname: '/storage/v1/object/public/**',
       },
       {
         protocol: 'https',

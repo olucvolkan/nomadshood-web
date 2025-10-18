@@ -4,11 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Nomadshood** is a Next.js 15 web application for digital nomads to discover coliving spaces worldwide, featuring AI-powered recommendations, personalized email campaigns, and comprehensive coliving information with nearby places and community links.
+**Nomadshood** is a Next.js 15 web application for digital nomads to discover coliving spaces in Spain, featuring AI-powered recommendations, personalized email campaigns, and comprehensive coliving information with nearby places and community links.
+
+**IMPORTANT**: The project is currently focused exclusively on **Spain** coliving spaces. All database queries filter for `country_code = 'ES'`.
 
 The project consists of two main components:
-1. **Next.js Web App** (`/src`) - Public-facing website with coliving listings, search, and AI recommendations
-2. **Firebase Cloud Functions** (`/functions`) - Automated email campaigns and serverless backend
+1. **Next.js Web App** (`/src`) - Public-facing website with Spain coliving listings, search, and AI recommendations
+2. **Firebase Cloud Functions** (`/functions`) - Automated email campaigns and serverless backend (will be migrated)
 
 ## Commands
 
@@ -27,7 +29,7 @@ npm run genkit:dev       # Start Genkit developer UI
 npm run genkit:watch     # Start Genkit with file watching
 ```
 
-### Firebase Functions (in `/functions` directory)
+### Firebase Functions (in `/functions` directory) - DEPRECATED
 ```bash
 cd functions
 npm run build            # Compile TypeScript functions
@@ -35,29 +37,42 @@ npm run deploy           # Deploy all functions to Firebase
 firebase deploy --only functions:weeklyPersonalizedEmails      # Deploy specific function
 firebase deploy --only functions:manualPersonalizedEmails     # Deploy manual trigger
 ```
+**Note**: Firebase Functions will be migrated to Supabase Edge Functions in the future.
 
 ## Architecture
 
-### Data Layer - Firebase Integration
+### Data Layer - Supabase Integration (MIGRATED FROM FIREBASE)
 
-**Primary Database**: Firestore (not Realtime Database)
-- Firebase SDK initialization in [src/lib/firebase.ts](src/lib/firebase.ts)
-- Exports: `app`, `db` (Firestore), `storage`, `functions`
-- All Firebase config via `NEXT_PUBLIC_FIREBASE_*` environment variables
+**Primary Database**: Supabase PostgreSQL
+- Supabase client initialization in [src/api/supabase.ts](src/api/supabase.ts)
+- Environment variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+- Database schema defined in [SUPABASE_SCHEMA.sql](SUPABASE_SCHEMA.sql)
+- TypeScript types in [src/api/database.types.ts](src/api/database.types.ts)
 
-**Core Firestore Collections**:
-- `colivings` - Coliving spaces with location, pricing, amenities
+**SPAIN-ONLY FILTERING**: All queries automatically filter for Spain (`country_code = 'ES'`)
+
+**Core PostgreSQL Tables**:
+- `colivings` - Coliving spaces (Spain only, country_code = 'ES')
 - `coliving_nearby_places` - Curated nearby attractions by category (cafes, gyms, restaurants)
 - `coliving_reviews` - Google Places reviews with sentiment analysis
 - `countries` - Country metadata with community links (WhatsApp, Telegram, Facebook groups)
 - `mail_subscriber` - Newsletter subscribers with country preferences and language
 - `nomad_videos` - YouTube video content by destination
 
-**Services Architecture** (`/src/services`):
-- [colivingService.ts](src/services/colivingService.ts) - Fetches colivings with filtering and nearby places
-- [newsletterService.ts](src/services/newsletterService.ts) - Newsletter subscription management
-- [storageService.ts](src/services/storageService.ts) - Firebase Storage URL resolution
-- [videoService.ts](src/services/videoService.ts) - YouTube video data
+**API Layer** (`/src/api`) - Supabase data operations:
+- [supabase.ts](src/api/supabase.ts) - Supabase client initialization
+- [colivings.ts](src/api/colivings.ts) - Coliving CRUD operations (Spain-only)
+- [nearby-places.ts](src/api/nearby-places.ts) - Nearby places queries
+- [reviews.ts](src/api/reviews.ts) - Review operations
+- [countries.ts](src/api/countries.ts) - Country/community data (Spain-only)
+- [newsletter.ts](src/api/newsletter.ts) - Newsletter subscriptions
+- [videos.ts](src/api/videos.ts) - Video content (Spain-filtered)
+
+**Services Architecture** (`/src/services`) - Wrapper layer for API:
+- [colivingService.ts](src/services/colivingService.ts) - Fetches Spain colivings with filtering and nearby places
+- [newsletterService.ts](src/services/newsletterService.ts) - Newsletter subscription (defaults to Spain)
+- [storageService.ts](src/services/storageService.ts) - Supabase Storage URL resolution
+- [videoService.ts](src/services/videoService.ts) - YouTube video data (Spain-filtered)
 
 ### AI/ML Integration - Genkit
 
@@ -158,20 +173,27 @@ See [functions/PERSONALIZED_EMAIL_SYSTEM_README.md](functions/PERSONALIZED_EMAIL
 ### Image Handling
 
 **Next.js Image Configuration**: [next.config.ts](next.config.ts)
-- Remote patterns for: Firebase Storage, Unsplash, YouTube thumbnails, coliving websites
-- Firebase Storage URLs via [storageService.ts](src/services/storageService.ts)
+- Remote patterns for: Supabase Storage, Unsplash, YouTube thumbnails, coliving websites
+- Supabase Storage URLs via [storageService.ts](src/services/storageService.ts)
 
 **Usage**:
 ```typescript
-import { getFirebaseStorageUrl } from '@/services/storageService';
-const imageUrl = await getFirebaseStorageUrl('path/to/image.jpg');
+import { getSupabaseStorageUrl } from '@/services/storageService';
+const imageUrl = await getSupabaseStorageUrl('coliving-images', 'path/to/image.jpg');
 ```
 
 ## Development Workflow
 
 ### Environment Variables
 
-**Required for Next.js App**:
+**Required for Supabase** (CURRENT):
+```bash
+NEXT_PUBLIC_SUPABASE_URL=          # Your Supabase project URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY=     # Supabase anonymous/public key
+SUPABASE_SERVICE_ROLE_KEY=         # Supabase service role key (server-side only)
+```
+
+**Firebase Variables** (DEPRECATED - Will be removed):
 ```bash
 NEXT_PUBLIC_FIREBASE_API_KEY=
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
@@ -179,7 +201,14 @@ NEXT_PUBLIC_FIREBASE_PROJECT_ID=
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
 NEXT_PUBLIC_FIREBASE_APP_ID=
-NEXT_PUBLIC_FIREBASE_DATABASE_URL=  # Optional for RTDB
+NEXT_PUBLIC_FIREBASE_DATABASE_URL=
+```
+
+**Other Required Variables**:
+```bash
+GEMINI_API_KEY=                    # For AI recommendations (Genkit)
+RESEND_API_KEY=                    # Email delivery via Resend
+OPENAI_API_KEY=                    # For PDF guide generation (if used)
 ```
 
 **Required for Firebase Functions**:

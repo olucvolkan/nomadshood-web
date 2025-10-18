@@ -1,30 +1,37 @@
-
-import { storage } from '@/lib/firebase'; // Assuming storage is initialized and exported from firebase.ts
-import { ref as storageRef, getDownloadURL } from 'firebase/storage';
+// Migrated to Supabase Storage
+import { supabase } from '@/api/supabase';
 
 /**
- * Gets a download URL for a file in Firebase Storage.
- * @param filePath The full path to the file in Firebase Storage (e.g., 'explore-top-destinations/colombia.jpg').
- * @returns A promise that resolves to the download URL string, or null if an error occurs.
+ * Gets a public URL for a file in Supabase Storage.
+ * @param bucket The Supabase storage bucket name (e.g., 'coliving-images').
+ * @param filePath The full path to the file in the bucket (e.g., 'explore-top-destinations/colombia.jpg').
+ * @returns The public URL string, or null if an error occurs.
+ */
+export async function getSupabaseStorageUrl(bucket: string, filePath: string): Promise<string | null> {
+  if (!bucket || !filePath) {
+    console.warn('getSupabaseStorageUrl: bucket and filePath are required.');
+    return null;
+  }
+
+  try {
+    const { data } = supabase.storage.from(bucket).getPublicUrl(filePath);
+
+    if (!data || !data.publicUrl) {
+      console.warn(`getSupabaseStorageUrl: Could not generate public URL for ${filePath} in bucket ${bucket}`);
+      return null;
+    }
+
+    return data.publicUrl;
+  } catch (error: any) {
+    console.error(`getSupabaseStorageUrl: Error getting URL for ${filePath} in bucket ${bucket}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Legacy function name for backward compatibility
+ * Defaults to 'coliving-images' bucket
  */
 export async function getFirebaseStorageDownloadUrl(filePath: string): Promise<string | null> {
-  if (!filePath) {
-    console.warn('getFirebaseStorageDownloadUrl: filePath is required.');
-    return null;
-  }
-  try {
-    const fileStorageRef = storageRef(storage, filePath);
-    const url = await getDownloadURL(fileStorageRef);
-    return url;
-  } catch (error: any) {
-    // Handle common errors like 'object-not-found' or 'unauthorized'
-    if (error.code === 'storage/object-not-found') {
-      console.warn(`getFirebaseStorageDownloadUrl: File not found at path: ${filePath}`);
-    } else if (error.code === 'storage/unauthorized') {
-      console.error(`getFirebaseStorageDownloadUrl: Unauthorized to access file at path: ${filePath}. Check Storage security rules.`);
-    } else {
-      console.error(`getFirebaseStorageDownloadUrl: Error fetching download URL for ${filePath}:`, error);
-    }
-    return null;
-  }
+  return await getSupabaseStorageUrl('coliving-images', filePath);
 }
